@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ExternalLink, Github, ArrowRight } from 'lucide-react';
+import { ExternalLink, Github, ArrowRight, FileText } from 'lucide-react';
 import { Project } from '@/lib/projects';
 
 interface ProjectCardProps {
@@ -11,6 +11,16 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
   const isEven = index % 2 === 0;
+
+  // Color accents for different projects
+  const accentColors: Record<string, string> = {
+    'ryft': '#22d3ee',
+    'ml-soft-robotics': '#a78bfa',
+    'ftc-robotics': '#34d399',
+    'web-curriculum': '#f472b6',
+  };
+
+  const accent = accentColors[project.slug] || 'var(--accent)';
 
   return (
     <div className="relative grid md:grid-cols-12 gap-4 items-center py-8">
@@ -26,20 +36,34 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               borderColor: 'var(--card-border)' 
             }}
           >
-            {/* Placeholder gradient */}
+            {/* Gradient background */}
             <div 
-              className="absolute inset-0 opacity-50"
+              className="absolute inset-0 opacity-30"
               style={{
-                background: `linear-gradient(135deg, var(--accent) 0%, transparent 50%)`
+                background: `linear-gradient(135deg, ${accent} 0%, transparent 60%)`
               }}
             />
+            {/* Project initial */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-6xl font-bold opacity-10">
+              <span 
+                className="text-7xl font-bold opacity-20"
+                style={{ color: accent }}
+              >
                 {project.title.charAt(0)}
               </span>
             </div>
+            {/* Year badge */}
+            <div 
+              className="absolute top-4 right-4 px-2 py-1 rounded text-xs font-mono"
+              style={{ backgroundColor: 'rgba(0,0,0,0.5)', color: accent }}
+            >
+              {project.year}
+            </div>
             {/* Hover overlay */}
-            <div className="absolute inset-0 bg-accent opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+            <div 
+              className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+              style={{ backgroundColor: accent }}
+            />
           </div>
         </Link>
       </div>
@@ -48,7 +72,9 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       <div 
         className={`md:col-span-5 ${isEven ? 'md:order-2 md:text-right' : 'md:order-1'}`}
       >
-        <p className="text-accent text-sm font-mono mb-2">Featured Project</p>
+        <p className="text-sm font-mono mb-2" style={{ color: accent }}>
+          Featured Project
+        </p>
         
         <h3 className="text-xl font-semibold mb-4">
           <Link 
@@ -65,6 +91,9 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         >
           <p className="text-muted text-sm leading-relaxed">
             {project.description}
+          </p>
+          <p className="text-xs text-muted mt-3 opacity-70">
+            {project.role}
           </p>
         </div>
 
@@ -101,11 +130,22 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               <ExternalLink size={20} />
             </a>
           )}
+          {project.paperUrl && (
+            <a
+              href={project.paperUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted hover:text-accent transition-colors"
+              aria-label="Paper"
+            >
+              <FileText size={20} />
+            </a>
+          )}
           <Link
             href={`/projects/${project.slug}`}
             className="text-muted hover:text-accent transition-colors flex items-center gap-1 text-sm"
           >
-            Case Study <ArrowRight size={14} />
+            Details <ArrowRight size={14} />
           </Link>
         </div>
       </div>

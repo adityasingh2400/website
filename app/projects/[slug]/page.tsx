@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Github, FileText } from 'lucide-react';
 import { getProjectBySlug, projects } from '@/lib/projects';
 
 export default function ProjectPage() {
@@ -27,6 +27,16 @@ export default function ProjectPage() {
   const prevProject = projects[currentIndex - 1];
   const nextProject = projects[currentIndex + 1];
 
+  // Color accents for different projects
+  const accentColors: Record<string, string> = {
+    'ryft': '#22d3ee',
+    'ml-soft-robotics': '#a78bfa',
+    'ftc-robotics': '#34d399',
+    'web-curriculum': '#f472b6',
+  };
+
+  const accent = accentColors[project.slug] || 'var(--accent)';
+
   return (
     <main className="min-h-screen py-20">
       {/* Back link */}
@@ -43,7 +53,9 @@ export default function ProjectPage() {
       {/* Header */}
       <header className="container mb-16">
         <div className="max-w-3xl">
-          <p className="text-accent font-mono text-sm mb-4">Case Study</p>
+          <p className="font-mono text-sm mb-4" style={{ color: accent }}>
+            Case Study
+          </p>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">{project.title}</h1>
           <p className="text-xl text-muted mb-6">{project.description}</p>
 
@@ -58,7 +70,7 @@ export default function ProjectPage() {
               {project.year}
             </div>
             <div>
-              <span className="block text-foreground font-medium">Tech</span>
+              <span className="block text-foreground font-medium">Stack</span>
               {project.technologies.slice(0, 3).join(', ')}
             </div>
           </div>
@@ -70,7 +82,8 @@ export default function ProjectPage() {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2 bg-accent text-background rounded font-medium hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-2 px-5 py-2 text-background rounded font-medium hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: accent }}
               >
                 <ExternalLink size={16} />
                 View Live
@@ -81,11 +94,23 @@ export default function ProjectPage() {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2 border border-card-border text-foreground rounded font-medium hover:border-accent hover:text-accent transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2 border text-foreground rounded font-medium hover:text-accent transition-colors"
                 style={{ borderColor: 'var(--card-border)' }}
               >
                 <Github size={16} />
                 Source Code
+              </a>
+            )}
+            {project.paperUrl && (
+              <a
+                href={project.paperUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2 border text-foreground rounded font-medium hover:text-accent transition-colors"
+                style={{ borderColor: 'var(--card-border)' }}
+              >
+                <FileText size={16} />
+                Read Paper
               </a>
             )}
           </div>
@@ -104,10 +129,13 @@ export default function ProjectPage() {
           <div 
             className="w-full h-full flex items-center justify-center"
             style={{
-              background: `linear-gradient(135deg, var(--accent) 0%, transparent 50%)`
+              background: `linear-gradient(135deg, ${accent} 0%, transparent 50%)`
             }}
           >
-            <span className="text-8xl font-bold opacity-10">
+            <span 
+              className="text-8xl font-bold opacity-20"
+              style={{ color: accent }}
+            >
               {project.title.charAt(0)}
             </span>
           </div>
@@ -120,7 +148,7 @@ export default function ProjectPage() {
           {/* The Problem */}
           <section>
             <h2 className="text-2xl font-semibold mb-4 flex items-center gap-3">
-              <span className="text-accent font-mono text-lg">01.</span>
+              <span className="font-mono text-lg" style={{ color: accent }}>01.</span>
               The Problem
             </h2>
             <p className="text-muted leading-relaxed">{project.problem}</p>
@@ -129,7 +157,7 @@ export default function ProjectPage() {
           {/* The Approach */}
           <section>
             <h2 className="text-2xl font-semibold mb-4 flex items-center gap-3">
-              <span className="text-accent font-mono text-lg">02.</span>
+              <span className="font-mono text-lg" style={{ color: accent }}>02.</span>
               The Approach
             </h2>
             <p className="text-muted leading-relaxed">{project.approach}</p>
@@ -138,7 +166,7 @@ export default function ProjectPage() {
           {/* The Solution */}
           <section>
             <h2 className="text-2xl font-semibold mb-4 flex items-center gap-3">
-              <span className="text-accent font-mono text-lg">03.</span>
+              <span className="font-mono text-lg" style={{ color: accent }}>03.</span>
               The Solution
             </h2>
             <p className="text-muted leading-relaxed">{project.solution}</p>
@@ -147,13 +175,13 @@ export default function ProjectPage() {
           {/* The Impact */}
           <section>
             <h2 className="text-2xl font-semibold mb-4 flex items-center gap-3">
-              <span className="text-accent font-mono text-lg">04.</span>
+              <span className="font-mono text-lg" style={{ color: accent }}>04.</span>
               The Impact
             </h2>
             <ul className="space-y-3">
               {project.impact.map((item, index) => (
                 <li key={index} className="flex items-start gap-3 text-muted">
-                  <span className="text-accent mt-1">▹</span>
+                  <span style={{ color: accent }} className="mt-1">▹</span>
                   {item}
                 </li>
               ))}
@@ -165,7 +193,14 @@ export default function ProjectPage() {
             <h2 className="text-2xl font-semibold mb-4">Tech Stack</h2>
             <div className="flex flex-wrap gap-2">
               {project.technologies.map((tech) => (
-                <span key={tech} className="tag">
+                <span 
+                  key={tech} 
+                  className="px-3 py-1 text-sm rounded-full"
+                  style={{ 
+                    backgroundColor: `${accent}15`,
+                    color: accent
+                  }}
+                >
                   {tech}
                 </span>
               ))}

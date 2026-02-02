@@ -9,13 +9,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Aditya Singh | Developer",
-  description: "Developer focused on building clean, user-friendly digital experiences. View my projects and get in touch.",
-  keywords: ["developer", "portfolio", "software engineer", "web development"],
+  title: "Aditya Singh | Full-stack + AI Engineering",
+  description: "CS student and engineering lead building AI copilots that turn messy business rules into auditable systems. Full-stack + LLM engineering.",
+  keywords: ["full-stack", "AI", "LLMs", "FastAPI", "Next.js", "Supabase", "product engineering", "startups", "RevOps", "automation", "robotics"],
   authors: [{ name: "Aditya Singh" }],
   openGraph: {
-    title: "Aditya Singh | Developer",
-    description: "Developer focused on building clean, user-friendly digital experiences.",
+    title: "Aditya Singh | Full-stack + AI Engineering",
+    description: "CS student and engineering lead building AI copilots that turn messy business rules into auditable systems.",
     type: "website",
   },
 };

@@ -14,18 +14,44 @@ export function Contact() {
         </h2>
 
         <p className="text-muted text-lg mb-10 mx-auto max-w-lg">
-          I'm currently open to new opportunities and always happy to connect. 
-          Whether you have a question, a project idea, or just want to say hi, 
-          feel free to reach out!
+          If you want to collaborate, chat, or need help building something real—I'm always 
+          open to interesting conversations and opportunities.
         </p>
 
         <a
-          href="mailto:hello@example.com"
-          className="inline-flex items-center gap-2 px-8 py-4 border border-accent text-accent rounded-md hover:bg-accent hover:bg-opacity-10 transition-all duration-200 text-lg"
+          href="mailto:adityasingh@ucsb.edu"
+          className="inline-flex items-center gap-2 px-8 py-4 bg-accent text-background font-medium rounded-md hover:opacity-90 transition-opacity text-lg"
         >
           <Mail size={20} />
-          Say Hello
+          adityasingh@ucsb.edu
         </a>
+
+        <div className="flex justify-center gap-6 mt-8 text-sm">
+          <a 
+            href="https://www.linkedin.com/in/adityasingh2400" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-muted hover:text-accent transition-colors"
+          >
+            LinkedIn
+          </a>
+          <a 
+            href="https://x.com/NoeticPraxis" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-muted hover:text-accent transition-colors"
+          >
+            X / Twitter
+          </a>
+          <a 
+            href="https://github.com/adityasingh2400" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-muted hover:text-accent transition-colors"
+          >
+            GitHub
+          </a>
+        </div>
       </div>
     </Section>
   );

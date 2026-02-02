@@ -4,9 +4,9 @@ import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
 
 const socialLinks = [
   { name: 'GitHub', href: 'https://github.com/adityasingh2400', icon: Github },
-  { name: 'LinkedIn', href: 'https://linkedin.com/in/', icon: Linkedin },
-  { name: 'Twitter', href: 'https://twitter.com/', icon: Twitter },
-  { name: 'Email', href: 'mailto:hello@example.com', icon: Mail },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/adityasingh2400', icon: Linkedin },
+  { name: 'X', href: 'https://x.com/NoeticPraxis', icon: Twitter },
+  { name: 'Email', href: 'mailto:adityasingh@ucsb.edu', icon: Mail },
 ];
 
 export function Hero() {
@@ -16,10 +16,10 @@ export function Hero() {
         <div className="max-w-3xl">
           {/* Greeting */}
           <p 
-            className="text-muted mb-4 animate-fade-in"
+            className="text-accent font-mono mb-4 animate-fade-in"
             style={{ animationDelay: '0.1s', opacity: 0 }}
           >
-            Hi, my name is
+            Hi, I'm
           </p>
 
           {/* Name */}
@@ -32,20 +32,21 @@ export function Hero() {
 
           {/* Tagline */}
           <h2 
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-muted mb-6 animate-fade-in"
+            className="text-2xl sm:text-3xl md:text-4xl font-semibold text-muted mb-6 animate-fade-in"
             style={{ animationDelay: '0.3s', opacity: 0 }}
           >
-            I build things for the web.
+            I build AI copilots that make complex workflows understandable, auditable, and fast.
           </h2>
 
           {/* Description */}
           <p 
-            className="text-lg text-muted max-w-xl mb-8 animate-fade-in"
+            className="text-lg text-muted max-w-xl mb-8 animate-fade-in leading-relaxed"
             style={{ animationDelay: '0.4s', opacity: 0 }}
           >
-            I'm a developer focused on building accessible, user-friendly digital experiences. 
-            Currently, I'm working on projects that solve real problems and make technology 
-            easier to use.
+            I'm a CS student at{' '}
+            <span className="text-foreground">UC Santa Barbara</span> and an engineering lead 
+            working on AI-native products. I like problems where the hard part isn't code—it's 
+            turning messy real-world rules into systems people trust.
           </p>
 
           {/* Social Links */}
@@ -69,14 +70,21 @@ export function Hero() {
 
           {/* CTA */}
           <div 
-            className="mt-12 animate-fade-in"
+            className="flex flex-wrap gap-4 mt-12 animate-fade-in"
             style={{ animationDelay: '0.6s', opacity: 0 }}
           >
+            <a
+              href="mailto:adityasingh@ucsb.edu"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-background font-medium rounded-md hover:opacity-90 transition-opacity"
+            >
+              <Mail size={18} />
+              Email me
+            </a>
             <a
               href="#projects"
               className="inline-flex items-center gap-2 px-6 py-3 border border-accent text-accent rounded-md hover:bg-accent hover:bg-opacity-10 transition-all duration-200"
             >
-              View my work
+              View projects
               <svg 
                 className="w-4 h-4" 
                 fill="none" 

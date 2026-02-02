@@ -4,8 +4,8 @@ import { Github, Linkedin, Twitter } from 'lucide-react';
 
 const socialLinks = [
   { name: 'GitHub', href: 'https://github.com/adityasingh2400', icon: Github },
-  { name: 'LinkedIn', href: 'https://linkedin.com/in/', icon: Linkedin },
-  { name: 'Twitter', href: 'https://twitter.com/', icon: Twitter },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/adityasingh2400', icon: Linkedin },
+  { name: 'X', href: 'https://x.com/NoeticPraxis', icon: Twitter },
 ];
 
 export function Footer() {

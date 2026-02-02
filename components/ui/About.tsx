@@ -3,44 +3,75 @@
 import { Section } from './Section';
 
 const skills = [
-  'JavaScript', 'TypeScript', 'React', 'Next.js', 'Node.js',
-  'Python', 'PostgreSQL', 'MongoDB', 'AWS', 'Docker',
-  'Git', 'REST APIs', 'GraphQL', 'Tailwind CSS'
+  // Core
+  'TypeScript', 'JavaScript', 'Python', 'SQL',
+  // Web + backend
+  'Next.js', 'React', 'FastAPI', 'Node.js',
+  'PostgreSQL', 'Supabase', 'REST APIs',
+  // AI/LLM
+  'LLM Pipelines', 'Prompt Engineering',
+  // Tools
+  'Git', 'AWS'
+];
+
+const highlights = [
+  { label: '4.0 GPA', detail: 'UCSB CS' },
+  { label: 'IEEE Published', detail: 'ML Research' },
+  { label: 'MIT URTC', detail: 'Presenter' },
+  { label: 'Engineering Lead', detail: 'AI Products' },
 ];
 
 export function About() {
   return (
     <Section id="about">
       <div className="container">
+        <h2 className="text-2xl font-semibold mb-8 flex items-center gap-3">
+          <span className="text-accent font-mono text-lg">01.</span>
+          About Me
+        </h2>
+
+        {/* Highlights strip */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+          {highlights.map((item) => (
+            <div 
+              key={item.label}
+              className="p-4 rounded-lg text-center"
+              style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
+            >
+              <div className="text-lg font-semibold text-accent">{item.label}</div>
+              <div className="text-sm text-muted">{item.detail}</div>
+            </div>
+          ))}
+        </div>
+
         <div className="grid md:grid-cols-[3fr_2fr] gap-12 items-start">
           {/* Text content */}
           <div>
-            <h2 className="text-2xl font-semibold mb-6 flex items-center gap-3">
-              <span className="text-accent font-mono text-lg">01.</span>
-              About Me
-            </h2>
-
             <div className="space-y-4 text-muted">
               <p>
-                Hello! I'm Aditya, a developer who enjoys building things that live on the internet. 
-                My interest in web development started back when I first tried customizing a website 
-                template — turns out hacking together HTML and CSS taught me a lot about how things work!
+                I'm Aditya Singh, a CS student at{' '}
+                <span className="text-foreground">UC Santa Barbara</span> and an engineering 
+                lead working on AI-native products. My focus is building copilots that augment 
+                human decision-making—especially in places where spreadsheets and ambiguity 
+                create real costs.
               </p>
 
               <p>
-                Fast-forward to today, and I've had the privilege of working on a variety of projects, 
-                from small business websites to complex web applications. My main focus these days is 
-                building accessible, inclusive products and digital experiences.
+                I've published ML research (IEEE), presented at MIT URTC, and built production 
+                full-stack infrastructure across modern web stacks and Python backends. I care 
+                a lot about <span className="text-foreground">clarity</span>,{' '}
+                <span className="text-foreground">auditability</span>, and{' '}
+                <span className="text-foreground">shipping</span>.
               </p>
 
               <p>
-                When I'm not at the computer, I'm usually reading, exploring new places, or learning 
-                something new. I believe in continuous improvement and always look for ways to grow 
-                both personally and professionally.
+                I like building things that feel inevitable once they exist. That usually means: 
+                pick a painful workflow, get close to the edge cases, and design a system that 
+                people can trust—even under scrutiny.
               </p>
 
               <p className="pt-2">
-                Here are a few technologies I've been working with recently:
+                Technologies I work with:
               </p>
             </div>
 
@@ -58,29 +89,36 @@ export function About() {
             </ul>
           </div>
 
-          {/* Image placeholder */}
-          <div className="relative group">
-            <div className="relative z-10">
-              <div 
-                className="aspect-square rounded-lg bg-card-bg border border-card-border overflow-hidden"
-                style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}
-              >
-                {/* Placeholder for profile image */}
-                <div className="w-full h-full flex items-center justify-center text-muted">
-                  <svg 
-                    className="w-24 h-24 opacity-30" 
-                    fill="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            {/* Decorative border */}
+          {/* Now section */}
+          <div>
             <div 
-              className="absolute top-4 left-4 w-full h-full rounded-lg border-2 border-accent -z-10 transition-all duration-300 group-hover:top-3 group-hover:left-3"
-            />
+              className="p-6 rounded-lg"
+              style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
+            >
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <span className="text-accent">⚡</span>
+                What I'm doing now
+              </h3>
+              <ul className="space-y-3 text-muted text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5">▹</span>
+                  <span>Building <span className="text-foreground">Ryft</span> and pushing toward real-world adoption</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5">▹</span>
+                  <span>Designing an FTC flywheel shooter for <span className="text-foreground">DECO 2026</span></span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5">▹</span>
+                  <span>Staying sharp on full-stack + applied LLM tooling</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Location */}
+            <div className="mt-6 text-sm text-muted">
+              <span className="text-accent">📍</span> Santa Barbara, CA (UCSB) + Bay Area ties
+            </div>
           </div>
         </div>
       </div>
