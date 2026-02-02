@@ -1,36 +1,164 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gravitational Portfolio
+
+An innovative portfolio website featuring a novel **Gravitational Orbit Navigation System** - a physics-based UI where your cursor has gravity and pulls project orbs toward it.
+
+## Features
+
+### Novel Navigation System
+- **Gravitational Cursor**: Your cursor acts as a gravitational force, pulling nearby project "planets" toward it
+- **Capture Mechanic**: Click to capture a project into orbit around your cursor
+- **Physics-Based Interaction**: Projects have different masses affecting how they respond to gravity
+
+### Cutting-Edge Technologies
+- **WebGL Fluid Metaball Background**: Custom GLSL shaders create organic, living backgrounds
+- **Particle Trail System**: Cursor leaves glowing particle trails as you navigate
+- **Flow Field Particles**: Simplex noise-driven particle animations in the About section
+- **Magnetic Cursor**: Custom cursor that morphs and snaps to interactive elements
+
+### Visual Effects
+- **3D Project Spheres**: React Three Fiber powered orbs with distortion materials
+- **Smooth Scroll**: Lenis-powered butter-smooth scrolling
+- **Page Transitions**: SVG morphing transitions between pages
+- **Scroll Animations**: Framer Motion powered reveal animations
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 14 (App Router) |
+| 3D Engine | React Three Fiber + @react-three/drei |
+| Animations | Framer Motion + Lenis |
+| Shaders | Custom GLSL (fluid, metaball, noise) |
+| Styling | Tailwind CSS |
+| Language | TypeScript |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone <your-repo-url>
+cd Website
+
+# Install dependencies
+npm install --legacy-peer-deps
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+### Deploy to Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The easiest way to deploy is using [Vercel](https://vercel.com):
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Push your code to GitHub
+2. Import your repository on [Vercel](https://vercel.com/new)
+3. Vercel will automatically detect Next.js and configure the build
 
-## Deploy on Vercel
+Or use the Vercel CLI:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm i -g vercel
+vercel
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+├── app/
+│   ├── layout.tsx          # Root layout with providers
+│   ├── page.tsx            # Main page with gravitational navigation
+│   ├── globals.css         # Global styles
+│   └── projects/[slug]/    # Dynamic project pages
+├── components/
+│   ├── canvas/             # 3D scene components
+│   │   ├── GravitationalScene.tsx
+│   │   ├── ProjectSphere.tsx
+│   │   ├── FluidBackground.tsx
+│   │   ├── ParticleTrails.tsx
+│   │   └── shaders/        # GLSL shader files
+│   ├── ui/                 # UI components
+│   │   ├── MagneticCursor.tsx
+│   │   ├── ProjectCard.tsx
+│   │   ├── AboutSection.tsx
+│   │   └── Navigation.tsx
+│   └── providers/          # Context providers
+├── lib/                    # Utilities and data
+│   ├── physics.ts          # Gravitational physics calculations
+│   ├── projects.ts         # Project data
+│   └── utils.ts            # Helper functions
+└── public/                 # Static assets
+```
+
+## Customization
+
+### Adding Projects
+
+Edit `lib/projects.ts` to add your own projects:
+
+```typescript
+export const projects: Project[] = [
+  {
+    id: '1',
+    slug: 'my-project',
+    title: 'My Project',
+    description: 'Short description',
+    longDescription: 'Detailed description...',
+    technologies: ['React', 'Node.js'],
+    color: '#8b5cf6',
+    glowColor: 'rgba(139, 92, 246, 0.5)',
+    mass: 4, // 1-5, affects gravitational behavior
+    link: 'https://example.com',
+    github: 'https://github.com/...',
+  },
+  // Add more projects...
+];
+```
+
+### Changing Colors
+
+Edit the CSS variables in `app/globals.css`:
+
+```css
+:root {
+  --accent-purple: #8b5cf6;
+  --accent-cyan: #06b6d4;
+  --accent-pink: #ec4899;
+}
+```
+
+## Performance Notes
+
+- The 3D scene uses `dynamic` import with SSR disabled for optimal loading
+- Particle systems are optimized with buffer geometries
+- Shaders run on GPU for smooth 60fps animations
+- Images should be optimized before adding to `/public`
+
+## License
+
+MIT License - feel free to use this for your own portfolio!
+
+## Credits
+
+Built with:
+- [Next.js](https://nextjs.org/)
+- [React Three Fiber](https://docs.pmnd.rs/react-three-fiber)
+- [Framer Motion](https://www.framer.com/motion/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Lenis](https://lenis.studiofreight.com/)
