@@ -11,15 +11,7 @@ declare global {
 interface FluidSim {
   setConfig: (config: Record<string, unknown>) => void;
   start: () => void;
-  splat: (x: number, y: number, dx: number, dy: number, color: { r: number; g: number; b: number }) => void;
 }
-
-const colors = [
-  { r: 0.13, g: 0.83, b: 0.93 },
-  { r: 0.55, g: 0.36, b: 0.96 },
-  { r: 0.93, g: 0.29, b: 0.60 },
-  { r: 0.39, g: 0.40, b: 0.95 },
-];
 
 export function FluidBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -60,25 +52,35 @@ export function FluidBackground() {
         sunrays: true,
         sunraysResolution: 196,
         sunraysWeight: 0.3,
-        hover: false,
+        hover: true,
         brightness: 0.7,
         colorPalette: ['#22d3ee', '#8b5cf6', '#ec4899', '#6366f1'],
       });
       fluidSim.start();
       simRef.current = fluidSim;
 
-      const handleMouseMove = (e: MouseEvent) => {
-        if (!simRef.current || !containerRef.current) return;
-        const canvas = containerRef.current.querySelector('canvas');
-        if (!canvas) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX / rect.width;
-        const y = e.clientY / rect.height;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        simRef.current.splat(x, y, e.movementX * 10, e.movementY * 10, color);
-      };
+      const canvas = containerRef.current.querySelector('canvas');
+      if (canvas) {
+        window.addEventListener('pointermove', (e) => {
+          canvas.dispatchEvent(new PointerEvent('pointermove', {
+            clientX: e.clientX,
+            clientY: e.clientY,
+            movementX: e.movementX,
+            movementY: e.movementY,
+            bubbles: true,
+            cancelable: true,
+          }));
+        }, { passive: true });
 
-      window.addEventListener('mousemove', handleMouseMove, { passive: true });
+        window.addEventListener('pointerdown', (e) => {
+          canvas.dispatchEvent(new PointerEvent('pointerdown', {
+            clientX: e.clientX,
+            clientY: e.clientY,
+            bubbles: true,
+            cancelable: true,
+          }));
+        });
+      }
     };
 
     document.head.appendChild(script);

@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { Github, Linkedin, Mail, FileText } from 'lucide-react';
 
 const name = 'Aditya Singh';
@@ -30,13 +29,11 @@ export function Hero() {
               boxShadow: '0 0 40px rgba(34, 211, 238, 0.15)',
             }}
           >
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/headshot.png"
               alt="Aditya Singh"
-              width={128}
-              height={128}
               className="w-full h-full object-cover"
-              priority
             />
           </div>
         </motion.div>
