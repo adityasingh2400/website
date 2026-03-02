@@ -1,108 +1,89 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-
-declare global {
-  interface Window {
-    WebGLFluidEnhanced: { default: new (container: HTMLElement) => FluidSim };
-  }
-}
-
-interface FluidSim {
-  setConfig: (config: Record<string, unknown>) => void;
-  start: () => void;
-}
+import WebGLFluidEnhanced from 'webgl-fluid-enhanced';
 
 export function FluidBackground() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const simRef = useRef<FluidSim | null>(null);
+  const simRef = useRef<WebGLFluidEnhanced | null>(null);
 
   useEffect(() => {
     if (simRef.current) return;
 
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/webgl-fluid-enhanced@0.8.0/dist/index.umd.js';
-    script.async = true;
-    script.onload = () => {
-      if (!containerRef.current || !window.WebGLFluidEnhanced) return;
+    const simulation = new WebGLFluidEnhanced();
+    simulation.setConfig({
+      simResolution: 256,
+      dyeResolution: 1024,
+      densityDissipation: 0.97,
+      velocityDissipation: 0.98,
+      pressure: 0.8,
+      pressureIterations: 20,
+      curl: 30,
+      splatRadius: 0.15,
+      splatForce: 6000,
+      shading: true,
+      colorful: true,
+      colorUpdateSpeed: 8,
+      backgroundColor: '#000000',
+      transparent: false,
+      bloom: true,
+      bloomIterations: 8,
+      bloomResolution: 256,
+      bloomIntensity: 0.8,
+      bloomThreshold: 0.5,
+      bloomSoftKnee: 0.7,
+      sunrays: true,
+      sunraysResolution: 196,
+      sunraysWeight: 0.3,
+      hover: true,
+      brightness: 0.7,
+      colorPalette: ['#22d3ee', '#8b5cf6', '#ec4899', '#6366f1'],
+    });
+    simulation.start();
+    simRef.current = simulation;
 
-      const fluidSim = new window.WebGLFluidEnhanced.default(containerRef.current);
-      fluidSim.setConfig({
-        simResolution: 256,
-        dyeResolution: 1024,
-        densityDissipation: 0.97,
-        velocityDissipation: 0.98,
-        pressure: 0.8,
-        pressureIterations: 20,
-        curl: 30,
-        splatRadius: 0.15,
-        splatForce: 6000,
-        shading: true,
-        colorful: true,
-        colorUpdateSpeed: 8,
-        paused: false,
-        backgroundColor: '#000000',
-        transparent: false,
-        bloom: true,
-        bloomIterations: 8,
-        bloomResolution: 256,
-        bloomIntensity: 0.8,
-        bloomThreshold: 0.5,
-        bloomSoftKnee: 0.7,
-        sunrays: true,
-        sunraysResolution: 196,
-        sunraysWeight: 0.3,
-        hover: true,
-        brightness: 0.7,
-        colorPalette: ['#22d3ee', '#8b5cf6', '#ec4899', '#6366f1'],
+    setTimeout(() => simulation.multipleSplats(Math.floor(Math.random() * 3) + 3), 100);
+
+    const canvas = document.body.querySelector<HTMLCanvasElement>(':scope > canvas');
+
+    const forwardMove = (e: MouseEvent) => {
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const evt = new MouseEvent('mousemove', {
+        clientX: e.clientX,
+        clientY: e.clientY,
+        bubbles: false,
+        cancelable: true,
       });
-      fluidSim.start();
-      simRef.current = fluidSim;
-
-      const canvas = containerRef.current.querySelector('canvas');
-      if (canvas) {
-        window.addEventListener('pointermove', (e) => {
-          canvas.dispatchEvent(new PointerEvent('pointermove', {
-            clientX: e.clientX,
-            clientY: e.clientY,
-            movementX: e.movementX,
-            movementY: e.movementY,
-            bubbles: true,
-            cancelable: true,
-          }));
-        }, { passive: true });
-
-        window.addEventListener('pointerdown', (e) => {
-          canvas.dispatchEvent(new PointerEvent('pointerdown', {
-            clientX: e.clientX,
-            clientY: e.clientY,
-            bubbles: true,
-            cancelable: true,
-          }));
-        });
-      }
+      Object.defineProperty(evt, 'offsetX', { value: e.clientX - rect.left, writable: false });
+      Object.defineProperty(evt, 'offsetY', { value: e.clientY - rect.top, writable: false });
+      canvas.dispatchEvent(evt);
     };
 
-    document.head.appendChild(script);
+    const forwardDown = (e: MouseEvent) => {
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const evt = new MouseEvent('mousedown', {
+        clientX: e.clientX,
+        clientY: e.clientY,
+        bubbles: false,
+        cancelable: true,
+      });
+      Object.defineProperty(evt, 'offsetX', { value: e.clientX - rect.left, writable: false });
+      Object.defineProperty(evt, 'offsetY', { value: e.clientY - rect.top, writable: false });
+      canvas.dispatchEvent(evt);
+    };
+
+    window.addEventListener('mousemove', forwardMove, { passive: true });
+    window.addEventListener('mousedown', forwardDown);
 
     return () => {
-      script.remove();
+      window.removeEventListener('mousemove', forwardMove);
+      window.removeEventListener('mousedown', forwardDown);
+      simulation.stop();
+      canvas?.remove();
+      simRef.current = null;
     };
   }, []);
 
-  return (
-    <div
-      ref={containerRef}
-      id="fluid-bg"
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 0,
-        width: '100vw',
-        height: '100vh',
-        overflow: 'hidden',
-        pointerEvents: 'none',
-      }}
-    />
-  );
+  return null;
 }
