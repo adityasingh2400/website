@@ -13,12 +13,18 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-sm tracking-[0.3em] uppercase mb-6"
-          style={{ color: 'var(--muted)' }}
+          style={{ color: 'rgba(255, 255, 255, 0.5)' }}
         >
           AI Systems &middot; Full-Stack &middot; Research
         </motion.p>
 
-        <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight mb-6">
+        <h1
+          className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight mb-8"
+          style={{
+            color: '#ffffff',
+            textShadow: '0 2px 40px rgba(0, 0, 0, 0.5)',
+          }}
+        >
           {name.split('').map((char, i) => (
             <motion.span
               key={i}
@@ -42,7 +48,10 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.0 }}
           className="text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed"
-          style={{ color: 'var(--muted)' }}
+          style={{
+            color: 'rgba(255, 255, 255, 0.6)',
+            textShadow: '0 1px 20px rgba(0, 0, 0, 0.4)',
+          }}
         >
           Building AI/LLM systems and full-stack products
           <br className="hidden sm:block" />
@@ -65,13 +74,13 @@ export function Hero() {
         >
           <span
             className="text-xs tracking-widest uppercase"
-            style={{ color: 'var(--muted)' }}
+            style={{ color: 'rgba(255, 255, 255, 0.35)' }}
           >
             scroll
           </span>
           <div
             className="w-px h-8"
-            style={{ background: 'linear-gradient(to bottom, var(--muted), transparent)' }}
+            style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0.3), transparent)' }}
           />
         </motion.div>
       </motion.div>
