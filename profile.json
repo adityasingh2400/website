@@ -1,0 +1,1219 @@
+{
+  "identity": {
+    "name": "Aditya Singh",
+    "email": "adisin650@gmail.com",
+    "alternateEmail": "adityasingh@ucsb.edu",
+    "linkedin": "https://www.linkedin.com/in/adityasingh2400",
+    "github": "https://github.com/adityasingh2400",
+    "phone": "5104581848"
+  },
+  "headline": "UCSB Computer Science student building AI/LLM systems and full-stack products",
+  "school": "UCSB",
+  "jobPreferences": {
+    "targetRoles": [
+      "SWE Intern",
+      "Backend Intern",
+      "Full-stack Intern",
+      "AI/ML Intern",
+      "Founding Engineer Intern"
+    ],
+    "companyTypes": [
+      "AI-native startups",
+      "strong tech companies",
+      "remote-friendly",
+      "hybrid"
+    ],
+    "comp": "Flexible"
+  },
+  "applicationDefaults": {
+    "questionBank": [
+      {
+        "patterns": [
+          "how did you hear",
+          "where did you hear",
+          "source"
+        ],
+        "answer": "{how_heard}"
+      },
+      {
+        "patterns": [
+          "email"
+        ],
+        "answer": "{email}"
+      },
+      {
+        "patterns": [
+          "phone extension",
+          "extension"
+        ],
+        "answer": "__skip__",
+        "notes": "Phone extension should be left empty"
+      },
+      {
+        "patterns": [
+          "country phone code",
+          "phone device type",
+          "phone type"
+        ],
+        "answer": "United States of America (+1)",
+        "notes": "Workday phone country code dropdown"
+      },
+      {
+        "patterns": [
+          "phone",
+          "mobile"
+        ],
+        "answer": "{phone}"
+      },
+      {
+        "patterns": [
+          "re:^state\\b",
+          "re:^\\s*state\\s.*select",
+          "re:^\\s*state\\s.*required"
+        ],
+        "answer": "California"
+      },
+      {
+        "patterns": [
+          "re:previously worked",
+          "re:have you previously worked",
+          "re:have you ever worked",
+          "re:previously employed",
+          "re:formerly employed",
+          "re:worked for.*before",
+          "re:have you.*worked.*for",
+          "re:ever been employed",
+          "re:prior employment",
+          "re:worked at.*before",
+          "re:employed by.*before",
+          "re:have you.*employed"
+        ],
+        "answer": "No"
+      },
+      {
+        "patterns": [
+          "re:in which city did you work",
+          "re:which city.*work",
+          "re:city.*you work"
+        ],
+        "answer": "N/A",
+        "notes": "Sub-field of 'previously worked' — should not appear if radio is No"
+      },
+      {
+        "patterns": [
+          "re:last manager",
+          "re:who was your.*manager",
+          "re:manager.*name",
+          "re:supervisor.*name"
+        ],
+        "answer": "N/A",
+        "notes": "Sub-field of 'previously worked' — should not appear if radio is No"
+      },
+      {
+        "patterns": [
+          "linkedin"
+        ],
+        "answer": "{linkedin}"
+      },
+      {
+        "patterns": [
+          "github"
+        ],
+        "answer": "{github}"
+      },
+      {
+        "patterns": [
+          "website",
+          "portfolio",
+          "personal site"
+        ],
+        "answer": "{github}"
+      },
+      {
+        "patterns": [
+          "re:percentage.*travel|travel.*time|travel.*working|willing.*travel"
+        ],
+        "answer": "80%"
+      },
+      {
+        "patterns": [
+          "re:date.*availability|available.*date|when.*available",
+          "start date",
+          "when can you start",
+          "available to start"
+        ],
+        "answer": "06/01/2026"
+      },
+      {
+        "patterns": [
+          "salary expectation",
+          "compensation expectation",
+          "desired salary"
+        ],
+        "answer": "Open / Negotiable"
+      },
+      {
+        "patterns": [
+          "referral",
+          "referred"
+        ],
+        "answer": "No"
+      },
+      {
+        "patterns": [
+          "work authorization",
+          "authorized to work",
+          "authorised to work",
+          "eligible to work",
+          "legally authorized",
+          "legally authorised",
+          "legal right to work",
+          "right to work"
+        ],
+        "answer": "Yes"
+      },
+      {
+        "patterns": [
+          "sponsorship",
+          "visa sponsorship",
+          "require sponsorship",
+          "need sponsorship",
+          "immigration sponsorship"
+        ],
+        "answer": "No"
+      },
+      {
+        "patterns": [
+          "citizenship",
+          "clearance",
+          "security clearance",
+          "export control",
+          "itar",
+          "eligible for.*clearance",
+          "held.*clearance",
+          "active.*clearance",
+          "obtain.*clearance"
+        ],
+        "answer": "Yes"
+      },
+      {
+        "patterns": [
+          "willing to relocate",
+          "open to relocate",
+          "relocation",
+          "open to relocation",
+          "relocate for this"
+        ],
+        "answer": "Yes"
+      },
+      {
+        "_comment": "=== UNIVERSAL PAGE 3 PATTERNS (work across all Workday apps) ===",
+        "patterns": [
+          "re:currently employed by.*(us|u\\.s\\.|united states)\\s*(government|gov)",
+          "re:serving on active duty",
+          "re:active duty.*military",
+          "re:reserves or national guard"
+        ],
+        "answer": "No"
+      },
+      {
+        "patterns": [
+          "re:years of.*relevant.*experience",
+          "re:how many years.*experience",
+          "re:years.*professional.*experience"
+        ],
+        "answer": "Less than 1 year"
+      },
+      {
+        "patterns": [
+          "re:ever been employed by",
+          "re:previously employed",
+          "re:have you ever.*employed.*before",
+          "re:previously worked for",
+          "re:have you previously worked",
+          "re:have you ever worked",
+          "re:formerly employed",
+          "re:worked for.*before"
+        ],
+        "answer": "No"
+      },
+      {
+        "patterns": [
+          "re:keep you in mind.*future",
+          "re:retain your application",
+          "re:share.*internally",
+          "re:future opportunities",
+          "re:may we.*retain",
+          "re:keep.*application.*file"
+        ],
+        "answer": "Yes"
+      },
+      {
+        "patterns": [
+          "re:states.*willing to relocate",
+          "re:which states.*relocate",
+          "re:where.*willing.*relocate"
+        ],
+        "answer": "Open to any location"
+      },
+      {
+        "patterns": [
+          "re:salary.*expectation",
+          "re:compensation.*expectation",
+          "re:desired.*salary",
+          "re:salary.*requirement",
+          "re:pay.*expectation",
+          "re:expected.*compensation",
+          "re:what.*salary"
+        ],
+        "answer": "Open / Negotiable"
+      },
+      {
+        "patterns": [
+          "re:available.*start.*date",
+          "re:start.*date",
+          "re:when.*can.*you.*start",
+          "re:earliest.*start",
+          "re:soonest.*start",
+          "re:when.*available.*begin"
+        ],
+        "answer": "Immediately"
+      },
+      {
+        "patterns": [
+          "re:convicted.*felony",
+          "re:criminal.*record",
+          "re:criminal.*conviction",
+          "re:criminal.*history"
+        ],
+        "answer": "No"
+      },
+      {
+        "patterns": [
+          "re:able to work.*on.?site",
+          "re:willing to work.*on.?site",
+          "re:work.*in.?person",
+          "re:comfortable.*on.?site",
+          "re:able to work.*office"
+        ],
+        "answer": "Yes"
+      },
+      {
+        "patterns": [
+          "re:background.*check",
+          "re:consent.*background",
+          "re:agree.*background.*check"
+        ],
+        "answer": "Yes"
+      },
+      {
+        "patterns": [
+          "re:drug.*test",
+          "re:drug.*screen",
+          "re:substance.*test"
+        ],
+        "answer": "Yes"
+      },
+      {
+        "patterns": [
+          "re:non.?compete",
+          "re:non.?disclosure",
+          "re:restrictive.*covenant",
+          "re:bound by.*agreement"
+        ],
+        "answer": "No"
+      },
+      {
+        "patterns": [
+          "re:18 years.*old",
+          "re:at least 18",
+          "re:over.*18",
+          "re:legal.*age"
+        ],
+        "answer": "Yes"
+      },
+      {
+        "patterns": [
+          "re:introduced.*recruitment.*agency",
+          "re:submitted.*by.*recruiter",
+          "re:agency.*represent"
+        ],
+        "answer": "No"
+      },
+      {
+        "patterns": [
+          "re:interviewed with",
+          "re:previously interviewed"
+        ],
+        "answer": "No"
+      },
+      {
+        "patterns": [
+          "re:know.*anyone.*works",
+          "re:know.*employee",
+          "re:know.*current.*employee"
+        ],
+        "answer": "No"
+      },
+      {
+        "patterns": [
+          "re:i (agree|acknowledge|accept|confirm)",
+          "re:by submitting.*application",
+          "re:ai usage policy",
+          "re:terms and conditions",
+          "re:privacy (policy|notice|statement)"
+        ],
+        "answer": "I agree"
+      },
+      {
+        "patterns": [
+          "re:us citizen",
+          "re:u\\.s\\. citizen",
+          "re:united states citizen",
+          "re:are you a citizen"
+        ],
+        "answer": "Yes"
+      },
+      {
+        "patterns": [
+          "re:reside in.*united states",
+          "re:currently reside.*us",
+          "re:live in.*us",
+          "re:based in.*united states"
+        ],
+        "answer": "Yes"
+      },
+      {
+        "patterns": [
+          "re:which.*state.*reside",
+          "re:what state.*reside",
+          "re:state.*currently reside",
+          "re:home state"
+        ],
+        "answer": "California"
+      },
+      {
+        "patterns": [
+          "re:what.*city.*live",
+          "re:what.*city.*reside",
+          "re:closest.*city",
+          "re:which.*city.*closest"
+        ],
+        "answer": "Fremont"
+      },
+      {
+        "patterns": [
+          "re:graduation.*date",
+          "re:expected.*graduation",
+          "re:anticipated.*graduation",
+          "re:when.*graduat"
+        ],
+        "answer": "June 2027"
+      },
+      {
+        "patterns": [
+          "re:currently.*enrolled",
+          "re:currently.*student",
+          "re:current.*student"
+        ],
+        "answer": "Yes"
+      },
+      {
+        "patterns": [
+          "re:how many months.*stay",
+          "re:duration.*internship",
+          "re:how long.*internship"
+        ],
+        "answer": "3"
+      },
+      {
+        "patterns": [
+          "gender"
+        ],
+        "answer": "Decline To Self Identify"
+      },
+      {
+        "patterns": [
+          "hispanic",
+          "latino",
+          "ethnicity"
+        ],
+        "answer": "Decline To Self Identify"
+      },
+      {
+        "patterns": [
+          "race",
+          "re:identify your race",
+          "re:racial.*ethnic"
+        ],
+        "answer": "Decline To Self Identify"
+      },
+      {
+        "patterns": [
+          "veteran",
+          "re:which categories describe you"
+        ],
+        "answer": "I am not a veteran"
+      },
+      {
+        "patterns": [
+          "disability"
+        ],
+        "answer": "Yes, I have a disability"
+      },
+      {
+        "patterns": [
+          "re:please check one of the boxes below",
+          "re:check.*box.*below"
+        ],
+        "answer": "Yes, I have a disability"
+      },
+      {
+        "patterns": [
+          "re:^date\\*?$",
+          "re:^date\\s*signed",
+          "re:today.*date",
+          "re:signature.*date"
+        ],
+        "answer": "__TODAY__"
+      },
+      {
+        "patterns": [
+          "re:sexual.*orientation"
+        ],
+        "answer": "Prefer not to say"
+      },
+      {
+        "patterns": [
+          "re:identify.*transgender",
+          "re:transgender"
+        ],
+        "answer": "Prefer not to say"
+      },
+      {
+        "patterns": [
+          "re:lgbtq",
+          "re:lesbian.*gay.*bisexual"
+        ],
+        "answer": "Prefer not to say"
+      },
+      {
+        "patterns": [
+          "re:preferred.*name"
+        ],
+        "answer": "No"
+      },
+      {
+        "patterns": [
+          "name name type here systemfield name"
+        ],
+        "answer": "Aditya Singh",
+        "control_kind": "input",
+        "required": true,
+        "options": [],
+        "example_label": "Name Name Type here... _systemfield_name",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "first name"
+        ],
+        "answer": "{first_name}",
+        "control_kind": "input",
+        "required": true,
+        "options": [],
+        "example_label": "First Name First Name* First Name* First Name*",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "last name"
+        ],
+        "answer": "{last_name}",
+        "control_kind": "input",
+        "required": true,
+        "options": [],
+        "example_label": "Last Name Last Name* Last Name* Last Name*",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "country country"
+        ],
+        "answer": "United States",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Country Country",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "have you previously worked for voyager or one of its subsidiaries? if so, when, which subsidiary, what position? have yo"
+        ],
+        "answer": "No",
+        "control_kind": "textarea",
+        "required": false,
+        "options": [],
+        "example_label": "Have you previously worked for Voyager or one of its subsidiaries? If so, when, which subsidiary, what position? Have you previously worked for Voyager or one of its subsidiaries? If so, when, which subsidiary, what position? Have you previously worked for Voy",
+        "notes": "Sensitive field."
+      },
+      {
+        "patterns": [
+          "are you eligible to obtain and maintain a us government clearance (requires us citizenship)?* are you eligible to obtain"
+        ],
+        "answer": "Yes",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Are you eligible to obtain and maintain a US Government clearance (requires US citizenship)?* Are you eligible to obtain and maintain a US Government clearance (requires US citizenship)?* Select...",
+        "notes": "Sensitive field."
+      },
+      {
+        "patterns": [
+          "gender gender select..."
+        ],
+        "answer": "Prefer not to say",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Gender Gender Select...",
+        "notes": "Sensitive field."
+      },
+      {
+        "patterns": [
+          "are you hispanic/latino? are you hispanic/latino? select..."
+        ],
+        "answer": "Prefer not to say",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Are you Hispanic/Latino? Are you Hispanic/Latino? Select...",
+        "notes": "Sensitive field."
+      },
+      {
+        "patterns": [
+          "veteran status veteran status select..."
+        ],
+        "answer": "I am not a veteran",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Veteran Status Veteran Status Select...",
+        "notes": "Sensitive field."
+      },
+      {
+        "patterns": [
+          "disability status disability status select..."
+        ],
+        "answer": "Yes, I have a disability",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Disability Status Disability Status Select...",
+        "notes": "Sensitive field."
+      },
+      {
+        "patterns": [
+          "re:address line 1.*addressline1",
+          "address line 1"
+        ],
+        "answer": "266 Mayten Way",
+        "control_kind": "input",
+        "required": true,
+        "options": [],
+        "example_label": "Address Line 1* addressLine1",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "address line 2 addressline2"
+        ],
+        "answer": "__HUMAN__",
+        "control_kind": "input",
+        "required": false,
+        "options": [],
+        "example_label": "Address Line 2 addressLine2",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "city city",
+          "city"
+        ],
+        "answer": "Fremont",
+        "control_kind": "input",
+        "required": true,
+        "options": [],
+        "example_label": "City* city",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "re:postal.?code.*postalcode",
+          "postal code",
+          "zip code"
+        ],
+        "answer": "94539",
+        "control_kind": "input",
+        "required": true,
+        "options": [],
+        "example_label": "Postal Code* postalCode",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "country"
+        ],
+        "answer": "United States",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Country Country",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "have you previously worked for voyager or one of its subsidiaries if so when which subsidiary what position have you pre"
+        ],
+        "answer": "No",
+        "control_kind": "textarea",
+        "required": false,
+        "options": [],
+        "example_label": "Have you previously worked for Voyager or one of its subsidiaries? If so, when, which subsidiary, what position? Have you previously worked for Voyager or one of its subsidiaries? If so, when, which subsidiary, what position? Have you previously worked for Voy",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "gender"
+        ],
+        "answer": "Decline To Self Identify",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Gender Gender Select...",
+        "notes": "Sensitive field (EEO)."
+      },
+      {
+        "patterns": [
+          "hispanic",
+          "latino",
+          "ethnicity"
+        ],
+        "answer": "Decline To Self Identify",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Are you Hispanic/Latino? Are you Hispanic/Latino? Select...",
+        "notes": "Sensitive field (EEO)."
+      },
+      {
+        "patterns": [
+          "race",
+          "identify your race"
+        ],
+        "answer": "Decline To Self Identify",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Please identify your race",
+        "notes": "Sensitive field (EEO)."
+      },
+      {
+        "patterns": [
+          "veteran"
+        ],
+        "answer": "I am not a veteran",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Veteran Status Veteran Status Select...",
+        "notes": "Sensitive field (EEO)."
+      },
+      {
+        "patterns": [
+          "disability"
+        ],
+        "answer": "Yes, I have a disability",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Disability Status Disability Status Select...",
+        "notes": "Sensitive field (EEO)."
+      },
+      {
+        "patterns": [
+          "school",
+          "university"
+        ],
+        "answer": "{school}",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "School* School* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "degree"
+        ],
+        "answer": "{degree}",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Degree* Degree* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "re:degree\\s+status.*highest\\s+degree"
+        ],
+        "answer": "BS currently pursuing",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Degree Status - Please identify your highest degree. Received or the highest degree currently in progress.",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "discipline discipline select"
+        ],
+        "answer": "Computer Science",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Discipline* Discipline* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "end date month end date month select"
+        ],
+        "answer": "June",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "End date month End date month Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "end date year end date year end date year end date year"
+        ],
+        "answer": "2027",
+        "control_kind": "input",
+        "required": false,
+        "options": [],
+        "example_label": "End date year End date year End date year End date year",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "impinj employment history impinj employment history select"
+        ],
+        "answer": "No",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Impinj Employment History* Impinj Employment History* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "do you currently know of anyone who works at impinj if so please provide the employee s name and a brief description as"
+        ],
+        "answer": "No",
+        "control_kind": "input",
+        "required": true,
+        "options": [],
+        "example_label": "Do you currently know of anyone who works at Impinj? If so, please provide the employee's name and a brief description as to how you're acquainted. Do you currently know of anyone who works at Impinj? If so, please provide the employee's name and a brief descr",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "ai usage policy for job applicants ai usage policy for job applicants select"
+        ],
+        "answer": "I acknowledge and agree",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "AI Usage Policy for Job Applicants* AI Usage Policy for Job Applicants* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "location city location city"
+        ],
+        "answer": "Fremont, CA",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Location (City)* Location (City)*",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "please specify details from your answer above example job board name employee referrer s name etc please specify details"
+        ],
+        "answer": "N/A",
+        "control_kind": "input",
+        "required": true,
+        "options": [],
+        "example_label": "Please specify details from your answer above (example: job board name, employee referrer's name, etc.) Please specify details from your answer above (example: job board name, employee referrer's name, etc.)* Please specify details from your answer above (exam",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "additional information for california residents additional information for california residents select"
+        ],
+        "answer": "I acknowledge",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Additional Information for California Residents:* Additional Information for California Residents:* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "full time question 35207622002",
+          "re:full\\s+time.*question.35207622002"
+        ],
+        "answer": "false",
+        "control_kind": "checkbox",
+        "required": true,
+        "options": [],
+        "example_label": "Full Time question_35207622002[]",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "internship spring january to april 2026 question 35207622002",
+          "re:internship.*spring.*january.*april.*2026"
+        ],
+        "answer": "false",
+        "control_kind": "checkbox",
+        "required": true,
+        "options": [],
+        "example_label": "Internship - Spring (January to April) 2026 question_35207622002[]",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "internship summer may to august 2026 question 35207622002",
+          "re:internship.*summer.*may.*august.*2026"
+        ],
+        "answer": "true",
+        "control_kind": "checkbox",
+        "required": true,
+        "options": [],
+        "example_label": "Internship - Summer (May to August) 2026 question_35207622002[]",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "internship fall september to december 2026 question 35207622002",
+          "re:internship.*fall.*september.*december.*2026"
+        ],
+        "answer": "true",
+        "control_kind": "checkbox",
+        "required": true,
+        "options": [],
+        "example_label": "Internship - Fall (September to December) 2026 question_35207622002[]",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "internship spring january to april 2027 question 35207622002",
+          "re:internship.*spring.*january.*april.*2027"
+        ],
+        "answer": "true",
+        "control_kind": "checkbox",
+        "required": true,
+        "options": [],
+        "example_label": "Internship - Spring (January to April) 2027 question_35207622002[]",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "have you ever been convicted of a felony?* have you ever been convicted of a felony?* select..."
+        ],
+        "answer": "No",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Have you ever been convicted of a felony?* Have you ever been convicted of a felony?* Select...",
+        "notes": "Sensitive field."
+      },
+      {
+        "patterns": [
+          "do you currently have a security or cissp certification do you currently have a security or cissp certification select"
+        ],
+        "answer": "No",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Do you currently have a Security+ or CISSP certification?* Do you currently have a Security+ or CISSP certification?* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "how many years of relevant professional experience do you have for this role how many years of relevant professional exp"
+        ],
+        "answer": "0-1",
+        "control_kind": "input",
+        "required": true,
+        "options": [],
+        "example_label": "How many years of relevant professional experience do you have for this role? How many years of relevant professional experience do you have for this role?* How many years of relevant professional experience do you have for this role?* How many years of releva",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "are you able to work on site at our colorado springs co office are you able to work on site at our colorado springs co o"
+        ],
+        "answer": "Yes",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Are you able to work on-site at our Colorado Springs, CO office?* Are you able to work on-site at our Colorado Springs, CO office?* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "how would you describe your racial ethnic background how would you describe your racial ethnic background select"
+        ],
+        "answer": "Prefer not to say",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "How would you describe your racial/ethnic background? How would you describe your racial/ethnic background? Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "how would you describe your sexual orientation? how would you describe your sexual orientation? select..."
+        ],
+        "answer": "Prefer not to say",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "How would you describe your sexual orientation? How would you describe your sexual orientation? Select...",
+        "notes": "Sensitive field."
+      },
+      {
+        "patterns": [
+          "do you identify as transgender do you identify as transgender select"
+        ],
+        "answer": "Prefer not to say",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "Do you identify as transgender? Do you identify as transgender? Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "godaddy employment history godaddy employment history select"
+        ],
+        "answer": "No",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "GoDaddy Employment History:* GoDaddy Employment History:* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "are you related to or have you had now or previously a close personal or business relationship with any current godaddy"
+        ],
+        "answer": "No",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Are you related to, or have you had (now or previously) a close personal or business relationship with, any current GoDaddy employees? Relevant business relationships include joint business ownership, shared investments or other financial interests.* Are you r",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "if yes what is the name of the employee s and the nature of the relationship e g spouse sibling business partnership etc"
+        ],
+        "answer": "__HUMAN__",
+        "control_kind": "textarea",
+        "required": false,
+        "options": [],
+        "example_label": "If yes, what is the name of the employee(s) and the nature of the relationship (e.g. spouse, sibling, business partnership, etc.) If yes, what is the name of the employee(s) and the nature of the relationship (e.g. spouse, sibling, business partnership, etc.)",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "have you ever previously interviewed with godaddy or any of its subsidiaries 123 reg freedom voice heg media temple main"
+        ],
+        "answer": "No",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Have you ever previously interviewed with GoDaddy or any of its subsidiaries (123-Reg, Freedom Voice, HEG, Media Temple, Main Street Hub, Sellbrite, Sucuri, etc.)?* Have you ever previously interviewed with GoDaddy or any of its subsidiaries (123-Reg, Freedom",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "have you been introduced to godaddy or any of its subsidiaries by a recruitment agency within the last 12 months have yo"
+        ],
+        "answer": "No",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Have you been introduced to GoDaddy or any of its subsidiaries by a recruitment agency within the last 12 months?* Have you been introduced to GoDaddy or any of its subsidiaries by a recruitment agency within the last 12 months?* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "have you ever been offered employment with godaddy or any of its subsidiaries 123 reg freedom voice heg media temple mai"
+        ],
+        "answer": "No",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Have you ever been offered employment with GoDaddy or any of its subsidiaries (123-Reg, Freedom Voice, HEG, Media Temple, Main Street Hub, Sellbrite, Sucuri, etc.)* Have you ever been offered employment with GoDaddy or any of its subsidiaries (123-Reg, Freedom",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "do you currently reside in the united states please note your answer to this question and the related sub questions as a"
+        ],
+        "answer": "Yes",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Do you currently reside in the United States? (Please note, your answer to this question and the related sub-questions, as applicable, will not be used to influence hiring decisions.)* Do you currently reside in the United States? (Please note, your answer to",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "if you answered yes to the above which u s state do you currently reside in if you answered yes to the above which u s s"
+        ],
+        "answer": "California",
+        "control_kind": "combobox",
+        "required": false,
+        "options": [],
+        "example_label": "If you answered \"yes\" to the above, which U.S. state do you currently reside in? If you answered \"yes\" to the above, which U.S. state do you currently reside in? Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "if you answered yes to the above what major city do you live in or closest to if you answered yes to the above what majo"
+        ],
+        "answer": "Fremont",
+        "control_kind": "input",
+        "required": false,
+        "options": [],
+        "example_label": "If you answered \"yes\" to the above, what major city do you live in or closest to? If you answered \"yes\" to the above, what major city do you live in or closest to? If you answered \"yes\" to the above, what major city do you live in or closest to? If you answere",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "what is the soonest you would be able to start what is the soonest you would be able to start what is the soonest you wo"
+        ],
+        "answer": "June 2026",
+        "control_kind": "textarea",
+        "required": true,
+        "options": [],
+        "example_label": "What is the soonest you would be able to start? What is the soonest you would be able to start?* What is the soonest you would be able to start?* What is the soonest you would be able to start?*",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "by submitting your application i you confirm that the information you provide is accurate and complete to the best of yo"
+        ],
+        "answer": "I agree",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "By submitting your application: (i) you confirm that the information you provide is accurate and complete to the best of your knowledge and you will inform us immediately if you subsequently become aware of any errors or inaccuracies; (ii) you acknowledge you",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "which categories describe you which categories describe you select"
+        ],
+        "answer": "N/A (not a veteran)",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Which categories describe you?* Which categories describe you?* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "do you consider yourself a member of the lesbian gay or bisexual lgbtq community do you consider yourself a member of th"
+        ],
+        "answer": "Prefer not to say",
+        "control_kind": "combobox",
+        "required": true,
+        "options": [],
+        "example_label": "Do you consider yourself a member of the Lesbian, Gay, or Bisexual (LGBTQ) community?* Do you consider yourself a member of the Lesbian, Gay, or Bisexual (LGBTQ) community?* Select...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "apartment addressline2"
+        ],
+        "answer": "__HUMAN__",
+        "control_kind": "input",
+        "required": false,
+        "options": [],
+        "example_label": "Apartment addressLine2",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "middle name",
+          "re:middle.*name"
+        ],
+        "answer": "__skip__",
+        "control_kind": "input",
+        "required": false,
+        "options": [],
+        "example_label": "Middle Name legalName--middleName",
+        "notes": "No middle name — leave blank"
+      },
+      {
+        "patterns": [
+          "full name",
+          "name"
+        ],
+        "answer": "{full_name}",
+        "control_kind": "input",
+        "required": true,
+        "options": [],
+        "example_label": "Full Name Full Name Type here... _systemfield_name",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "pick date"
+        ],
+        "answer": "__HUMAN__",
+        "control_kind": "input",
+        "required": false,
+        "options": [],
+        "example_label": "Pick date...",
+        "notes": ""
+      },
+      {
+        "patterns": [
+          "how many months can you stay how many months can you stay type here a351e243 0b04 4f80 90b3 fe09a255b518"
+        ],
+        "answer": "3",
+        "control_kind": "input",
+        "required": false,
+        "options": [],
+        "example_label": "How many months can you stay? How many months can you stay? Type here... a351e243-0b04-4f80-90b3-fe09a255b518",
+        "notes": ""
+      }
+    ]
+  },
+  "schoolStart": "September 2024",
+  "schoolEnd": "June 2027",
+  "graduatingEarly": true
+}

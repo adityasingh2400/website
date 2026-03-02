@@ -1,18 +1,8 @@
 'use client';
 
-import { Section } from './Section';
-
-const skills = [
-  // Core
-  'TypeScript', 'JavaScript', 'Python', 'SQL',
-  // Web + backend
-  'Next.js', 'React', 'FastAPI', 'Node.js',
-  'PostgreSQL', 'Supabase', 'REST APIs',
-  // AI/LLM
-  'LLM Pipelines', 'Prompt Engineering',
-  // Tools
-  'Git', 'AWS'
-];
+import { motion } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { useRef } from 'react';
 
 const highlights = [
   { label: '4.0 GPA', detail: 'UCSB CS' },
@@ -21,107 +11,92 @@ const highlights = [
   { label: 'Engineering Lead', detail: 'AI Products' },
 ];
 
-export function About() {
-  return (
-    <Section id="about">
-      <div className="container">
-        <h2 className="text-2xl font-semibold mb-8 flex items-center gap-3">
-          <span className="text-accent font-mono text-lg">01.</span>
-          About Me
-        </h2>
+const skills = [
+  'TypeScript', 'Python', 'Next.js', 'React', 'FastAPI',
+  'PostgreSQL', 'Supabase', 'LLM Pipelines', 'AWS',
+];
 
-        {/* Highlights strip */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+export function About() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
+
+  return (
+    <section id="about" className="relative py-32 sm:py-40 px-6" ref={ref}>
+      <div className="max-w-3xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <p
+            className="text-sm tracking-[0.2em] uppercase mb-8"
+            style={{ color: 'var(--accent)' }}
+          >
+            About
+          </p>
+
+          <p
+            className="text-xl sm:text-2xl leading-relaxed mb-12"
+            style={{ color: 'var(--muted)' }}
+          >
+            CS student at{' '}
+            <span style={{ color: 'var(--foreground)' }}>UC Santa Barbara</span>.
+            I build copilots that augment human decision-making -- especially where
+            spreadsheets and ambiguity create real costs. I care about{' '}
+            <span style={{ color: 'var(--foreground)' }}>clarity</span>,{' '}
+            <span style={{ color: 'var(--foreground)' }}>auditability</span>, and{' '}
+            <span style={{ color: 'var(--foreground)' }}>shipping</span>.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="flex flex-wrap gap-3 mb-12"
+        >
           {highlights.map((item) => (
-            <div 
+            <div
               key={item.label}
-              className="p-4 rounded-lg text-center"
-              style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
+              className="glass-subtle px-4 py-2.5 flex items-center gap-2"
             >
-              <div className="text-lg font-semibold text-accent">{item.label}</div>
-              <div className="text-sm text-muted">{item.detail}</div>
+              <span className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
+                {item.label}
+              </span>
+              <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                {item.detail}
+              </span>
             </div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="grid md:grid-cols-[3fr_2fr] gap-12 items-start">
-          {/* Text content */}
-          <div>
-            <div className="space-y-4 text-muted">
-              <p>
-                I'm Aditya Singh, a CS student at{' '}
-                <span className="text-foreground">UC Santa Barbara</span> and an engineering 
-                lead working on AI-native products. My focus is building copilots that augment 
-                human decision-making—especially in places where spreadsheets and ambiguity 
-                create real costs.
-              </p>
-
-              <p>
-                I've published ML research (IEEE), presented at MIT URTC, and built production 
-                full-stack infrastructure across modern web stacks and Python backends. I care 
-                a lot about <span className="text-foreground">clarity</span>,{' '}
-                <span className="text-foreground">auditability</span>, and{' '}
-                <span className="text-foreground">shipping</span>.
-              </p>
-
-              <p>
-                I like building things that feel inevitable once they exist. That usually means: 
-                pick a painful workflow, get close to the edge cases, and design a system that 
-                people can trust—even under scrutiny.
-              </p>
-
-              <p className="pt-2">
-                Technologies I work with:
-              </p>
-            </div>
-
-            {/* Skills grid */}
-            <ul className="grid grid-cols-2 gap-2 mt-4">
-              {skills.map((skill) => (
-                <li 
-                  key={skill}
-                  className="flex items-center gap-2 text-sm text-muted"
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <p
+            className="text-sm mb-4"
+            style={{ color: 'var(--muted)' }}
+          >
+            Technologies I work with
+          </p>
+          <p className="text-sm leading-loose" style={{ color: 'var(--muted)' }}>
+            {skills.map((skill, i) => (
+              <span key={skill}>
+                <span
+                  className="inline-block transition-colors duration-200 hover:text-[var(--accent)] cursor-default"
                 >
-                  <span className="text-accent">▹</span>
                   {skill}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Now section */}
-          <div>
-            <div 
-              className="p-6 rounded-lg"
-              style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
-            >
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <span className="text-accent">⚡</span>
-                What I'm doing now
-              </h3>
-              <ul className="space-y-3 text-muted text-sm">
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">▹</span>
-                  <span>Building <span className="text-foreground">Ryft</span> and pushing toward real-world adoption</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">▹</span>
-                  <span>Designing an FTC flywheel shooter for <span className="text-foreground">DECO 2026</span></span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">▹</span>
-                  <span>Staying sharp on full-stack + applied LLM tooling</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Location */}
-            <div className="mt-6 text-sm text-muted">
-              <span className="text-accent">📍</span> Santa Barbara, CA (UCSB) + Bay Area ties
-            </div>
-          </div>
-        </div>
+                </span>
+                {i < skills.length - 1 && (
+                  <span className="mx-2 opacity-30">/</span>
+                )}
+              </span>
+            ))}
+          </p>
+        </motion.div>
       </div>
-    </Section>
+    </section>
   );
 }

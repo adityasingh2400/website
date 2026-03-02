@@ -1,8 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { ExternalLink, Github, ArrowRight, FileText } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 import { Project } from '@/lib/projects';
+
+const accentColors: Record<string, string> = {
+  ryft: '#22d3ee',
+  'ml-soft-robotics': '#8b5cf6',
+  'ftc-robotics': '#34d399',
+  'web-curriculum': '#ec4899',
+};
 
 interface ProjectCardProps {
   project: Project;
@@ -10,145 +19,77 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
-  const isEven = index % 2 === 0;
-
-  // Color accents for different projects
-  const accentColors: Record<string, string> = {
-    'ryft': '#22d3ee',
-    'ml-soft-robotics': '#a78bfa',
-    'ftc-robotics': '#34d399',
-    'web-curriculum': '#f472b6',
-  };
-
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
   const accent = accentColors[project.slug] || 'var(--accent)';
 
   return (
-    <div className="relative grid md:grid-cols-12 gap-4 items-center py-8">
-      {/* Project image/placeholder */}
-      <div 
-        className={`md:col-span-7 ${isEven ? 'md:order-1' : 'md:order-2'}`}
-      >
-        <Link href={`/projects/${project.slug}`} className="block group">
-          <div 
-            className="relative aspect-video rounded-lg overflow-hidden border transition-all duration-300 group-hover:border-accent"
-            style={{ 
-              backgroundColor: 'var(--card-bg)', 
-              borderColor: 'var(--card-border)' 
-            }}
-          >
-            {/* Gradient background */}
-            <div 
-              className="absolute inset-0 opacity-30"
-              style={{
-                background: `linear-gradient(135deg, ${accent} 0%, transparent 60%)`
-              }}
-            />
-            {/* Project initial */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span 
-                className="text-7xl font-bold opacity-20"
-                style={{ color: accent }}
-              >
-                {project.title.charAt(0)}
-              </span>
-            </div>
-            {/* Year badge */}
-            <div 
-              className="absolute top-4 right-4 px-2 py-1 rounded text-xs font-mono"
-              style={{ backgroundColor: 'rgba(0,0,0,0.5)', color: accent }}
-            >
-              {project.year}
-            </div>
-            {/* Hover overlay */}
-            <div 
-              className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
-              style={{ backgroundColor: accent }}
-            />
-          </div>
-        </Link>
-      </div>
-
-      {/* Project content */}
-      <div 
-        className={`md:col-span-5 ${isEven ? 'md:order-2 md:text-right' : 'md:order-1'}`}
-      >
-        <p className="text-sm font-mono mb-2" style={{ color: accent }}>
-          Featured Project
-        </p>
-        
-        <h3 className="text-xl font-semibold mb-4">
-          <Link 
-            href={`/projects/${project.slug}`}
-            className="hover:text-accent transition-colors"
-          >
-            {project.title}
-          </Link>
-        </h3>
-
-        <div 
-          className="p-5 rounded-lg mb-4 shadow-lg"
-          style={{ backgroundColor: 'var(--card-bg)' }}
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{
+        duration: 0.7,
+        delay: index * 0.15,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
+    >
+      <Link href={`/projects/${project.slug}`} className="block group">
+        <div
+          className="glass relative overflow-hidden p-6 sm:p-8 transition-all duration-500 hover:border-opacity-30"
+          style={{
+            '--card-accent': accent,
+          } as React.CSSProperties}
         >
-          <p className="text-muted text-sm leading-relaxed">
-            {project.description}
-          </p>
-          <p className="text-xs text-muted mt-3 opacity-70">
-            {project.role}
-          </p>
-        </div>
+          <div
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+            style={{
+              background: `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${accent}08, transparent 60%)`,
+            }}
+          />
 
-        {/* Tech stack */}
-        <ul className={`flex flex-wrap gap-3 mb-4 text-sm text-muted ${isEven ? 'md:justify-end' : ''}`}>
-          {project.technologies.slice(0, 5).map((tech) => (
-            <li key={tech} className="font-mono text-xs">
-              {tech}
-            </li>
-          ))}
-        </ul>
+          <div className="relative z-10">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <p className="text-xs tracking-wider uppercase mb-1" style={{ color: accent }}>
+                  {project.role} &middot; {project.year}
+                </p>
+                <h3 className="text-xl sm:text-2xl font-semibold group-hover:text-[var(--accent)] transition-colors duration-300">
+                  {project.title}
+                </h3>
+              </div>
+              <ArrowUpRight
+                size={20}
+                className="opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 flex-shrink-0 mt-1"
+                style={{ color: accent }}
+              />
+            </div>
 
-        {/* Links */}
-        <div className={`flex items-center gap-4 ${isEven ? 'md:justify-end' : ''}`}>
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted hover:text-accent transition-colors"
-              aria-label="GitHub"
+            <p
+              className="text-sm sm:text-base leading-relaxed mb-6"
+              style={{ color: 'var(--muted)' }}
             >
-              <Github size={20} />
-            </a>
-          )}
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted hover:text-accent transition-colors"
-              aria-label="Live site"
-            >
-              <ExternalLink size={20} />
-            </a>
-          )}
-          {project.paperUrl && (
-            <a
-              href={project.paperUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted hover:text-accent transition-colors"
-              aria-label="Paper"
-            >
-              <FileText size={20} />
-            </a>
-          )}
-          <Link
-            href={`/projects/${project.slug}`}
-            className="text-muted hover:text-accent transition-colors flex items-center gap-1 text-sm"
-          >
-            Details <ArrowRight size={14} />
-          </Link>
+              {project.description}
+            </p>
+
+            <div className="flex flex-wrap gap-2">
+              {project.technologies.slice(0, 5).map((tech) => (
+                <span
+                  key={tech}
+                  className="text-xs px-2.5 py-1 rounded-full"
+                  style={{
+                    color: 'var(--muted)',
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                  }}
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </Link>
+    </motion.div>
   );
 }

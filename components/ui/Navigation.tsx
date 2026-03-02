@@ -1,100 +1,61 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 
 const navItems = [
-  { label: 'About', href: '#about', number: '01' },
-  { label: 'Projects', href: '#projects', number: '02' },
-  { label: 'Contact', href: '#contact', number: '03' },
+  { label: 'Work', href: '#projects' },
+  { label: 'About', href: '#about' },
+  { label: 'Contact', href: '#contact' },
 ];
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [pastHero, setPastHero] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const currentY = window.scrollY;
+      setPastHero(currentY > window.innerHeight * 0.5);
+      setVisible(currentY < lastScrollY || currentY < 100);
+      setLastScrollY(currentY);
     };
-
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-background/90 backdrop-blur-md shadow-lg' : ''
-      }`}
-      style={{ 
-        backgroundColor: isScrolled ? 'rgba(10, 10, 10, 0.9)' : 'transparent' 
-      }}
-    >
-      <nav className="container flex items-center justify-between h-20">
-        {/* Logo */}
-        <Link 
-          href="/" 
-          className="text-accent font-bold text-xl hover:opacity-80 transition-opacity"
+    <>
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: visible || isOpen ? 0 : -100 }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        className="fixed top-0 left-0 right-0 z-50 px-6 py-4"
+      >
+        <nav
+          className={`mx-auto max-w-5xl flex items-center justify-between px-5 py-3 rounded-full transition-all duration-500 ${
+            pastHero ? 'glass' : ''
+          }`}
         >
-          AS
-        </Link>
+          <Link
+            href="/"
+            className="text-sm font-semibold tracking-wider hover:opacity-70 transition-opacity"
+          >
+            AS
+          </Link>
 
-        {/* Desktop nav */}
-        <ul className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <li key={item.label}>
-              <a
-                href={item.href}
-                className="text-sm text-muted hover:text-accent transition-colors"
-              >
-                <span className="text-accent font-mono text-xs mr-1">
-                  {item.number}.
-                </span>
-                {item.label}
-              </a>
-            </li>
-          ))}
-          <li>
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 border border-accent text-accent text-sm rounded hover:bg-accent hover:bg-opacity-10 transition-all"
-            >
-              Resume
-            </a>
-          </li>
-        </ul>
-
-        {/* Mobile menu button */}
-        <button
-          className="md:hidden text-muted hover:text-accent transition-colors"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </nav>
-
-      {/* Mobile menu */}
-      {isOpen && (
-        <div 
-          className="md:hidden fixed inset-0 top-20 z-40"
-          style={{ backgroundColor: 'var(--background)' }}
-        >
-          <nav className="flex flex-col items-center justify-center h-full gap-8">
+          <div className="hidden sm:flex items-center gap-8">
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                className="text-lg text-foreground hover:text-accent transition-colors"
-                onClick={() => setIsOpen(false)}
+                className="text-sm transition-colors duration-200 hover:text-[var(--accent)]"
+                style={{ color: 'var(--muted)' }}
               >
-                <span className="text-accent font-mono text-sm block text-center mb-1">
-                  {item.number}.
-                </span>
                 {item.label}
               </a>
             ))}
@@ -102,14 +63,71 @@ export function Navigation() {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 px-8 py-3 border border-accent text-accent rounded hover:bg-accent hover:bg-opacity-10 transition-all"
-              onClick={() => setIsOpen(false)}
+              className="text-sm px-4 py-1.5 rounded-full transition-all duration-200 hover:text-[var(--accent)] hover:border-[var(--accent)]"
+              style={{
+                color: 'var(--muted)',
+                border: '1px solid var(--glass-border)',
+              }}
             >
               Resume
             </a>
-          </nav>
-        </div>
-      )}
-    </header>
+          </div>
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="sm:hidden p-1"
+            style={{ color: 'var(--foreground)' }}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </nav>
+      </motion.header>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8"
+            style={{ background: 'rgba(0, 0, 0, 0.85)', backdropFilter: 'blur(20px)' }}
+          >
+            {navItems.map((item, i) => (
+              <motion.a
+                key={item.label}
+                href={item.href}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ delay: i * 0.1 }}
+                onClick={() => setIsOpen(false)}
+                className="text-3xl font-light transition-colors hover:text-[var(--accent)]"
+                style={{ color: 'var(--foreground)' }}
+              >
+                {item.label}
+              </motion.a>
+            ))}
+            <motion.a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ delay: navItems.length * 0.1 }}
+              className="text-lg mt-4 px-6 py-2 rounded-full"
+              style={{
+                color: 'var(--accent)',
+                border: '1px solid var(--accent)',
+              }}
+            >
+              Resume
+            </motion.a>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

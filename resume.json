@@ -1,0 +1,128 @@
+{
+  "basics": {
+    "name": "Aditya Singh",
+    "label": "UCSB Computer Science student building AI/LLM systems and full-stack products",
+    "email": "adityasingh@ucsb.edu",
+    "phone": "5104581848",
+    "url": "https://github.com/adityasingh2400",
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "url": "https://linkedin.com/in/adityasingh2400"
+      },
+      {
+        "network": "GitHub",
+        "url": "https://github.com/adityasingh2400"
+      }
+    ]
+  },
+  "contact": {
+    "phone": "5104581848"
+  },
+  "education": [
+    {
+      "institution": "University of California, Santa Barbara",
+      "studyType": "Bachelor of Science",
+      "degree": "Bachelor of Science in Computer Science",
+      "area": "Computer Science",
+      "gpa": "3.97",
+      "graduationDate": "June 2027",
+      "startDate": "2024-09",
+      "endDate": "2027-06",
+      "location": "Goleta, CA",
+      "courses": [
+        "Problem Solving with C++",
+        "Object-Oriented Programming with C++",
+        "Linear Algebra",
+        "Differential Equations",
+        "Multivariable Calculus",
+        "Data Structures and Algorithms",
+        "Computer Architecture"
+      ]
+    }
+  ],
+  "work": [
+    {
+      "name": "Ryft AI",
+      "position": "Software Engineering Intern",
+      "location": "Cupertino, CA",
+      "startDate": "2025-08",
+      "endDate": null,
+      "highlights": [
+        "Architected a scalable Python and FastAPI backend spanning 40 REST endpoints for a 3-tier multi-agent orchestrator, driving platform growth to 30k ARR and securing enterprise deployments with YC-backed clients like Corgi AI via CRM integrations",
+        "Designed an autonomous agentic loop using GPT-4o equipped with 12 discrete tools for complex data transformation, utilizing strict 22-field JSON constraint prompting to achieve 95% extraction accuracy across unstructured PDF contracts",
+        "Engineered a multi-tier context management system using pgvector RAG and cross-session memory compaction, pairing domain-aware chunking with Bedrock prompt caching to reduce per-session LLM costs by 60–70%, ensuring accuracy",
+        "Developed a 3-layer observability and evaluation framework implementing an AI validation agent that cross-checks generated logic against source contracts, eliminating 350–400 hours of manual QA work per quarter ensuring auditability"
+      ]
+    },
+    {
+      "name": "Techno G.O.A.Ts LLC",
+      "position": "Co-Founder and Team Captain",
+      "location": "Fremont, CA",
+      "startDate": "2018-09",
+      "endDate": "2024-01",
+      "highlights": [
+        "Co-founded a 501(c)(3) robotics nonprofit—3D-modeled 30+ competition robots in Fusion 360, trained machine learning and ran weekly build sprints synthesizing build team progress for efficient hardware-code integration",
+        "Engineered a custom computer vision pipeline using TensorFlow and OpenCV to train a Convolutional Neural Network (CNN), reducing autonomous task latency by 40%+ during competitive matches with 96% object detection accuracy",
+        "Mentored neurodivergent learners via a 4-year Serendipity STEM partnership, and secured a 5k Apple grant"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Ziri",
+      "description": "Distributed voice OS with LangGraph supervisor routing across specialized ReAct subagents",
+      "startDate": "2026-02",
+      "endDate": null,
+      "technologies": ["Python", "FastAPI", "LangGraph", "AWS Bedrock", "PostgreSQL", "pgvector", "Langfuse"],
+      "highlights": [
+        "Architected a distributed Python/FastAPI voice OS with a LangGraph supervisor routing complex intents across 3 specialized ReAct subagents (25+ tools), while handling 80% of commands via a deterministic zero-LLM fast path",
+        "Engineered a semantic memory system using 1536-dim Amazon Titan embeddings and Supabase pgvector with HNSW indexing. Queried history via SQL similarity search to inject user preferences into Claude Sonnet 4.6 context windows",
+        "Developed an evaluation and observability framework using Langfuse to trace generation spans and score tool-execution correctness; optimized the ElevenLabs streaming pipeline to achieve sub-50ms audio latency for cached interactions and sub-900ms TTFB for complex multi-step voice queries"
+      ]
+    },
+    {
+      "name": "Autonomous Soft Robot System for Safer Brain Tumor Therapy",
+      "description": "ML-guided controller for flexible surgical robots with MRI-based collision-aware planning",
+      "startDate": "2022-11",
+      "endDate": "2023-06",
+      "technologies": ["MATLAB", "Neural Network Toolbox", "C++", "Supervised Machine Learning"],
+      "highlights": [
+        "Trained a Bayesian Neural Network on 100k joint configs via Matlab's Neural Net Toolbox to predict a flexible surgical robot's 3D tip position from joint inputs: Achieved sub-0.1% max tip error on unseen targets",
+        "Developed a MATLAB algorithm to convert multi-million-voxel MRI data into interactive 3D brain safety maps enabling high-fidelity collision-aware planning with tumor highlighting",
+        "Engineered a C++ control stack for a 6-DOF robot arm through an Arduino, streaming PC-to-Arduino communication and synchronizing multi-actuator motion",
+        "Won 1st place among 230+ participants at regional science and engineering fair (ACSEF)"
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "name": "Kinematic Controller of a Soft Continuum Robot Using Learned Forward Models",
+      "publisher": "University of Cambridge (Research Program)",
+      "releaseDate": "2023-02",
+      "location": "Cambridge, UK",
+      "highlights": [
+        "Formalized a learned forward-kinematics algorithm for soft continuum robots over 6 months of research, addressing redundancy and non-invertibility",
+        "Presented at the IEEE MIT Undergraduate Research Technology Conference"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "name": "Programming Languages",
+      "keywords": ["Python", "Java", "Spring Boot", "C++", "Go", "Rust", "JavaScript"]
+    },
+    {
+      "name": "AI & Frameworks",
+      "keywords": ["LangGraph", "Langfuse", "pgvector", "FastAPI", "TensorFlow", "React", "Next.js", "Node.js"]
+    },
+    {
+      "name": "DevOps & Cloud",
+      "keywords": ["AWS", "Bedrock", "Lambda", "Docker", "Kubernetes", "GitHub Actions", "Prometheus", "Linux"]
+    },
+    {
+      "name": "Databases & Tools",
+      "keywords": ["PostgreSQL", "Supabase", "RESTful APIs", "Git"]
+    }
+  ]
+}
