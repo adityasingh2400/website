@@ -1,19 +1,21 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const highlights = [
-  { label: '4.0 GPA', detail: 'UCSB CS' },
-  { label: 'IEEE Published', detail: 'ML Research' },
+  { label: '3.97 GPA', detail: 'UCSB CS' },
+  { label: 'IEEE Published', detail: 'Cambridge' },
   { label: 'MIT URTC', detail: 'Presenter' },
-  { label: 'Engineering Lead', detail: 'AI Products' },
+  { label: '30k ARR', detail: 'Ryft AI' },
+  { label: '1st Place', detail: 'ACSEF' },
 ];
 
-const skills = [
-  'TypeScript', 'Python', 'Next.js', 'React', 'FastAPI',
-  'PostgreSQL', 'Supabase', 'LLM Pipelines', 'AWS',
+const skillGroups = [
+  { category: 'Languages', items: ['Python', 'Java', 'C++', 'Go', 'Rust', 'JavaScript', 'TypeScript'] },
+  { category: 'AI & Frameworks', items: ['LangGraph', 'Langfuse', 'pgvector', 'FastAPI', 'TensorFlow', 'React', 'Next.js'] },
+  { category: 'Cloud & DevOps', items: ['AWS', 'Bedrock', 'Lambda', 'Docker', 'Kubernetes', 'GitHub Actions'] },
+  { category: 'Data & Tools', items: ['PostgreSQL', 'Supabase', 'RESTful APIs', 'Git', 'Linux', 'Prometheus'] },
 ];
 
 export function About() {
@@ -40,12 +42,14 @@ export function About() {
             style={{ color: 'var(--muted)' }}
           >
             CS student at{' '}
-            <span style={{ color: 'var(--foreground)' }}>UC Santa Barbara</span>.
-            I build copilots that augment human decision-making -- especially where
-            spreadsheets and ambiguity create real costs. I care about{' '}
-            <span style={{ color: 'var(--foreground)' }}>clarity</span>,{' '}
-            <span style={{ color: 'var(--foreground)' }}>auditability</span>, and{' '}
-            <span style={{ color: 'var(--foreground)' }}>shipping</span>.
+            <span style={{ color: 'var(--foreground)' }}>UC Santa Barbara</span>{' '}
+            building AI/LLM systems and full-stack products. Currently an SWE Intern at{' '}
+            <span style={{ color: 'var(--foreground)' }}>Ryft AI</span>{' '}
+            where I architect multi-agent orchestrators and LLM pipelines.
+            Published at{' '}
+            <span style={{ color: 'var(--foreground)' }}>IEEE</span>, presented at{' '}
+            <span style={{ color: 'var(--foreground)' }}>MIT URTC</span>, researched at{' '}
+            <span style={{ color: 'var(--foreground)' }}>Cambridge</span>.
           </p>
         </motion.div>
 
@@ -53,7 +57,7 @@ export function About() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="flex flex-wrap gap-3 mb-12"
+          className="flex flex-wrap gap-3 mb-16"
         >
           {highlights.map((item) => (
             <div
@@ -74,27 +78,30 @@ export function About() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="space-y-6"
         >
-          <p
-            className="text-sm mb-4"
-            style={{ color: 'var(--muted)' }}
-          >
-            Technologies I work with
-          </p>
-          <p className="text-sm leading-loose" style={{ color: 'var(--muted)' }}>
-            {skills.map((skill, i) => (
-              <span key={skill}>
-                <span
-                  className="inline-block transition-colors duration-200 hover:text-[var(--accent)] cursor-default"
-                >
-                  {skill}
-                </span>
-                {i < skills.length - 1 && (
-                  <span className="mx-2 opacity-30">/</span>
-                )}
-              </span>
-            ))}
-          </p>
+          {skillGroups.map((group) => (
+            <div key={group.category}>
+              <p
+                className="text-xs tracking-[0.15em] uppercase mb-2"
+                style={{ color: 'var(--accent)', opacity: 0.7 }}
+              >
+                {group.category}
+              </p>
+              <p className="text-sm leading-loose" style={{ color: 'var(--muted)' }}>
+                {group.items.map((skill, i) => (
+                  <span key={skill}>
+                    <span className="inline-block transition-colors duration-200 hover:text-[var(--accent)] cursor-default">
+                      {skill}
+                    </span>
+                    {i < group.items.length - 1 && (
+                      <span className="mx-2 opacity-20">/</span>
+                    )}
+                  </span>
+                ))}
+              </p>
+            </div>
+          ))}
         </motion.div>
       </div>
     </section>

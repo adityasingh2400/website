@@ -5,6 +5,8 @@ import Lenis from 'lenis';
 import { Navigation } from '@/components/ui/Navigation';
 import { Hero } from '@/components/ui/Hero';
 import { About } from '@/components/ui/About';
+import { Experience } from '@/components/ui/Experience';
+import { Education } from '@/components/ui/Education';
 import { Projects } from '@/components/ui/Projects';
 import { Contact } from '@/components/ui/Contact';
 
@@ -31,6 +33,8 @@ export default function Home() {
       <main>
         <Hero />
         <About />
+        <Experience />
+        <Education />
         <Projects />
         <Contact />
       </main>

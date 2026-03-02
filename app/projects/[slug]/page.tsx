@@ -5,16 +5,23 @@ import Link from 'next/link';
 import { ArrowLeft, ExternalLink, Github, FileText } from 'lucide-react';
 import { getProjectBySlug, projects } from '@/lib/projects';
 
+const accentColors: Record<string, string> = {
+  ziri: '#8b5cf6',
+  'ryft-ai': '#22d3ee',
+  'soft-robot-system': '#34d399',
+  'soft-continuum-research': '#ec4899',
+};
+
 export default function ProjectPage() {
   const params = useParams();
   const project = getProjectBySlug(params.slug as string);
 
   if (!project) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center px-6">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Project not found</h1>
-          <Link href="/" className="text-accent hover:underline">
+          <Link href="/" className="hover:text-[var(--accent)] transition-colors">
             Go back home
           </Link>
         </div>
@@ -22,70 +29,61 @@ export default function ProjectPage() {
     );
   }
 
-  // Get adjacent projects for navigation
   const currentIndex = projects.findIndex((p) => p.slug === project.slug);
   const prevProject = projects[currentIndex - 1];
   const nextProject = projects[currentIndex + 1];
-
-  // Color accents for different projects
-  const accentColors: Record<string, string> = {
-    'ryft': '#22d3ee',
-    'ml-soft-robotics': '#a78bfa',
-    'ftc-robotics': '#34d399',
-    'web-curriculum': '#f472b6',
-  };
-
   const accent = accentColors[project.slug] || 'var(--accent)';
 
   return (
-    <main className="min-h-screen py-20">
-      {/* Back link */}
-      <div className="container mb-12">
-        <Link
-          href="/#projects"
-          className="inline-flex items-center gap-2 text-muted hover:text-accent transition-colors"
-        >
-          <ArrowLeft size={16} />
-          Back to projects
-        </Link>
-      </div>
+    <main className="min-h-screen py-20 px-6">
+      <div className="max-w-3xl mx-auto">
+        {/* Back link */}
+        <div className="mb-12">
+          <Link
+            href="/#projects"
+            className="inline-flex items-center gap-2 text-sm transition-colors hover:text-[var(--accent)]"
+            style={{ color: 'var(--muted)' }}
+          >
+            <ArrowLeft size={16} />
+            Back to projects
+          </Link>
+        </div>
 
-      {/* Header */}
-      <header className="container mb-16">
-        <div className="max-w-3xl">
-          <p className="font-mono text-sm mb-4" style={{ color: accent }}>
-            Case Study
+        {/* Header */}
+        <header className="mb-16">
+          <p className="text-xs tracking-wider uppercase mb-4" style={{ color: accent }}>
+            {project.role} &middot; {project.year}
           </p>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">{project.title}</h1>
-          <p className="text-xl text-muted mb-6">{project.description}</p>
+          <p className="text-lg mb-8" style={{ color: 'var(--muted)' }}>
+            {project.description}
+          </p>
 
-          {/* Meta info */}
-          <div className="flex flex-wrap gap-6 text-sm text-muted mb-8">
-            <div>
-              <span className="block text-foreground font-medium">Role</span>
-              {project.role}
-            </div>
-            <div>
-              <span className="block text-foreground font-medium">Year</span>
-              {project.year}
-            </div>
-            <div>
-              <span className="block text-foreground font-medium">Stack</span>
-              {project.technologies.slice(0, 3).join(', ')}
-            </div>
+          <div className="flex flex-wrap gap-2 mb-8">
+            {project.technologies.map((tech) => (
+              <span
+                key={tech}
+                className="text-xs px-2.5 py-1 rounded-full"
+                style={{
+                  color: accent,
+                  background: `${accent}15`,
+                }}
+              >
+                {tech}
+              </span>
+            ))}
           </div>
 
-          {/* Links */}
           <div className="flex gap-4">
             {project.liveUrl && (
               <a
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2 text-background rounded font-medium hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: accent }}
+                className="inline-flex items-center gap-2 px-5 py-2 text-sm rounded-full font-medium transition-opacity hover:opacity-80"
+                style={{ backgroundColor: accent, color: '#000' }}
               >
-                <ExternalLink size={16} />
+                <ExternalLink size={14} />
                 View Live
               </a>
             )}
@@ -94,11 +92,10 @@ export default function ProjectPage() {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2 border text-foreground rounded font-medium hover:text-accent transition-colors"
-                style={{ borderColor: 'var(--card-border)' }}
+                className="inline-flex items-center gap-2 px-5 py-2 text-sm rounded-full glass font-medium transition-colors hover:text-[var(--accent)]"
               >
-                <Github size={16} />
-                Source Code
+                <Github size={14} />
+                Source
               </a>
             )}
             {project.paperUrl && (
@@ -106,141 +103,103 @@ export default function ProjectPage() {
                 href={project.paperUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2 border text-foreground rounded font-medium hover:text-accent transition-colors"
-                style={{ borderColor: 'var(--card-border)' }}
+                className="inline-flex items-center gap-2 px-5 py-2 text-sm rounded-full glass font-medium transition-colors hover:text-[var(--accent)]"
               >
-                <FileText size={16} />
-                Read Paper
+                <FileText size={14} />
+                Paper
               </a>
             )}
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Project image placeholder */}
-      <div className="container mb-20">
-        <div 
-          className="aspect-video rounded-lg overflow-hidden border"
-          style={{ 
-            backgroundColor: 'var(--card-bg)', 
-            borderColor: 'var(--card-border)' 
-          }}
-        >
-          <div 
-            className="w-full h-full flex items-center justify-center"
-            style={{
-              background: `linear-gradient(135deg, ${accent} 0%, transparent 50%)`
-            }}
-          >
-            <span 
-              className="text-8xl font-bold opacity-20"
-              style={{ color: accent }}
-            >
-              {project.title.charAt(0)}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Case study content */}
-      <article className="container">
-        <div className="max-w-3xl mx-auto space-y-16">
-          {/* The Problem */}
+        {/* Case study content */}
+        <article className="space-y-14">
           <section>
-            <h2 className="text-2xl font-semibold mb-4 flex items-center gap-3">
-              <span className="font-mono text-lg" style={{ color: accent }}>01.</span>
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-3">
+              <span className="text-sm" style={{ color: accent }}>01</span>
               The Problem
             </h2>
-            <p className="text-muted leading-relaxed">{project.problem}</p>
+            <p className="leading-relaxed" style={{ color: 'var(--muted)' }}>
+              {project.problem}
+            </p>
           </section>
 
-          {/* The Approach */}
           <section>
-            <h2 className="text-2xl font-semibold mb-4 flex items-center gap-3">
-              <span className="font-mono text-lg" style={{ color: accent }}>02.</span>
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-3">
+              <span className="text-sm" style={{ color: accent }}>02</span>
               The Approach
             </h2>
-            <p className="text-muted leading-relaxed">{project.approach}</p>
+            <p className="leading-relaxed" style={{ color: 'var(--muted)' }}>
+              {project.approach}
+            </p>
           </section>
 
-          {/* The Solution */}
           <section>
-            <h2 className="text-2xl font-semibold mb-4 flex items-center gap-3">
-              <span className="font-mono text-lg" style={{ color: accent }}>03.</span>
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-3">
+              <span className="text-sm" style={{ color: accent }}>03</span>
               The Solution
             </h2>
-            <p className="text-muted leading-relaxed">{project.solution}</p>
+            <p className="leading-relaxed" style={{ color: 'var(--muted)' }}>
+              {project.solution}
+            </p>
           </section>
 
-          {/* The Impact */}
           <section>
-            <h2 className="text-2xl font-semibold mb-4 flex items-center gap-3">
-              <span className="font-mono text-lg" style={{ color: accent }}>04.</span>
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-3">
+              <span className="text-sm" style={{ color: accent }}>04</span>
               The Impact
             </h2>
             <ul className="space-y-3">
               {project.impact.map((item, index) => (
-                <li key={index} className="flex items-start gap-3 text-muted">
-                  <span style={{ color: accent }} className="mt-1">▹</span>
+                <li
+                  key={index}
+                  className="flex items-start gap-3 text-sm leading-relaxed"
+                  style={{ color: 'var(--muted)' }}
+                >
+                  <span
+                    className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: accent }}
+                  />
                   {item}
                 </li>
               ))}
             </ul>
           </section>
+        </article>
 
-          {/* Tech stack */}
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">Tech Stack</h2>
-            <div className="flex flex-wrap gap-2">
-              {project.technologies.map((tech) => (
-                <span 
-                  key={tech} 
-                  className="px-3 py-1 text-sm rounded-full"
-                  style={{ 
-                    backgroundColor: `${accent}15`,
-                    color: accent
-                  }}
-                >
-                  {tech}
+        {/* Project navigation */}
+        <nav
+          className="mt-20 pt-12"
+          style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}
+        >
+          <div className="flex justify-between items-center">
+            {prevProject ? (
+              <Link href={`/projects/${prevProject.slug}`} className="group">
+                <span className="text-xs block mb-1" style={{ color: 'var(--muted)' }}>
+                  Previous
                 </span>
-              ))}
-            </div>
-          </section>
-        </div>
-      </article>
-
-      {/* Project navigation */}
-      <nav className="container mt-20 pt-12 border-t" style={{ borderColor: 'var(--card-border)' }}>
-        <div className="flex justify-between items-center">
-          {prevProject ? (
-            <Link
-              href={`/projects/${prevProject.slug}`}
-              className="group"
-            >
-              <span className="text-sm text-muted block mb-1">Previous</span>
-              <span className="text-lg font-medium group-hover:text-accent transition-colors">
-                {prevProject.title}
-              </span>
-            </Link>
-          ) : (
-            <div />
-          )}
-
-          {nextProject ? (
-            <Link
-              href={`/projects/${nextProject.slug}`}
-              className="group text-right"
-            >
-              <span className="text-sm text-muted block mb-1">Next</span>
-              <span className="text-lg font-medium group-hover:text-accent transition-colors">
-                {nextProject.title}
-              </span>
-            </Link>
-          ) : (
-            <div />
-          )}
-        </div>
-      </nav>
+                <span className="text-lg font-medium group-hover:text-[var(--accent)] transition-colors">
+                  {prevProject.title}
+                </span>
+              </Link>
+            ) : (
+              <div />
+            )}
+            {nextProject ? (
+              <Link href={`/projects/${nextProject.slug}`} className="group text-right">
+                <span className="text-xs block mb-1" style={{ color: 'var(--muted)' }}>
+                  Next
+                </span>
+                <span className="text-lg font-medium group-hover:text-[var(--accent)] transition-colors">
+                  {nextProject.title}
+                </span>
+              </Link>
+            ) : (
+              <div />
+            )}
+          </div>
+        </nav>
+      </div>
     </main>
   );
 }

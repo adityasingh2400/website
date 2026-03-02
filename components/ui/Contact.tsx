@@ -2,12 +2,11 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Github, Linkedin, Twitter, Mail } from 'lucide-react';
+import { Github, Linkedin, Mail } from 'lucide-react';
 
 const socials = [
   { name: 'GitHub', href: 'https://github.com/adityasingh2400', icon: Github },
-  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/adityasingh2400', icon: Linkedin },
-  { name: 'X', href: 'https://x.com/NoeticPraxis', icon: Twitter },
+  { name: 'LinkedIn', href: 'https://linkedin.com/in/adityasingh2400', icon: Linkedin },
 ];
 
 export function Contact() {

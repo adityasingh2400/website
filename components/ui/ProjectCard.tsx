@@ -7,10 +7,10 @@ import { ArrowUpRight } from 'lucide-react';
 import { Project } from '@/lib/projects';
 
 const accentColors: Record<string, string> = {
-  ryft: '#22d3ee',
-  'ml-soft-robotics': '#8b5cf6',
-  'ftc-robotics': '#34d399',
-  'web-curriculum': '#ec4899',
+  ziri: '#8b5cf6',
+  'ryft-ai': '#22d3ee',
+  'soft-robot-system': '#34d399',
+  'soft-continuum-research': '#ec4899',
 };
 
 interface ProjectCardProps {

@@ -15,7 +15,7 @@ export function Hero() {
           className="text-sm tracking-[0.3em] uppercase mb-6"
           style={{ color: 'var(--muted)' }}
         >
-          Full-Stack &middot; AI &middot; Engineering
+          AI Systems &middot; Full-Stack &middot; Research
         </motion.p>
 
         <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight mb-6">
@@ -44,9 +44,11 @@ export function Hero() {
           className="text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed"
           style={{ color: 'var(--muted)' }}
         >
-          I build AI copilots that make complex workflows
+          Building AI/LLM systems and full-stack products
           <br className="hidden sm:block" />
-          {' '}understandable, auditable, and fast.
+          {' '}that turn messy real-world problems into
+          <br className="hidden sm:block" />
+          {' '}things people can actually trust.
         </motion.p>
       </div>
 
