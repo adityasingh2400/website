@@ -90,6 +90,22 @@ a {
 .lab-shell {
   margin: 0 auto;
   max-width: 1280px;
+  width: 100%;
+}
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@media (max-width: 640px) {
+  .lab-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+  }
 }
 
 .lab-eyebrow {

@@ -5,6 +5,10 @@ import Lenis from 'lenis';
 
 export function SmoothScroll() {
   useEffect(() => {
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (isTouchDevice) return;
+
     const lenis = new Lenis({
       duration: 1.1,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

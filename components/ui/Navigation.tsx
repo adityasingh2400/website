@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
@@ -32,13 +32,26 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  const closeMenu = useCallback(() => setIsOpen(false), []);
+
   return (
     <>
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: visible || isOpen ? 0 : -100 }}
         transition={{ duration: 0.35, ease: 'easeInOut' }}
-        className="fixed inset-x-0 top-0 z-50 px-4 py-4"
+        className="fixed inset-x-0 top-0 z-50 px-3 py-3 sm:px-4 sm:py-4"
       >
         <nav
           className={`mx-auto max-w-6xl border transition-all duration-500 ${
@@ -47,12 +60,12 @@ export function Navigation() {
               : 'border-transparent bg-transparent'
           }`}
         >
-          <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
-            <Link href="/" className="transition-opacity duration-300 hover:opacity-65">
-              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--muted)]">
+          <div className="flex items-center justify-between gap-3 px-3 py-2.5 sm:gap-4 sm:px-6 sm:py-3">
+            <Link href="/" className="transition-opacity duration-300 hover:opacity-65" onClick={closeMenu}>
+              <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-[var(--muted)] sm:text-[10px]">
                 Aditya Singh
               </span>
-              <span className="mt-1 block font-display text-[1.1rem] leading-none tracking-[-0.04em] text-[var(--foreground)]">
+              <span className="mt-0.5 block font-display text-[1rem] leading-none tracking-[-0.04em] text-[var(--foreground)] sm:mt-1 sm:text-[1.1rem]">
                 UCSB / Ryft AI
               </span>
             </Link>
@@ -91,44 +104,54 @@ export function Navigation() {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25 }}
-            className="fixed left-4 right-4 top-[88px] z-40 mx-auto max-w-6xl border border-[var(--line-strong)] bg-[rgba(243,236,223,0.95)] p-5 shadow-[0_24px_80px_rgba(17,17,17,0.08)] backdrop-blur-xl lg:hidden"
-          >
-            <div className="grid gap-2">
-              {navItems.map((item, i) => (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-30 bg-[rgba(250,248,242,0.6)] backdrop-blur-sm lg:hidden"
+              onClick={closeMenu}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
+              className="fixed left-3 right-3 top-[72px] z-40 mx-auto max-w-6xl border border-[var(--line-strong)] bg-[rgba(243,236,223,0.97)] p-4 shadow-[0_24px_80px_rgba(17,17,17,0.08)] backdrop-blur-xl sm:left-4 sm:right-4 sm:top-[88px] sm:p-5 lg:hidden"
+            >
+              <div className="grid gap-2">
+                {navItems.map((item, i) => (
+                  <motion.a
+                    key={item.label}
+                    href={item.href}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ delay: i * 0.06 }}
+                    onClick={closeMenu}
+                    className="flex items-center justify-between border border-[var(--line)] bg-[rgba(255,255,255,0.36)] px-4 py-3.5 text-sm font-medium text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] active:scale-[0.98]"
+                  >
+                    {item.label}
+                    <ArrowUpRight size={15} />
+                  </motion.a>
+                ))}
                 <motion.a
-                  key={item.label}
-                  href={item.href}
+                  href="/resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: i * 0.06 }}
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-between border border-[var(--line)] bg-[rgba(255,255,255,0.36)] px-4 py-3 text-sm font-medium text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)]"
+                  transition={{ delay: navItems.length * 0.06 }}
+                  className="mt-2 inline-flex items-center justify-between border border-[var(--line-strong)] px-4 py-3.5 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--foreground)]"
                 >
-                  {item.label}
+                  Resume
                   <ArrowUpRight size={15} />
                 </motion.a>
-              ))}
-              <motion.a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ delay: navItems.length * 0.06 }}
-                className="mt-2 inline-flex items-center justify-between border border-[var(--line-strong)] px-4 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--foreground)]"
-              >
-                Resume
-                <ArrowUpRight size={15} />
-              </motion.a>
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

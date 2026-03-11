@@ -57,24 +57,24 @@ export function Experience() {
   const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="experience" className="relative px-6 py-28 sm:py-36" ref={ref}>
+    <section id="experience" className="relative px-4 py-20 sm:px-6 sm:py-36" ref={ref}>
       <div className="lab-shell">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="mb-10 max-w-3xl"
+          className="mb-8 max-w-3xl sm:mb-10"
         >
-          <p className="lab-eyebrow mb-4">Experience</p>
-          <h2 className="font-display text-[clamp(2.6rem,5vw,4rem)] leading-[0.96] tracking-[-0.05em] text-[var(--foreground)]">
+          <p className="lab-eyebrow mb-3 sm:mb-4">Experience</p>
+          <h2 className="font-display text-[clamp(2rem,5vw,4rem)] leading-[0.96] tracking-[-0.05em] text-[var(--foreground)]">
             Work, robotics, and research.
           </h2>
-          <p className="mt-5 text-base leading-relaxed text-[var(--muted)] sm:text-lg">
+          <p className="mt-4 text-[0.9rem] leading-relaxed text-[var(--muted)] sm:mt-5 sm:text-lg">
             The main thread is building real systems and making them useful to other people.
           </p>
         </motion.div>
 
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           {experiences.map((exp, index) => (
             <motion.article
               key={exp.company}
@@ -85,34 +85,34 @@ export function Experience() {
                 delay: index * 0.12,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="grid gap-6 border-t border-[var(--line)] pt-8 lg:grid-cols-[220px_minmax(0,1fr)]"
+              className="grid gap-4 border-t border-[var(--line)] pt-6 sm:gap-6 sm:pt-8 lg:grid-cols-[220px_minmax(0,1fr)]"
             >
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+              <div className="flex items-center gap-3 lg:block">
+                <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:text-[10px]">
                   {exp.period}
                 </p>
-                <p className="mt-3 text-sm text-[var(--muted)]">{exp.location}</p>
+                <p className="text-[0.8rem] text-[var(--muted)] lg:mt-3 lg:text-sm">{exp.location}</p>
               </div>
 
-              <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
+              <div className="grid gap-5 sm:gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
                 <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.22em]" style={{ color: exp.accent }}>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.22em] sm:text-[10px]" style={{ color: exp.accent }}>
                     {exp.company}
                   </p>
-                  <h3 className="mt-2 font-display text-[2.2rem] leading-[0.94] tracking-[-0.045em] text-[var(--foreground)] sm:text-[2.8rem]">
+                  <h3 className="mt-2 font-display text-[1.6rem] leading-[0.94] tracking-[-0.045em] text-[var(--foreground)] sm:text-[2.8rem]">
                     {exp.role}
                   </h3>
-                  <p className="mt-4 max-w-3xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
+                  <p className="mt-3 max-w-3xl text-[0.9rem] leading-relaxed text-[var(--muted)] sm:mt-4 sm:text-lg">
                     {exp.summary}
                   </p>
-                  <ul className="mt-6 grid gap-3">
+                  <ul className="mt-4 grid gap-2.5 sm:mt-6 sm:gap-3">
                     {exp.highlights.map((highlight) => (
                       <li
                         key={highlight}
-                        className="flex items-start gap-3 text-sm leading-relaxed text-[var(--muted)] sm:text-base"
+                        className="flex items-start gap-2.5 text-[0.8rem] leading-relaxed text-[var(--muted)] sm:gap-3 sm:text-base"
                       >
                         <span
-                          className="mt-2 block h-1.5 w-1.5 flex-shrink-0 rounded-full"
+                          className="mt-1.5 block h-1.5 w-1.5 flex-shrink-0 rounded-full sm:mt-2"
                           style={{ backgroundColor: exp.accent }}
                         />
                         {highlight}
@@ -121,14 +121,14 @@ export function Experience() {
                   </ul>
                 </div>
 
-                <div className="lab-panel p-5">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                <div className="lab-panel p-4 sm:p-5">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:text-[10px]">
                     Proof points
                   </p>
-                  <div className="mt-5 grid gap-3">
+                  <div className="mt-4 grid gap-2 sm:mt-5 sm:gap-3">
                     {exp.proof.map((item) => (
-                      <div key={item} className="border border-[var(--line)] bg-[rgba(255,255,255,0.32)] p-4">
-                        <p className="text-sm font-medium text-[var(--foreground)]">{item}</p>
+                      <div key={item} className="border border-[var(--line)] bg-[rgba(255,255,255,0.32)] p-3 sm:p-4">
+                        <p className="text-[0.8rem] font-medium text-[var(--foreground)] sm:text-sm">{item}</p>
                       </div>
                     ))}
                   </div>
