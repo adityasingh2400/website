@@ -126,7 +126,7 @@ export function VoiceAgent() {
             initial={{ opacity: 0, y: 24 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="lab-panel relative overflow-hidden p-4 sm:p-6 md:p-8"
+            className="lab-panel relative p-4 sm:p-6 md:p-8"
           >
             <div
               className="pointer-events-none absolute inset-0 opacity-80"
@@ -205,6 +205,12 @@ export function VoiceAgent() {
           display: block;
           width: 100%;
           min-height: 360px;
+        }
+        #voice .lab-panel {
+          overflow: visible;
+        }
+        #voice .lab-panel::before {
+          border-radius: inherit;
         }
         @media (min-width: 640px) {
           elevenlabs-convai.voice-agent-widget {
