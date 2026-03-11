@@ -1,95 +1,60 @@
 'use client';
 
-import Link from 'next/link';
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import { Project } from '@/lib/projects';
-
-const accentColors: Record<string, string> = {
-  ziri: '#8b5cf6',
-  'ryft-ai': '#22d3ee',
-  'soft-robot-system': '#34d399',
-  'soft-continuum-research': '#ec4899',
-};
+import type { Project } from '@/lib/projects';
 
 interface ProjectCardProps {
   project: Project;
   index: number;
+  isActive: boolean;
+  onSelect: () => void;
 }
 
-export function ProjectCard({ project, index }: ProjectCardProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
-  const accent = accentColors[project.slug] || 'var(--accent)';
-
+export function ProjectCard({ project, index, isActive, onSelect }: ProjectCardProps) {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        duration: 0.7,
-        delay: index * 0.15,
-        ease: [0.25, 0.46, 0.45, 0.94],
+    <motion.button
+      type="button"
+      initial={{ opacity: 0, y: 28 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      onMouseEnter={onSelect}
+      onFocus={onSelect}
+      onClick={onSelect}
+      className="group w-full border p-5 text-left transition-all duration-300 md:p-6"
+      style={{
+        borderColor: isActive ? project.accent : 'var(--line)',
+        background: isActive ? project.accentSoft : 'rgba(255, 255, 255, 0.3)',
+        boxShadow: isActive ? `0 18px 48px ${project.accentSoft}` : 'none',
       }}
     >
-      <Link href={`/projects/${project.slug}`} className="block group">
-        <div
-          className="glass relative overflow-hidden p-6 sm:p-8 transition-all duration-500 hover:border-opacity-30"
-          style={{
-            '--card-accent': accent,
-          } as React.CSSProperties}
-        >
-          <div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-            style={{
-              background: `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${accent}08, transparent 60%)`,
-            }}
-          />
-
-          <div className="relative z-10">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <p className="text-xs tracking-wider uppercase mb-1" style={{ color: accent }}>
-                  {project.role} &middot; {project.year}
-                </p>
-                <h3 className="text-xl sm:text-2xl font-semibold group-hover:text-[var(--accent)] transition-colors duration-300">
-                  {project.title}
-                </h3>
-              </div>
-              <ArrowUpRight
-                size={20}
-                className="opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 flex-shrink-0 mt-1"
-                style={{ color: accent }}
-              />
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex min-w-0 items-start gap-4">
+          <div className="mt-1 h-10 w-px flex-shrink-0" style={{ background: isActive ? project.accent : 'var(--line-strong)' }} />
+          <div className="min-w-0">
+            <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <span style={{ color: isActive ? project.accent : 'var(--muted)' }}>{project.eyebrow}</span>
             </div>
-
-            <p
-              className="text-sm sm:text-base leading-relaxed mb-6"
-              style={{ color: 'var(--muted)' }}
-            >
-              {project.description}
-            </p>
-
-            <div className="flex flex-wrap gap-2">
-              {project.technologies.slice(0, 5).map((tech) => (
-                <span
-                  key={tech}
-                  className="text-xs px-2.5 py-1 rounded-full"
-                  style={{
-                    color: 'var(--muted)',
-                    background: 'rgba(255, 255, 255, 0.04)',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
-                  }}
-                >
-                  {tech}
-                </span>
-              ))}
+            <h3 className="mt-3 font-display text-[1.7rem] leading-[0.92] tracking-[-0.045em] text-[var(--foreground)] sm:text-[2rem]">
+              {project.title}
+            </h3>
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+              <span>{project.primaryLanguage ?? project.stack[0]}</span>
+              <span>{project.year}</span>
             </div>
           </div>
         </div>
-      </Link>
-    </motion.div>
+
+        <div className="hidden flex-shrink-0 md:flex md:pt-1">
+          <ArrowUpRight
+            size={18}
+            className={`transition-transform duration-300 ${
+              isActive ? 'translate-x-0.5 -translate-y-0.5' : ''
+            } text-[var(--foreground)]`}
+          />
+        </div>
+      </div>
+    </motion.button>
   );
 }

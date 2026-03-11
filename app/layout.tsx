@@ -1,23 +1,49 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { FluidBackground } from "@/components/ui/FluidBackground";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { IBM_Plex_Mono, Inter, Syne } from 'next/font/google';
+import './globals.css';
 
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  variable: '--font-sans',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  display: 'swap',
+});
+
+const syne = Syne({
+  variable: '--font-display',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+});
+
+const mono = IBM_Plex_Mono({
+  variable: '--font-mono',
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: "Aditya Singh | Full-stack + AI Engineering",
-  description: "CS student and engineering lead building AI copilots that turn messy business rules into auditable systems. Full-stack + LLM engineering.",
-  keywords: ["full-stack", "AI", "LLMs", "FastAPI", "Next.js", "Supabase", "product engineering", "startups", "RevOps", "automation", "robotics"],
-  authors: [{ name: "Aditya Singh" }],
+  title: 'Aditya Singh | Systems, Agents, and Product Engineering',
+  description:
+    'Editorial portfolio for Aditya Singh: agent systems, full-stack product engineering, robotics research, and open-source experiments.',
+  keywords: [
+    'full-stack',
+    'AI',
+    'agents',
+    'LangGraph',
+    'FastAPI',
+    'Next.js',
+    'product engineering',
+    'automation',
+    'robotics',
+  ],
+  authors: [{ name: 'Aditya Singh' }],
   openGraph: {
-    title: "Aditya Singh | Full-stack + AI Engineering",
-    description: "CS student and engineering lead building AI copilots that turn messy business rules into auditable systems.",
-    type: "website",
+    title: 'Aditya Singh | Systems, Agents, and Product Engineering',
+    description:
+      'Agent systems, full-stack builds, robotics research, and open-source experiments.',
+    type: 'website',
   },
 };
 
@@ -28,8 +54,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
-        <FluidBackground />
+      <body className={`${inter.variable} ${syne.variable} ${mono.variable} antialiased`}>
         <div style={{ position: 'relative', zIndex: 1 }}>
           {children}
         </div>

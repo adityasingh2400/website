@@ -2,52 +2,71 @@
 
 import { useEffect, useRef } from 'react';
 import WebGLFluidEnhanced from 'webgl-fluid-enhanced';
+import { cn } from '@/lib/utils';
 
-export function FluidBackground() {
+interface FluidBackgroundProps {
+  className?: string;
+}
+
+export function FluidBackground({ className }: FluidBackgroundProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const simRef = useRef<WebGLFluidEnhanced | null>(null);
 
   useEffect(() => {
-    if (simRef.current) return;
+    const container = containerRef.current;
 
-    const simulation = new WebGLFluidEnhanced();
+    if (!container || simRef.current) return;
+
+    const simulation = new WebGLFluidEnhanced(container);
     simulation.setConfig({
-      simResolution: 256,
+      simResolution: 160,
       dyeResolution: 1024,
-      densityDissipation: 0.97,
-      velocityDissipation: 0.98,
+      densityDissipation: 0.995,
+      velocityDissipation: 0.22,
       pressure: 0.8,
-      pressureIterations: 20,
-      curl: 30,
-      splatRadius: 0.15,
-      splatForce: 6000,
+      pressureIterations: 24,
+      curl: 22,
+      splatRadius: 0.22,
+      splatForce: 6400,
       shading: true,
       colorful: true,
-      colorUpdateSpeed: 8,
-      backgroundColor: '#000000',
+      colorUpdateSpeed: 12,
+      backgroundColor: '#eff2ff',
       transparent: false,
       bloom: true,
-      bloomIterations: 8,
+      bloomIterations: 6,
       bloomResolution: 256,
-      bloomIntensity: 0.8,
-      bloomThreshold: 0.5,
-      bloomSoftKnee: 0.7,
-      sunrays: true,
+      bloomIntensity: 0.32,
+      bloomThreshold: 0.64,
+      bloomSoftKnee: 0.62,
+      sunrays: false,
       sunraysResolution: 196,
       sunraysWeight: 0.3,
       hover: true,
-      brightness: 0.7,
-      colorPalette: ['#22d3ee', '#8b5cf6', '#ec4899', '#6366f1'],
+      brightness: 0.68,
+      colorPalette: ['#6d5efc', '#5da8ff', '#22d3ee', '#ec4899'],
     });
     simulation.start();
     simRef.current = simulation;
 
-    setTimeout(() => simulation.multipleSplats(Math.floor(Math.random() * 3) + 3), 100);
+    setTimeout(() => simulation.multipleSplats(Math.floor(Math.random() * 5) + 10), 100);
+    setTimeout(() => simulation.multipleSplats(Math.floor(Math.random() * 4) + 4), 900);
 
-    const canvas = document.body.querySelector<HTMLCanvasElement>(':scope > canvas');
+    const canvas = container.querySelector<HTMLCanvasElement>('canvas');
+
+    const isInsideContainer = (clientX: number, clientY: number) => {
+      const rect = container.getBoundingClientRect();
+      return (
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom
+      );
+    };
 
     const forwardMove = (e: MouseEvent) => {
-      if (!canvas) return;
-      const rect = canvas.getBoundingClientRect();
+      if (!canvas || !isInsideContainer(e.clientX, e.clientY)) return;
+      const rect = container.getBoundingClientRect();
       const evt = new MouseEvent('mousemove', {
         clientX: e.clientX,
         clientY: e.clientY,
@@ -60,8 +79,8 @@ export function FluidBackground() {
     };
 
     const forwardDown = (e: MouseEvent) => {
-      if (!canvas) return;
-      const rect = canvas.getBoundingClientRect();
+      if (!canvas || !isInsideContainer(e.clientX, e.clientY)) return;
+      const rect = container.getBoundingClientRect();
       const evt = new MouseEvent('mousedown', {
         clientX: e.clientX,
         clientY: e.clientY,
@@ -80,10 +99,16 @@ export function FluidBackground() {
       window.removeEventListener('mousemove', forwardMove);
       window.removeEventListener('mousedown', forwardDown);
       simulation.stop();
-      canvas?.remove();
+      container.querySelector('canvas')?.remove();
       simRef.current = null;
     };
   }, []);
 
-  return null;
+  return (
+    <div
+      ref={containerRef}
+      aria-hidden="true"
+      className={cn('fluid-surface absolute inset-0 overflow-hidden', className)}
+    />
+  );
 }

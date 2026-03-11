@@ -1,202 +1,237 @@
-'use client';
-
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, Github, FileText } from 'lucide-react';
-import { getProjectBySlug, projects } from '@/lib/projects';
+import { notFound } from 'next/navigation';
+import { ArrowLeft, ArrowRight, ArrowUpRight, FileText, Github } from 'lucide-react';
+import { getPinnedProjects, getProjectBySlug } from '@/lib/projects';
 
-const accentColors: Record<string, string> = {
-  ziri: '#8b5cf6',
-  'ryft-ai': '#22d3ee',
-  'soft-robot-system': '#34d399',
-  'soft-continuum-research': '#ec4899',
-};
+export const revalidate = 60 * 60;
 
-export default function ProjectPage() {
-  const params = useParams();
-  const project = getProjectBySlug(params.slug as string);
+interface ProjectPageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  const [project, projects] = await Promise.all([
+    getProjectBySlug(params.slug),
+    getPinnedProjects(),
+  ]);
 
   if (!project) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-6">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Project not found</h1>
-          <Link href="/" className="hover:text-[var(--accent)] transition-colors">
-            Go back home
-          </Link>
-        </div>
-      </div>
-    );
+    notFound();
   }
 
-  const currentIndex = projects.findIndex((p) => p.slug === project.slug);
+  const currentIndex = projects.findIndex((entry) => entry.slug === project.slug);
   const prevProject = projects[currentIndex - 1];
   const nextProject = projects[currentIndex + 1];
-  const accent = accentColors[project.slug] || 'var(--accent)';
 
   return (
-    <main className="min-h-screen py-20 px-6">
-      <div className="max-w-3xl mx-auto">
-        {/* Back link */}
-        <div className="mb-12">
+    <main className="min-h-screen px-6 pb-24 pt-28 sm:pt-32">
+      <div className="lab-shell">
+        <div className="mb-10">
           <Link
             href="/#projects"
-            className="inline-flex items-center gap-2 text-sm transition-colors hover:text-[var(--accent)]"
-            style={{ color: 'var(--muted)' }}
+            className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--foreground)]"
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={14} />
             Back to projects
           </Link>
         </div>
 
-        {/* Header */}
-        <header className="mb-16">
-          <p className="text-xs tracking-wider uppercase mb-4" style={{ color: accent }}>
-            {project.role} &middot; {project.year}
-          </p>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{project.title}</h1>
-          <p className="text-lg mb-8" style={{ color: 'var(--muted)' }}>
-            {project.description}
-          </p>
+        <header className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_300px]">
+          <div>
+            <p className="lab-eyebrow mb-4">
+              {project.eyebrow} / {project.updatedLabel}
+            </p>
+            <h1 className="font-display text-[clamp(3.4rem,8vw,7rem)] leading-[0.9] tracking-[-0.065em] text-[var(--foreground)]">
+              {project.title}
+            </h1>
+            <p className="mt-5 max-w-3xl text-lg leading-relaxed text-[var(--muted-strong)] sm:text-xl">
+              {project.summary}
+            </p>
 
-          <div className="flex flex-wrap gap-2 mb-8">
-            {project.technologies.map((tech) => (
-              <span
-                key={tech}
-                className="text-xs px-2.5 py-1 rounded-full"
-                style={{
-                  color: accent,
-                  background: `${accent}15`,
-                }}
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
+            <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+              <span>{project.role}</span>
+              <span>{project.year}</span>
+              <span>{project.primaryLanguage ?? project.stack[0]}</span>
+              <span>{project.status}</span>
+            </div>
 
-          <div className="flex gap-4">
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2 text-sm rounded-full font-medium transition-opacity hover:opacity-80"
-                style={{ backgroundColor: accent, color: '#000' }}
-              >
-                <ExternalLink size={14} />
-                View Live
-              </a>
-            )}
-            {project.githubUrl && (
+            <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2 text-sm rounded-full glass font-medium transition-colors hover:text-[var(--accent)]"
+                className="inline-flex items-center gap-2 border border-[var(--foreground)] bg-[var(--foreground)] px-4 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--background)] transition-all duration-300 hover:-translate-y-0.5"
               >
                 <Github size={14} />
                 Source
               </a>
-            )}
-            {project.paperUrl && (
-              <a
-                href={project.paperUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2 text-sm rounded-full glass font-medium transition-colors hover:text-[var(--accent)]"
-              >
-                <FileText size={14} />
-                Paper
-              </a>
-            )}
+              {project.liveUrl && (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border border-[var(--line-strong)] px-4 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)]"
+                >
+                  Live
+                  <ArrowUpRight size={14} />
+                </a>
+              )}
+              {project.paperUrl && (
+                <a
+                  href={project.paperUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border border-[var(--line-strong)] px-4 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)]"
+                >
+                  <FileText size={14} />
+                  Paper
+                </a>
+              )}
+            </div>
           </div>
+
+          <aside
+            className="lab-panel p-6"
+            style={{
+              borderColor: project.accent,
+              background: `linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.28)), ${project.accentSoft}`,
+            }}
+          >
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+              Project info
+            </p>
+
+            <div className="mt-5 grid gap-3">
+              {[
+                `${project.repoName} repo`,
+                project.updatedLabel,
+                project.liveUrl ? 'Has live link' : 'Repo only',
+                `${project.stack.length} main tools`,
+              ].map((item) => (
+                <div key={item} className="border border-[var(--line)] bg-[rgba(255,255,255,0.36)] p-4 text-sm text-[var(--foreground)]">
+                  {item}
+                </div>
+              ))}
+
+              <div className="border border-[var(--line)] bg-[rgba(255,255,255,0.36)] p-4">
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                  Stack
+                </p>
+                <div className="mt-3 flex flex-wrap gap-x-3 gap-y-2 text-sm text-[var(--muted)]">
+                  {project.stack.slice(0, 6).map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </aside>
         </header>
 
-        {/* Case study content */}
-        <article className="space-y-14">
-          <section>
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-3">
-              <span className="text-sm" style={{ color: accent }}>01</span>
-              The Problem
-            </h2>
-            <p className="leading-relaxed" style={{ color: 'var(--muted)' }}>
-              {project.problem}
-            </p>
-          </section>
+        <section className="mt-14 grid gap-3 sm:grid-cols-3">
+          {project.metrics.map((metric) => (
+            <div
+              key={metric.label}
+              className="lab-panel p-5"
+              style={{ background: 'rgba(255,255,255,0.42)' }}
+            >
+              <p className="font-display text-3xl leading-none tracking-[-0.05em] text-[var(--foreground)]">
+                {metric.value}
+              </p>
+              <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--foreground)]">
+                {metric.label}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{metric.note}</p>
+            </div>
+          ))}
+        </section>
 
-          <section>
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-3">
-              <span className="text-sm" style={{ color: accent }}>02</span>
-              The Approach
-            </h2>
-            <p className="leading-relaxed" style={{ color: 'var(--muted)' }}>
-              {project.approach}
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-3">
-              <span className="text-sm" style={{ color: accent }}>03</span>
-              The Solution
-            </h2>
-            <p className="leading-relaxed" style={{ color: 'var(--muted)' }}>
-              {project.solution}
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-3">
-              <span className="text-sm" style={{ color: accent }}>04</span>
-              The Impact
-            </h2>
-            <ul className="space-y-3">
-              {project.impact.map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-start gap-3 text-sm leading-relaxed"
-                  style={{ color: 'var(--muted)' }}
-                >
+        <section className="mt-14">
+          <article className="space-y-12">
+            {project.modules.map((module, index) => (
+              <section key={module.title} className="border-t border-[var(--line)] pt-8">
+                <div className="flex items-start gap-4">
                   <span
-                    className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: accent }}
-                  />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </section>
-        </article>
+                    className="mt-1 font-mono text-[10px] uppercase tracking-[0.22em]"
+                    style={{ color: project.accent }}
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <h2 className="font-display text-[2rem] leading-[0.95] tracking-[-0.045em] text-[var(--foreground)] sm:text-[2.5rem]">
+                      {module.title}
+                    </h2>
+                    <ul className="mt-5 grid gap-3">
+                      {module.bullets.map((bullet) => (
+                        <li
+                          key={bullet}
+                          className="flex items-start gap-3 text-sm leading-relaxed text-[var(--muted)] sm:text-base"
+                        >
+                          <span
+                            className="mt-2 block h-1.5 w-1.5 flex-shrink-0 rounded-full"
+                            style={{ backgroundColor: project.accent }}
+                          />
+                          {bullet}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </section>
+            ))}
+          </article>
+        </section>
 
-        {/* Project navigation */}
-        <nav
-          className="mt-20 pt-12"
-          style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}
-        >
-          <div className="flex justify-between items-center">
+        <nav className="mt-20 border-t border-[var(--line)] pt-10">
+          <div className="grid gap-4 md:grid-cols-2">
             {prevProject ? (
-              <Link href={`/projects/${prevProject.slug}`} className="group">
-                <span className="text-xs block mb-1" style={{ color: 'var(--muted)' }}>
-                  Previous
-                </span>
-                <span className="text-lg font-medium group-hover:text-[var(--accent)] transition-colors">
+              <Link
+                href={`/projects/${prevProject.slug}`}
+                className="group border border-[var(--line)] bg-[rgba(255,255,255,0.3)] p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)]"
+              >
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                  Previous project
+                </p>
+                <h3 className="mt-3 font-display text-[2rem] leading-[0.95] tracking-[-0.04em] text-[var(--foreground)]">
                   {prevProject.title}
-                </span>
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{prevProject.summary}</p>
               </Link>
             ) : (
-              <div />
+              <div className="border border-dashed border-[var(--line)] p-5 text-sm text-[var(--muted)]">
+                Start of the pinned sequence.
+              </div>
             )}
+
             {nextProject ? (
-              <Link href={`/projects/${nextProject.slug}`} className="group text-right">
-                <span className="text-xs block mb-1" style={{ color: 'var(--muted)' }}>
-                  Next
-                </span>
-                <span className="text-lg font-medium group-hover:text-[var(--accent)] transition-colors">
+              <Link
+                href={`/projects/${nextProject.slug}`}
+                className="group border border-[var(--line)] bg-[rgba(255,255,255,0.3)] p-5 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] md:text-right"
+              >
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                  Next project
+                </p>
+                <h3 className="mt-3 font-display text-[2rem] leading-[0.95] tracking-[-0.04em] text-[var(--foreground)]">
                   {nextProject.title}
-                </span>
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{nextProject.summary}</p>
               </Link>
             ) : (
-              <div />
+              <div className="border border-dashed border-[var(--line)] p-5 text-sm text-[var(--muted)] md:text-right">
+                End of the pinned sequence.
+              </div>
             )}
+          </div>
+
+          <div className="mt-6">
+            <Link
+              href="/#projects"
+              className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--foreground)]"
+            >
+              Back to explorer
+              <ArrowRight size={14} />
+            </Link>
           </div>
         </nav>
       </div>

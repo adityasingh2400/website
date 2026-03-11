@@ -10,11 +10,14 @@ const experiences = [
     location: 'Cupertino, CA',
     period: 'Aug 2025 — Present',
     accent: '#22d3ee',
+    summary:
+      'Building backend and agent systems for commission automation. A lot of the work is turning messy contracts into software people can trust.',
+    proof: ['40 REST endpoints', '30k ARR', '350-400 hours saved / quarter'],
     highlights: [
-      'Architected a scalable Python/FastAPI backend spanning 40 REST endpoints for a 3-tier multi-agent orchestrator, driving platform to 30k ARR',
-      'Designed an autonomous agentic loop using GPT-4o with 12 discrete tools, achieving 95% extraction accuracy across unstructured PDF contracts',
-      'Engineered pgvector RAG with cross-session memory compaction, reducing per-session LLM costs by 60–70%',
-      'Built AI validation agent eliminating 350–400 hours of manual QA per quarter',
+      'Architected a scalable Python/FastAPI backend spanning 40 REST endpoints for a 3-tier multi-agent orchestrator.',
+      'Designed an autonomous tool-driven loop for extracting commission logic from messy PDF contracts with high-accuracy structured output.',
+      'Engineered pgvector-based context systems and memory compaction to cut recurring LLM cost by 60-70%.',
+      'Built validation tooling that removed 350-400 hours of manual QA per quarter.',
     ],
   },
   {
@@ -23,10 +26,28 @@ const experiences = [
     location: 'Fremont, CA',
     period: 'Sep 2018 — Jan 2024',
     accent: '#8b5cf6',
+    summary:
+      'Co-founded a robotics nonprofit. Built competition robots, led the team, and mentored students.',
+    proof: ['30+ robots modeled', '4 years mentoring', '$5k Apple grant'],
     highlights: [
-      'Co-founded 501(c)(3) robotics nonprofit — 3D-modeled 30+ competition robots, ran weekly build sprints',
-      'Engineered TensorFlow/OpenCV computer vision pipeline with CNN, reducing autonomous task latency by 40%+ at 96% detection accuracy',
-      'Mentored neurodivergent learners via 4-year Serendipity STEM partnership, secured 5k Apple grant',
+      '3D-modeled 30+ competition robots and ran weekly build sprints across mechanical, software, and strategy work.',
+      'Built a TensorFlow/OpenCV vision pipeline that reduced autonomous task latency by 40%+ at 96% detection accuracy.',
+      'Mentored neurodivergent learners through a 4-year Serendipity STEM partnership and helped secure a $5k Apple grant.',
+    ],
+  },
+  {
+    company: 'University of Cambridge / IEEE',
+    role: 'Soft Robotics Research Collaborator',
+    location: 'Cambridge, UK',
+    period: '2023',
+    accent: '#0f766e',
+    summary:
+      'Worked on soft robotics research at Cambridge and turned it into published work.',
+    proof: ['IEEE publication', 'MIT URTC presenter', 'Cambridge collaboration'],
+    highlights: [
+      'Worked on learned forward-kinematics approaches for soft continuum robots where analytical models break down.',
+      'Formalized the project into research rigorous enough to publish and present outside the lab.',
+      'Used the research process itself as a training ground for making complex technical systems explainable.',
     ],
   },
 ];
@@ -36,85 +57,85 @@ export function Experience() {
   const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="experience" className="relative py-32 sm:py-40 px-6" ref={ref}>
-      <div className="max-w-3xl mx-auto">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
+    <section id="experience" className="relative px-6 py-28 sm:py-36" ref={ref}>
+      <div className="lab-shell">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-sm tracking-[0.2em] uppercase mb-12"
-          style={{ color: 'var(--accent)' }}
+          transition={{ duration: 0.7 }}
+          className="mb-10 max-w-3xl"
         >
-          Experience
-        </motion.p>
+          <p className="lab-eyebrow mb-4">Experience</p>
+          <h2 className="font-display text-[clamp(2.6rem,5vw,4rem)] leading-[0.96] tracking-[-0.05em] text-[var(--foreground)]">
+            Work, robotics, and research.
+          </h2>
+          <p className="mt-5 text-base leading-relaxed text-[var(--muted)] sm:text-lg">
+            The main thread is building real systems and making them useful to other people.
+          </p>
+        </motion.div>
 
-        <div className="relative">
-          {/* Glowing timeline line */}
-          <div
-            className="absolute left-0 sm:left-4 top-0 bottom-0 w-px"
-            style={{
-              background: 'linear-gradient(to bottom, var(--accent), rgba(139, 92, 246, 0.3), transparent)',
-            }}
-          />
+        <div className="space-y-8">
+          {experiences.map((exp, index) => (
+            <motion.article
+              key={exp.company}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{
+                duration: 0.75,
+                delay: index * 0.12,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="grid gap-6 border-t border-[var(--line)] pt-8 lg:grid-cols-[220px_minmax(0,1fr)]"
+            >
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                  {exp.period}
+                </p>
+                <p className="mt-3 text-sm text-[var(--muted)]">{exp.location}</p>
+              </div>
 
-          <div className="space-y-16">
-            {experiences.map((exp, index) => (
-              <motion.div
-                key={exp.company}
-                initial={{ opacity: 0, x: -30 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{
-                  duration: 0.7,
-                  delay: index * 0.2,
-                  ease: [0.25, 0.46, 0.45, 0.94],
-                }}
-                className="relative pl-8 sm:pl-14"
-              >
-                {/* Timeline dot */}
-                <div
-                  className="absolute left-0 sm:left-4 top-1 w-2 h-2 rounded-full -translate-x-[3.5px]"
-                  style={{
-                    backgroundColor: exp.accent,
-                    boxShadow: `0 0 12px ${exp.accent}60`,
-                  }}
-                />
-
-                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-3 gap-1">
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-semibold">
-                      {exp.role}
-                    </h3>
-                    <p className="text-sm" style={{ color: exp.accent }}>
-                      {exp.company}
-                      <span style={{ color: 'var(--muted)' }}> — {exp.location}</span>
-                    </p>
-                  </div>
-                  <p
-                    className="text-xs tracking-wider uppercase whitespace-nowrap"
-                    style={{ color: 'var(--muted)' }}
-                  >
-                    {exp.period}
+              <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.22em]" style={{ color: exp.accent }}>
+                    {exp.company}
                   </p>
+                  <h3 className="mt-2 font-display text-[2.2rem] leading-[0.94] tracking-[-0.045em] text-[var(--foreground)] sm:text-[2.8rem]">
+                    {exp.role}
+                  </h3>
+                  <p className="mt-4 max-w-3xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
+                    {exp.summary}
+                  </p>
+                  <ul className="mt-6 grid gap-3">
+                    {exp.highlights.map((highlight) => (
+                      <li
+                        key={highlight}
+                        className="flex items-start gap-3 text-sm leading-relaxed text-[var(--muted)] sm:text-base"
+                      >
+                        <span
+                          className="mt-2 block h-1.5 w-1.5 flex-shrink-0 rounded-full"
+                          style={{ backgroundColor: exp.accent }}
+                        />
+                        {highlight}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                <ul className="space-y-2.5 mt-4">
-                  {exp.highlights.map((highlight, i) => (
-                    <li
-                      key={i}
-                      className="text-sm leading-relaxed flex items-start gap-3"
-                      style={{ color: 'var(--muted)' }}
-                    >
-                      <span
-                        className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: exp.accent, opacity: 0.6 }}
-                      />
-                      {highlight}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
+                <div className="lab-panel p-5">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                    Proof points
+                  </p>
+                  <div className="mt-5 grid gap-3">
+                    {exp.proof.map((item) => (
+                      <div key={item} className="border border-[var(--line)] bg-[rgba(255,255,255,0.32)] p-4">
+                        <p className="text-sm font-medium text-[var(--foreground)]">{item}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.article>
+          ))}
         </div>
       </div>
     </section>

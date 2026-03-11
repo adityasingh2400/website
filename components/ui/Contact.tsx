@@ -2,11 +2,12 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowUpRight, Github, Linkedin, Mail } from 'lucide-react';
 
 const socials = [
-  { name: 'GitHub', href: 'https://github.com/adityasingh2400', icon: Github },
-  { name: 'LinkedIn', href: 'https://linkedin.com/in/adityasingh2400', icon: Linkedin },
+  { label: 'GitHub', href: 'https://github.com/adityasingh2400', icon: Github },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/adityasingh2400', icon: Linkedin },
+  { label: 'Email', href: 'mailto:adityasingh@ucsb.edu', icon: Mail },
 ];
 
 export function Contact() {
@@ -14,78 +15,108 @@ export function Contact() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="contact" className="relative py-32 sm:py-40 px-6" ref={ref}>
-      <div className="max-w-2xl mx-auto text-center">
+    <section id="contact" className="relative px-6 py-28 sm:py-36" ref={ref}>
+      <div className="lab-shell border-t border-[var(--line)] pt-10">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-sm tracking-[0.2em] uppercase mb-8"
-          style={{ color: 'var(--accent)' }}
+          className="lab-eyebrow mb-4"
         >
           Contact
         </motion.p>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6"
-        >
-          Let&apos;s talk.
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-base sm:text-lg mb-10 max-w-md mx-auto"
-          style={{ color: 'var(--muted)' }}
-        >
-          Open to interesting conversations, collaborations, and opportunities.
-        </motion.p>
-
-        <motion.a
-          href="mailto:adityasingh@ucsb.edu"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass text-sm font-medium transition-all duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
-          style={{ color: 'var(--foreground)' }}
-        >
-          <Mail size={16} />
-          adityasingh@ucsb.edu
-        </motion.a>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="flex items-center justify-center gap-6 mt-10"
-        >
-          {socials.map((s) => (
-            <a
-              key={s.name}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={s.name}
-              className="transition-all duration-200 hover:text-[var(--accent)] hover:-translate-y-0.5"
-              style={{ color: 'var(--muted)' }}
+        <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-end">
+          <div>
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="font-display text-[clamp(2.8rem,7vw,5rem)] leading-[0.94] tracking-[-0.05em] text-[var(--foreground)]"
             >
-              <s.icon size={20} strokeWidth={1.5} />
-            </a>
-          ))}
-        </motion.div>
+              Email works best.
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="mt-5 max-w-2xl text-base leading-relaxed text-[var(--muted)] sm:text-lg"
+            >
+              If you want to build something together, reach out.
+            </motion.p>
+
+            <motion.a
+              href="mailto:adityasingh@ucsb.edu"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="mt-8 flex max-w-3xl items-center justify-between gap-4 border border-[var(--line-strong)] bg-[rgba(255,255,255,0.7)] px-6 py-6 text-[clamp(1.25rem,3vw,2rem)] font-semibold text-[var(--foreground)] shadow-[0_20px_50px_rgba(17,17,17,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)]"
+            >
+              <span className="break-all">adityasingh@ucsb.edu</span>
+              <ArrowUpRight size={18} />
+            </motion.a>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.4 }}
+              className="mt-12 grid gap-4 md:grid-cols-2"
+            >
+              <div className="lab-panel p-5">
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                  Location
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+                  Santa Barbara / Goleta
+                </p>
+              </div>
+              <div className="lab-panel p-5">
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                  Looking for
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+                  product engineering, AI systems, voice products
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.35 }}
+            className="grid gap-3"
+          >
+            <p className="lab-eyebrow mb-1">Elsewhere</p>
+            {socials.map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                target={social.href.startsWith('http') ? '_blank' : undefined}
+                rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                className="group flex items-center justify-between border border-[var(--line)] bg-[rgba(255,255,255,0.5)] px-4 py-4 text-sm font-medium text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)]"
+              >
+                <span className="flex items-center gap-3">
+                  <social.icon size={16} strokeWidth={1.8} />
+                  {social.label}
+                </span>
+                <ArrowUpRight
+                  size={16}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </a>
+            ))}
+          </motion.div>
+        </div>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.7, delay: 0.7 }}
-          className="mt-24 text-xs"
-          style={{ color: 'var(--muted)', opacity: 0.5 }}
+          className="mt-20 font-mono text-[10px] uppercase tracking-[0.22em] text-[rgba(17,17,17,0.45)]"
         >
-          Designed & built by Aditya Singh
+          Designed and built by Aditya Singh
         </motion.p>
       </div>
     </section>

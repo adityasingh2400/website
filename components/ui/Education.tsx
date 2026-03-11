@@ -3,14 +3,14 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
-const courses = [
+const coursework = [
   'Data Structures & Algorithms',
   'Computer Architecture',
   'Object-Oriented Programming',
-  'Problem Solving with C++',
   'Linear Algebra',
   'Differential Equations',
   'Multivariable Calculus',
+  'Problem Solving with C++',
 ];
 
 export function Education() {
@@ -18,53 +18,70 @@ export function Education() {
   const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section className="relative py-24 sm:py-32 px-6" ref={ref}>
-      <div className="max-w-3xl mx-auto">
+    <section className="relative px-6 py-24 sm:py-32" ref={ref}>
+      <div className="lab-shell">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 26 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="glass p-6 sm:p-8"
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="grid gap-8 border-t border-[var(--line)] pt-8 lg:grid-cols-[340px_minmax(0,1fr)]"
         >
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-            <div>
-              <p
-                className="text-xs tracking-[0.15em] uppercase mb-2"
-                style={{ color: 'var(--accent)' }}
-              >
-                Education
-              </p>
-              <h3 className="text-lg sm:text-xl font-semibold">
-                University of California, Santa Barbara
-              </h3>
-              <p className="text-sm" style={{ color: 'var(--muted)' }}>
-                Bachelor of Science in Computer Science
-              </p>
-            </div>
-            <div className="sm:text-right flex-shrink-0">
-              <p className="text-2xl font-bold" style={{ color: 'var(--accent)' }}>
-                3.97
-              </p>
-              <p className="text-xs" style={{ color: 'var(--muted)' }}>
-                GPA &middot; Class of 2027
-              </p>
+          <div>
+            <p className="lab-eyebrow mb-4">Education</p>
+            <h3 className="font-display text-[2.2rem] leading-[0.96] tracking-[-0.04em] text-[var(--foreground)] sm:text-[2.8rem]">
+              University of California, Santa Barbara
+            </h3>
+            <p className="mt-4 text-base leading-relaxed text-[var(--muted)]">
+              B.S. in Computer Science. GPA 3.97. Expected graduation 2027.
+            </p>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              <div className="lab-panel p-5">
+                <p className="font-display text-4xl leading-none tracking-[-0.05em] text-[var(--foreground)]">
+                  3.97
+                </p>
+                <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                  GPA
+                </p>
+              </div>
+              <div className="lab-panel p-5">
+                <p className="font-display text-4xl leading-none tracking-[-0.05em] text-[var(--foreground)]">
+                  2027
+                </p>
+                <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                  Expected graduation
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {courses.map((course) => (
-              <span
-                key={course}
-                className="text-xs px-2.5 py-1 rounded-full transition-colors duration-200 hover:text-[var(--accent)]"
-                style={{
-                  color: 'var(--muted)',
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                }}
-              >
-                {course}
-              </span>
-            ))}
+          <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_260px]">
+            <div className="lab-panel p-5">
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                Relevant coursework
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                {coursework.map((course) => (
+                  <div
+                    key={course}
+                    className="border border-[var(--line)] bg-[rgba(255,255,255,0.48)] px-3 py-2 text-sm text-[var(--foreground)]"
+                  >
+                    {course}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="lab-panel p-5">
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                Outside class
+              </p>
+              <div className="mt-5 grid gap-3 text-sm text-[var(--muted)]">
+                <p>Building products</p>
+                <p>Doing research</p>
+                <p>Shipping open source work</p>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>

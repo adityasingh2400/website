@@ -1,41 +1,30 @@
-'use client';
-
-import { useEffect } from 'react';
-import Lenis from 'lenis';
 import { Navigation } from '@/components/ui/Navigation';
 import { Hero } from '@/components/ui/Hero';
+import { VoiceAgent } from '@/components/ui/VoiceAgent';
 import { About } from '@/components/ui/About';
 import { Experience } from '@/components/ui/Experience';
 import { Education } from '@/components/ui/Education';
 import { Projects } from '@/components/ui/Projects';
 import { Contact } from '@/components/ui/Contact';
+import { SmoothScroll } from '@/components/ui/SmoothScroll';
+import { getPinnedProjects } from '@/lib/projects';
 
-export default function Home() {
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
+export const revalidate = 60 * 60;
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    return () => lenis.destroy();
-  }, []);
+export default async function Home() {
+  const projects = await getPinnedProjects();
 
   return (
     <>
+      <SmoothScroll />
       <Navigation />
       <main>
         <Hero />
+        <VoiceAgent />
         <About />
         <Experience />
         <Education />
-        <Projects />
+        <Projects projects={projects} />
         <Contact />
       </main>
     </>
