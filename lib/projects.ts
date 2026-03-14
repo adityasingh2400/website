@@ -15,6 +15,15 @@ export interface ProjectModule {
   bullets: string[];
 }
 
+export interface ProjectShowcase {
+  kind: 'image' | 'video';
+  src: string;
+  alt: string;
+  eyebrow: string;
+  caption: string;
+  poster?: string;
+}
+
 export interface Project {
   slug: string;
   repoName: string;
@@ -34,6 +43,7 @@ export interface Project {
   capabilities: string[];
   metrics: ProjectMetric[];
   modules: ProjectModule[];
+  showcase?: ProjectShowcase;
   githubUrl: string;
   liveUrl?: string;
   paperUrl?: string;
@@ -60,6 +70,7 @@ interface CuratedProjectOverride {
   capabilities: string[];
   metrics: ProjectMetric[];
   modules: ProjectModule[];
+  showcase: ProjectShowcase;
   liveUrl?: string;
   paperUrl?: string;
 }
@@ -70,13 +81,21 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
     eyebrow: 'Voice OS',
     category: 'Ambient systems / multi-agent orchestration',
     summary:
-      'A distributed home voice OS that listens locally, routes hard tasks through agents, and keeps routine commands fast.',
+      'An always-on voice OS that keeps common commands on a sub-100ms deterministic path and escalates only real reasoning work to a LangGraph multi-agent stack.',
     description:
-      'Ziri started as a reaction to the tradeoff most voice products make: either rigid command trees or slow generic LLM wrappers. The system mixes deterministic fast paths for everyday requests with a LangGraph supervisor for multi-step reasoning, all wrapped in an always-on interface designed to feel ambient instead of app-like.',
+      'Ziri is a full voice runtime, not a chat wrapper with a microphone. It runs an always-on wake word listener, streams speech in and audio out, routes requests across music, info, home, and quick-action domains, and backs the whole system with semantic memory, traces, metrics, and graceful fallbacks.',
     heroStatement:
-      'Build the kind of voice system that feels instant on common requests and only becomes agentic when the request actually deserves it.',
+      'This project makes voice feel like infrastructure: instant on routine commands, agentic only when the request is actually hard.',
     pullQuote:
-      'The interesting part is not making voice work. It is making voice feel native to a real life workflow without hiding the engineering underneath.',
+      'Four input surfaces, 200+ zero-LLM routes, 272 tests, and end-to-end traces turn an AI demo into a system you can live with.',
+    showcase: {
+      kind: 'image',
+      src: '/project-shots/ziri-architecture.png',
+      alt: 'Ziri architecture diagram captured from the GitHub README.',
+      eyebrow: 'README capture',
+      caption:
+        'The architecture is explicit: always-on mic, Siri, browser, and REST all feed one runtime, then fan out into deterministic routes, domain agents, streaming TTS, memory, and observability.',
+    },
     accent: '#6d5efc',
     role: 'Creator',
     year: '2026',
@@ -92,50 +111,50 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
     ],
     metrics: [
       {
-        label: 'Complex queries',
-        value: 'sub-900ms',
-        note: 'time-to-first-byte target for multi-step requests',
+        label: 'Fast path',
+        value: 'sub-100ms',
+        note: 'recognized commands bypass the LLM entirely',
       },
       {
-        label: 'Deterministic path',
-        value: '80%',
-        note: 'of commands avoid an LLM entirely',
+        label: 'Direct routes',
+        value: '200+',
+        note: 'pattern-matched commands land before agent routing',
       },
       {
-        label: 'Input surfaces',
-        value: '4',
-        note: 'mic, Siri shortcut, browser, and REST',
+        label: 'Test suite',
+        value: '272',
+        note: 'PyTest coverage backs the API, orchestration, and tools',
       },
     ],
     modules: [
       {
         title: 'Ambient runtime',
         narrative:
-          'The interaction model treats voice as infrastructure, not as a chat UI. Different entry points feed the same intent pipeline so the system stays available whether the user is at the keyboard, in a browser, or entirely hands-free.',
+          'Every entry point feeds the same intent system, so Ziri stays available whether the interaction starts from the mic, the browser, Siri, or a raw API call.',
         bullets: [
-          'Always-on mic listener plus browser, Siri, and API inputs',
-          'Fast paths for timers, media control, and lightweight commands',
-          'Distributed services keep audio, routing, and tool execution decoupled',
+          'Always-on wake word detection via openWakeWord on the Mac',
+          'ElevenLabs Scribe realtime transcription with faster-whisper fallback',
+          'Streaming ElevenLabs TTS, volume ducking, and pre-cached phrases for speed',
         ],
       },
       {
-        title: 'Supervisor architecture',
+        title: 'Supervisor-worker orchestration',
         narrative:
-          'When a request crosses into reasoning territory, a LangGraph supervisor hands off to specialized workers rather than forcing one giant prompt to do everything.',
+          'The architecture stays inspectable. A supervisor classifies the request, routes to domain agents, and preserves tool use as a visible system instead of burying everything in one oversized prompt.',
         bullets: [
-          'Specialized subagents route music, calendar, home, and general tasks',
-          'Tool-heavy requests stay inspectable instead of disappearing into a monolith',
-          'Designed around low latency, graceful fallbacks, and clean handoffs',
+          'LangGraph flow runs `supervisor -> router -> [music|info|home|quick] -> respond`',
+          'MusicAgent, InfoAgent, and HomeAgent use bounded ReAct loops for tool work',
+          'Heuristic and legacy fallbacks keep the assistant alive when services fail',
         ],
       },
       {
-        title: 'Memory and feedback',
+        title: 'Memory and observability',
         narrative:
-          'The system keeps track of user preferences and measures whether the agent loop is actually behaving well, not just whether it produces text.',
+          'The jump from prototype to daily-use assistant is whether it remembers context and whether you can see what broke. Ziri does both.',
         bullets: [
-          'Titan embeddings plus pgvector memory for preference recall',
-          'SQL filters combine with vector retrieval for better personalization',
-          'Langfuse traces tool correctness, latency, and generation quality',
+          'Amazon Titan embeddings land in pgvector with HNSW search for recall',
+          'Hybrid retrieval fuses Elasticsearch keyword matches with vector search via RRF',
+          'Langfuse and Prometheus track token use, tool accuracy, TTFB, and routing latency',
         ],
       },
     ],
@@ -145,13 +164,21 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
     eyebrow: 'Job Ops',
     category: 'Resume scoring / browser automation',
     summary:
-      'A local job operations stack that ranks opportunities against a resume and can automate application submission when the upside is there.',
+      'A local job-ops stack that scores opportunities against a resume, ranks the shortlist, and can auto-submit the ones worth pursuing across major ATS platforms.',
     description:
-      'Autoapplier combines a decision layer with an execution layer. The dashboard pulls roles, scrapes descriptions, scores fit from zero to one hundred, and tracks what has been touched. The CLI side handles the repetitive ATS submission work so effort can stay focused on the roles that actually matter.',
+      'Autoapplier does two jobs that normally waste hours. First, it pulls listings from SimplifyJobs, scrapes full descriptions, and scores fit from 0 to 100 in a local dashboard. Then it runs a headless applier that can fill forms, upload resumes, answer custom questions with an LLM, and optionally submit.',
     heroStatement:
-      'The point was never to apply everywhere. The point was to reserve human time for the applications with the highest expected return.',
+      'The leverage is simple: stop burning serious time on low-probability applications.',
     pullQuote:
-      'Good automation is not about removing judgment. It is about making sure judgment only happens where it has leverage.',
+      'This is not blind spray-and-pray automation. It is a local decision system that ranks where attention belongs, then removes the repetitive browser work.',
+    showcase: {
+      kind: 'image',
+      src: '/project-shots/autoapplier-ranker.png',
+      alt: 'Autoapplier README section showing the dashboard ranker and auto-applier workflow.',
+      eyebrow: 'README capture',
+      caption:
+        'The repo is deliberately split into two levers: a local triage dashboard at `localhost:5050` and a CLI applier that can dry-run or submit across major ATS flows.',
+    },
     accent: '#f97316',
     role: 'Creator',
     year: '2026',
@@ -167,26 +194,26 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
     ],
     metrics: [
       {
-        label: 'Repo structure',
-        value: '2 tools',
-        note: 'a dashboard for triage and a CLI for execution',
+        label: 'ATS support',
+        value: '4+',
+        note: 'Lever, Greenhouse, Ashby, Workday, plus a generic fallback',
       },
       {
-        label: 'Scoring output',
+        label: 'Fit score',
         value: '0-100',
-        note: 'ranked fit score against a resume',
+        note: 'Claude ranks experience match, recency, and location',
       },
       {
-        label: 'State tracking',
-        value: '1 click',
-        note: 'mark applications and keep the ledger clean',
+        label: 'Review loop',
+        value: 'localhost:5050',
+        note: 'fresh jobs, filters, and applied tracking stay local',
       },
     ],
     modules: [
       {
-        title: 'Opportunity triage',
+        title: 'Triage dashboard',
         narrative:
-          'The first layer solves a practical problem: most job listings are not worth a custom application. The dashboard narrows the field before any manual effort is spent.',
+          'The dashboard exists to kill waste before it starts. Most listings do not deserve a custom application, so the system ranks the field before any human effort is spent.',
         bullets: [
           'Pulls fresh postings from SimplifyJobs',
           'Scrapes job descriptions for full scoring context',
@@ -194,23 +221,23 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
         ],
       },
       {
-        title: 'Local decision loop',
+        title: 'Question-answering engine',
         narrative:
-          'Keeping the system local matters because this is a personal operations tool. It is meant to be fast, inspectable, and easy to override without platform friction.',
+          'Once a role survives triage, the system already has the context it needs to fill the ugly parts of the form without turning the workflow into a hosted black box.',
         bullets: [
-          'Dashboard runs locally at a simple localhost URL',
-          'Scored and unscored roles can be processed separately',
-          'Applied state stays visible instead of disappearing into spreadsheets',
+          'AWS Bedrock Claude generates resume-aware answers for custom prompts',
+          'Personal data lives in local `real_memory/` files instead of a hosted service',
+          'An answer bank keeps recurring application fields consistent and overrideable',
         ],
       },
       {
         title: 'Execution layer',
         narrative:
-          'Once the ranked list exists, the second half removes the repetitive browser work that turns a good lead into a time sink.',
+          'The CLI applier turns the shortlist into action without forcing manual repetition every time an application lives behind a different ATS.',
         bullets: [
-          'CLI bot handles repetitive ATS submission flows',
-          'Keeps human review focused on exceptions, not every form field',
-          'Pairs naturally with resume-aware scoring instead of blind automation',
+          'Runs headless or headful with dry-run, keep-open, and human-in-loop modes',
+          'Uploads resumes, fills fields, and answers custom questions automatically',
+          'Can start from a direct URL, a Simplify batch, or the top-scored shortlist',
         ],
       },
     ],
@@ -220,13 +247,22 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
     eyebrow: 'Desktop Utility',
     category: 'Agent workflow ergonomics',
     summary:
-      'A tiny Rust utility that protects focus by bouncing you back to your prior window while Cursor agents work in the background.',
+      'A Rust utility that kicks you back to your previous task the moment a Cursor agent starts working, then returns you only when approval or review is needed.',
     description:
-      'Recursor is built around one high-leverage annoyance in agentic coding workflows: you should not have to babysit the IDE while the agent is doing its job. It captures context, returns focus to whatever you were doing before, and only brings you back when the work needs you.',
+      'Recursor fixes a bad interaction pattern in agentic coding: humans should not have to sit inside the IDE while the agent is busy. It hooks into Cursor events, captures prior window context, restores focus automatically, and can even pause and resume YouTube while you bounce between work and review.',
     heroStatement:
-      'Make the agent feel like an assistant you can delegate to, not a tab you are trapped inside.',
+      'Agent workflows get better when the human can walk away.',
     pullQuote:
-      'The best productivity tools often look almost trivial on the surface because they remove friction that should never have existed.',
+      'No dependencies. One-command install. The entire product is reclaiming the dead time between prompt submission and human approval.',
+    showcase: {
+      kind: 'video',
+      src: '/project-shots/recursor-demo-web.mp4',
+      poster: '/project-shots/recursor-demo-poster.jpg',
+      alt: 'Recursor demo video showing the focus handoff workflow.',
+      eyebrow: 'Demo capture',
+      caption:
+        'The entire behavior is visible in one loop: submit a Cursor prompt, go back to what you were doing, and return only when the agent needs you or finishes.',
+    },
     accent: '#0f766e',
     role: 'Creator',
     year: '2026',
@@ -255,36 +291,41 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
         value: '1 command',
         note: 'or double-click binary distribution',
       },
+      {
+        label: 'Hook events',
+        value: '4',
+        note: 'before submit, shell start, shell end, and stop',
+      },
     ],
     modules: [
       {
-        title: 'Bounce-back interaction',
+        title: 'Focus handoff',
         narrative:
-          'The core interaction is intentionally narrow. You switch to Cursor, launch an agent, and the tool returns you to the previous task instead of forcing you to watch the terminal.',
+          'The core loop is brutally simple, and that is why it works: enter Cursor, launch the agent, leave immediately.',
         bullets: [
-          'Captures the pre-Cursor application state',
-          'Returns focus immediately after the prompt handoff',
-          'Pulls attention back only when a human input is required',
+          'Saves the active non-Cursor window before prompt submission',
+          'Restores the previous app as soon as the agent is working',
+          'Pulls focus back only when the run needs a human or is done',
         ],
       },
       {
-        title: 'Tiny systems footprint',
+        title: 'Install surface',
         narrative:
-          'Because the job is so focused, the implementation can stay sharp and low-overhead rather than becoming a heavy desktop suite.',
+          'The utility stays tiny because it does one thing well and refuses to become a heavyweight desktop suite.',
         bullets: [
-          'Native Rust implementation',
-          'Simple install path for quick adoption',
-          'Designed to be invisible until it matters',
+          'Native Rust binary with no runtime dependencies',
+          'One-command installer plus double-click installers for macOS, Windows, and Linux',
+          'Manual hook wiring stays transparent if you want to inspect the plumbing',
         ],
       },
       {
-        title: 'Workflow design',
+        title: 'Workflow polish',
         narrative:
-          'Recursor is really a commentary on how agent tools should behave. It shifts the interface from active monitoring to asynchronous delegation.',
+          'Recursor is opinionated about what good human-in-the-loop tooling should feel like. It shifts agent usage from active monitoring to asynchronous delegation.',
         bullets: [
-          'Pairs especially well with long-running agent tasks',
-          'Improves the ergonomics of human-in-the-loop review',
-          'Turns idle waiting time back into productive time',
+          'Optional Chrome and YouTube auto-pause makes context switching less jarring',
+          'Pairs especially well with long-running shell work and approval gates',
+          'Turns idle waiting time back into real productive time',
         ],
       },
     ],
@@ -294,13 +335,21 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
     eyebrow: 'Sports Vision',
     category: 'Computer vision / movement analysis',
     summary:
-      'An AI-powered basketball shot analyzer that tracks body and hand landmarks from video and turns them into actionable mechanics feedback.',
+      'A basketball shot analyzer that turns a single video upload into phase-segmented mechanics feedback, keyframes, and annotated overlay footage.',
     description:
-      'FormFix approaches coaching like a structured vision problem. Video goes in, pose and hand landmarks are extracted, motion phases are segmented, and the output becomes concrete feedback on sequencing, follow-through, and wrist snap rather than generic advice.',
+      'FormFix treats coaching as a vision pipeline. It extracts body and hand landmarks, segments the shot into load, set, rise, release, and follow-through, compares timing and angles against research baselines, then returns issues a player can actually correct.',
     heroStatement:
-      'Translate a messy human movement into a review loop that is specific enough to actually help somebody improve.',
+      'The point is not to detect joints. The point is to explain exactly why the jumper broke.',
     pullQuote:
-      'The fun part is not detecting joints. It is converting raw motion into feedback that sounds like coaching instead of computer vision.',
+      'Upload once, get the shot split into five phases, the wrist flick measured, and the miss translated into coaching language instead of model jargon.',
+    showcase: {
+      kind: 'image',
+      src: '/project-shots/formfix-how-it-works.png',
+      alt: 'FormFix README section showing the analysis pipeline and API response.',
+      eyebrow: 'README capture',
+      caption:
+        'The pipeline is concrete: upload a clip, segment the shot into five phases, detect mechanics issues, and return keyframes plus an annotated video payload.',
+    },
     accent: '#ec4899',
     role: 'Creator',
     year: '2026',
@@ -325,40 +374,40 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
         note: 'load through follow-through segmentation',
       },
       {
-        label: 'Camera setup',
-        value: 'multi-angle',
-        note: 'front, side, or diagonal videos are supported',
+        label: 'Frame sampling',
+        value: '15fps',
+        note: 'frames are extracted before pose and phase analysis',
       },
     ],
     modules: [
       {
-        title: 'Movement pipeline',
+        title: 'Motion extraction',
         narrative:
-          'The system begins by turning consumer video into structured motion data. Body landmarks and hand landmarks create a frame-by-frame representation of the shot.',
+          'The backend turns ordinary phone video into structured movement data quickly enough to support real feedback.',
         bullets: [
-          'MediaPipe Holistic extracts full-body and hand landmarks',
-          'Tracking works across multiple viewing angles',
-          'Skeleton overlays help verify the model visually',
+          'MediaPipe Holistic extracts body and hand landmarks frame by frame',
+          'Supports front, side, and diagonal camera angles',
+          'OpenCV overlay output makes the tracking inspectable instead of opaque',
         ],
       },
       {
-        title: 'Phase-aware feedback',
+        title: 'Phase segmentation',
         narrative:
-          'Instead of analyzing the clip as one blur, the system segments the shot into discrete phases so each part of the motion can be judged in context.',
+          'The system does not analyze the jumper as one blur. It breaks the motion into the moments coaches actually care about.',
         bullets: [
           'Load, set, rise, release, and follow-through are detected automatically',
-          'Wrist flexion and velocity become measurable flick signals',
-          'Issues like shallow bend or short follow-through become explicit',
+          'Knee angle, wrist height, and wrist velocity drive the segmentation cues',
+          'Wrist flexion angle and speed become explicit flick signals',
         ],
       },
       {
-        title: 'Coaching output',
+        title: 'Feedback surface',
         narrative:
-          'The value is in the translation layer: turning kinematic signals into guidance that feels useful to a player or coach after a single upload.',
+          'The output is designed for correction, not novelty. The project translates raw motion into something a player or coach can act on after one upload.',
         bullets: [
-          'Frame-by-frame review makes the analysis explainable',
-          'Feedback is phrased around mechanics, not raw model data',
-          'A full-stack workflow keeps analysis and review in one loop',
+          'Flags issues like shallow knee bend, weak wrist snap, and short follow-through',
+          'Returns keyframes, issues, confidence notes, and optional annotated video',
+          'Grounds thresholds in biomechanics references instead of arbitrary heuristics',
         ],
       },
     ],
@@ -368,13 +417,21 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
     eyebrow: 'Forecast Product',
     category: 'UI / UX / weather product',
     summary:
-      'A UI-heavy sunset app for Isla Vista with live scoring, sky visuals, and an interactive explainer.',
+      'A consumer weather product that scores Isla Vista sunsets from 0 to 100, explains the call, and renders the forecast as a living sky instead of a dead dashboard.',
     description:
-      'IV Sunsets was mostly a product and interface problem. The goal was to make sunset checking feel fast, visual, and local to Isla Vista instead of like reading a generic weather dashboard.',
+      'IV Sunsets turns local weather data into something people actually want to check before dinner. Live forecast inputs roll into a six-day outlook, animated Canvas scenes, an interactive simulator, and a scrollytelling explainer that teaches why the score moved.',
     heroStatement:
-      'The hard part was turning weather data into something people would actually want to check every afternoon.',
+      'This project makes forecasting feel like a ritual instead of homework.',
     pullQuote:
-      'This one is mostly UI, interaction, and product taste wrapped around a lightweight local model.',
+      'The product works because the score is fast, the reasoning is visible, and the visuals feel unmistakably local to Isla Vista.',
+    showcase: {
+      kind: 'image',
+      src: '/project-shots/ivsunsets-live.png',
+      alt: 'Live IV Sunsets homepage showing the current sunset score and animated scene.',
+      eyebrow: 'Live product capture',
+      caption:
+        'This is the product doing its job: a single sunset score, a plain-English outlook, and a custom sky scene rendered from live Isla Vista forecast data.',
+    },
     accent: '#0ea5e9',
     role: 'Creator',
     year: '2026',
@@ -399,40 +456,40 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
         note: 'with daily breakdowns and explanations',
       },
       {
-        label: 'Rendering surface',
-        value: 'Canvas',
-        note: 'animated sky scenes respond to forecast data',
+        label: 'Scoring factors',
+        value: '9',
+        note: 'clouds, rain, humidity, visibility, and texture all move the score',
       },
     ],
     modules: [
       {
-        title: 'Forecast model',
+        title: 'Scoring model',
         narrative:
-          'The scoring model stays simple on purpose. It gives the product a clear signal without getting in the way of the experience.',
+          'The scoring logic is simple enough to understand and specific enough to feel trustworthy. It turns weather into a strong call, not a black box.',
         bullets: [
-          'Real-time forecast inputs feed a single score people can scan instantly',
-          'Short explanations show why the number moved up or down',
-          'Everything stays lightweight enough to feel like a product, not a dashboard',
+          'Open-Meteo inputs feed a 0-100 score tuned to the sunset window',
+          'High clouds, mid clouds, low-cloud penalties, rain, humidity, and visibility all move the result',
+          'Fallback forecasts keep the experience usable even when the API is down',
         ],
       },
       {
-        title: 'Product UI',
+        title: 'Visual product design',
         narrative:
-          'Most of the work here was in the UI. The layout, motion, and visual hierarchy do as much heavy lifting as the scoring itself.',
+          'The product wins on interface as much as on logic. The number only matters because the UI makes it legible, local, and memorable.',
         bullets: [
-          'The score, outlook, and supporting details are built for quick scanning',
-          'Canvas sky scenes give the product a stronger local feel',
-          'The experience leans more consumer app than weather tool',
+          'Canvas sky scenes respond to the same data that drives the score',
+          'Forecast cards, reason chips, and labels make the outlook instantly scannable',
+          'The main surface feels like a local consumer app, not a weather console',
         ],
       },
       {
-        title: 'Interactive explainer',
+        title: 'Explainer loop',
         narrative:
-          'The simulator and explainer turn the sunset model into something people can play with instead of just passively read.',
+          'The simulator and post-sunset feedback keep the model from feeling like a magic number. Users can see why the call moves and feed reality back into the product.',
         bullets: [
           'Sliders let people see how haze, clouds, and atmosphere change the score',
           'Scrollytelling explains why certain sunset conditions look better',
-          'The whole thing is designed to feel fun before it feels academic',
+          'Post-sunset feedback is stored locally to calibrate future calls',
         ],
       },
     ],
@@ -443,13 +500,21 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
     eyebrow: 'Climate Policy',
     category: 'Predictive analytics / public-sector storytelling',
     summary:
-      'A tract-level workforce vulnerability engine for Santa Barbara County that models how climate shocks can displace workers and slow recovery.',
+      'A tract-level climate policy platform that shows which Santa Barbara County neighborhoods lose workers first, how recovery diverges, and what intervention costs before the shock is over.',
     description:
-      'W.A.V.E turns a policy blind spot into something planners can interrogate. It maps vulnerability across real census tracts, simulates recovery under climate shocks, estimates relief needs, and layers an AI interface on top so people can query the system in plain language.',
+      'W.A.V.E combines real county datasets, an ODE labor resilience model, a Markov workforce transition model, and a planner-facing dashboard. The result is a decision tool that maps risk, simulates shocks, estimates relief, and lets policy teams query the data in plain language.',
     heroStatement:
-      'Policy tools become useful when they show who gets hit first, how long recovery takes, and what intervention is actually worth funding.',
+      'Static vulnerability maps tell you who is exposed. W.A.V.E tells you who leaves, how long recovery takes, and what it costs to wait.',
     pullQuote:
-      'The ambition here was to make a county-scale model feel explorable instead of burying it inside static charts and a PDF nobody reads.',
+      '109 tracts. Twelve shock simulations per tract. Real county data. One interface that turns climate risk into an allocation problem instead of a slide deck.',
+    showcase: {
+      kind: 'image',
+      src: '/project-shots/wave-what-it-does.png',
+      alt: 'W.A.V.E README section summarizing the policy dashboard features.',
+      eyebrow: 'README capture',
+      caption:
+        'The dashboard is broader than a map: tract profiles, shock simulation, recovery curves, workforce shifts, a policy chatbot, and PDF export all live in the same planning surface.',
+    },
     accent: '#111111',
     role: 'Builder',
     year: '2026',
@@ -469,45 +534,45 @@ const curatedProjectOverrides: Record<string, CuratedProjectOverride> = {
         note: 'county-wide neighborhood-scale modeling',
       },
       {
-        label: 'Workforce lens',
-        value: '~220k',
-        note: 'workers represented in the county context',
+        label: 'Simulations',
+        value: '12 / tract',
+        note: 'four severities across three durations drive the score',
       },
       {
-        label: 'Scenario depth',
-        value: '12 shocks',
-        note: 'simulated climate scenarios feed vulnerability scoring',
+        label: 'Worker data',
+        value: '~2,575',
+        note: 'full job-history records feed the workforce panel',
       },
     ],
     modules: [
       {
-        title: 'County-scale model',
+        title: 'Labor resilience engine',
         narrative:
-          'The model asks which areas lose workers, how long they take to recover, and how much relief should be staged before a shock lands.',
+          'The backbone is a real model, not a storytelling layer glued to a map. The math decides how recovery behaves, then the interface makes it explorable.',
         bullets: [
-          'Tract-level vulnerability scores across Santa Barbara County',
-          'Recovery behavior modeled across multiple shock severities',
-          'Housing pressure and EJ burden stay visible in the same frame',
+          'A logistic growth ODE models recovery speed, drop depth, and equilibrium retention',
+          'Environmental justice burden enters as a friction term that slows recovery',
+          'Four shock severities across three durations create 12 simulations per tract',
         ],
       },
       {
-        title: 'Interactive policy surface',
+        title: 'Workforce movement model',
         narrative:
-          'Instead of flattening the model into a report, the interface keeps it explorable with maps, curves, and workforce context panels.',
+          'Recovery is not just about how many jobs return. It is about where workers go when coastal sectors crack and housing pressure stays high.',
         bullets: [
-          'Interactive map with tract profiles and displacement risk',
-          'Recovery charts compare burden levels side by side',
-          'Workforce panel shows how industries shift after disruption',
+          'A Markov chain tracks coastal, inland, unemployed, and transitioning labor states',
+          'The workforce panel is grounded in roughly 2,575 real worker records',
+          'Housing pressure and coastal exposure stay in the same analytic frame',
         ],
       },
       {
-        title: 'Decision support',
+        title: 'Planning surface',
         narrative:
-          'The project closes the gap between analytics and planning by adding tools that help decision-makers interrogate and export what they are seeing.',
+          'The interface keeps the math operational. Maps, curves, chatbot answers, and exports move together so policy teams can actually use the model under pressure.',
         bullets: [
-          'AI policy chatbot answers questions against the full dataset',
-          'Emergency relief estimates connect model outputs to action',
-          'PDF export captures the current dashboard state for sharing',
+          'Map, recovery curves, economic impact scores, and city views update together',
+          'The AI policy chatbot answers tract and scenario questions against the full dataset',
+          'PDF export preserves the exact dashboard state for reporting and handoff',
         ],
       },
     ],
@@ -638,6 +703,7 @@ function mergeProject(repository: GithubRepository, pinnedIndex: number): Projec
     capabilities: override.capabilities,
     metrics: override.metrics,
     modules: override.modules,
+    showcase: override.showcase,
     githubUrl: repository.url,
     liveUrl: override.liveUrl ?? repository.homepageUrl,
     paperUrl: override.paperUrl,

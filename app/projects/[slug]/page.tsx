@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, ArrowUpRight, FileText, Github } from 'lucide-react';
@@ -24,6 +25,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const currentIndex = projects.findIndex((entry) => entry.slug === project.slug);
   const prevProject = projects[currentIndex - 1];
   const nextProject = projects[currentIndex + 1];
+  const infoItems = [
+    project.category,
+    project.updatedLabel,
+    project.liveUrl ? 'Live product available' : 'Repository-first project',
+    `${project.capabilities.length} shipped capabilities`,
+  ];
 
   return (
     <main className="min-h-screen px-4 pb-20 pt-24 sm:px-6 sm:pb-24 sm:pt-32">
@@ -104,12 +111,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             </p>
 
             <div className="mt-4 grid gap-2 sm:mt-5 sm:gap-3">
-              {[
-                `${project.repoName} repo`,
-                project.updatedLabel,
-                project.liveUrl ? 'Has live link' : 'Repo only',
-                `${project.stack.length} main tools`,
-              ].map((item) => (
+              {infoItems.map((item) => (
                 <div key={item} className="border border-[var(--line)] bg-[rgba(255,255,255,0.36)] p-3 text-[0.8rem] text-[var(--foreground)] sm:p-4 sm:text-sm">
                   {item}
                 </div>
@@ -128,6 +130,85 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             </div>
           </aside>
         </header>
+
+        <section className="mt-10 grid gap-3 sm:mt-14 sm:gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+          <div
+            className="lab-panel p-5 sm:p-6 md:p-8"
+            style={{
+              borderColor: project.accent,
+              background: `linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.34)), ${project.accentSoft}`,
+            }}
+          >
+            <p className="lab-eyebrow">What this project proves</p>
+            <h2 className="mt-4 max-w-4xl font-display text-[1.8rem] leading-[0.94] tracking-[-0.05em] text-[var(--foreground)] sm:text-[2.8rem]">
+              {project.heroStatement}
+            </h2>
+            <p className="mt-4 max-w-3xl text-[0.95rem] leading-relaxed text-[var(--muted)] sm:text-lg">
+              {project.description}
+            </p>
+          </div>
+
+          <aside className="border border-[var(--line)] bg-[rgba(255,255,255,0.42)] p-5 sm:p-6">
+            <p className="lab-eyebrow">Readme takeaway</p>
+            <p className="mt-4 text-[1rem] leading-relaxed text-[var(--foreground)] sm:text-[1.08rem]">
+              {project.pullQuote}
+            </p>
+          </aside>
+        </section>
+
+        {project.showcase && (
+          <section className="mt-10 sm:mt-14">
+            <figure className="overflow-hidden rounded-[28px] border border-[var(--line-strong)] bg-[rgba(255,255,255,0.58)] shadow-[var(--shadow-strong)]">
+              <div className="flex items-center justify-between gap-3 border-b border-[var(--line)] bg-[rgba(255,255,255,0.78)] px-4 py-3 sm:px-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1.5">
+                    <span className="block h-2.5 w-2.5 rounded-full" style={{ backgroundColor: project.accent }} />
+                    <span className="block h-2.5 w-2.5 rounded-full bg-[rgba(17,17,17,0.18)]" />
+                    <span className="block h-2.5 w-2.5 rounded-full bg-[rgba(17,17,17,0.1)]" />
+                  </div>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:text-[10px]">
+                    {project.showcase.eyebrow}
+                  </span>
+                </div>
+
+                <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:text-[10px]">
+                  {project.showcase.kind === 'video' ? 'Motion proof' : 'Surface proof'}
+                </span>
+              </div>
+
+              {project.showcase.kind === 'video' ? (
+                <video
+                  className="block aspect-video w-full bg-black object-cover"
+                  poster={project.showcase.poster}
+                  playsInline
+                  controls
+                  preload="metadata"
+                  aria-label={project.showcase.alt}
+                >
+                  <source src={project.showcase.src} type="video/mp4" />
+                </video>
+              ) : (
+                <Image
+                  src={project.showcase.src}
+                  alt={project.showcase.alt}
+                  width={1440}
+                  height={1024}
+                  sizes="(max-width: 1024px) 100vw, 1200px"
+                  className="block h-auto w-full"
+                />
+              )}
+
+              <figcaption className="grid gap-3 border-t border-[var(--line)] bg-[rgba(255,255,255,0.78)] px-4 py-4 sm:px-6 sm:py-5 md:grid-cols-[180px_minmax(0,1fr)]">
+                <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:text-[10px]">
+                  {project.showcase.eyebrow}
+                </p>
+                <p className="text-[0.88rem] leading-relaxed text-[var(--muted-strong)] sm:text-base">
+                  {project.showcase.caption}
+                </p>
+              </figcaption>
+            </figure>
+          </section>
+        )}
 
         <section className="mt-10 grid gap-2 grid-cols-1 sm:mt-14 sm:gap-3 sm:grid-cols-3">
           {project.metrics.map((metric) => (
@@ -162,6 +243,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     <h2 className="font-display text-[1.6rem] leading-[0.95] tracking-[-0.045em] text-[var(--foreground)] sm:text-[2.5rem]">
                       {module.title}
                     </h2>
+                    <p className="mt-3 max-w-3xl text-[0.88rem] leading-relaxed text-[var(--muted-strong)] sm:mt-4 sm:text-base">
+                      {module.narrative}
+                    </p>
                     <ul className="mt-4 grid gap-2.5 sm:mt-5 sm:gap-3">
                       {module.bullets.map((bullet) => (
                         <li
