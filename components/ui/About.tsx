@@ -17,8 +17,11 @@ const stackGroups = [
     items: [
       { label: 'Python', icon: 'python' },
       { label: 'TypeScript', icon: 'typescript' },
-      { label: 'Rust', icon: 'rust' },
+      { label: 'C++', icon: 'cpp' },
       { label: 'Go', icon: 'go' },
+      { label: 'Rust', icon: 'rust' },
+      { label: 'Java', icon: 'java' },
+      { label: 'JavaScript', icon: 'javascript' },
     ],
   },
   {
@@ -29,6 +32,8 @@ const stackGroups = [
       { label: 'Next.js', icon: 'nextjs' },
       { label: 'React', icon: 'react' },
       { label: 'Node.js', icon: 'nodejs' },
+      { label: 'TensorFlow', icon: 'tensorflow' },
+      { label: 'Spring Boot', icon: 'spring' },
     ],
   },
   {
@@ -37,8 +42,14 @@ const stackGroups = [
     items: [
       { label: 'AWS', icon: 'aws' },
       { label: 'Docker', icon: 'docker' },
-      { label: 'Postgres', icon: 'postgres' },
+      { label: 'Kubernetes', icon: 'kubernetes' },
+      { label: 'PostgreSQL', icon: 'postgres' },
+      { label: 'Supabase', icon: 'supabase' },
       { label: 'Linux', icon: 'linux' },
+      { label: 'Git', icon: 'git' },
+      { label: 'GitHub', icon: 'github' },
+      { label: 'Prometheus', icon: 'prometheus' },
+      { label: 'VS Code', icon: 'vscode' },
     ],
   },
 ];
