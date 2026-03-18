@@ -7,26 +7,23 @@ import { Star } from 'lucide-react';
 const contributions = [
   {
     name: 'OpenAI Agents SDK',
-    repo: 'openai/openai-agents-python',
     logo: '/logos/openai.svg',
     accent: '#000000',
-    accentGlow: 'rgba(0,0,0,0.12)',
+    accentGlow: 'rgba(0,0,0,0.1)',
     stars: 15200,
   },
   {
-    name: 'DSPy',
-    repo: 'stanfordnlp/dspy',
+    name: 'Stanford DSPy',
     logo: '/logos/stanford.svg',
     accent: '#8C1515',
-    accentGlow: 'rgba(140,21,21,0.14)',
+    accentGlow: 'rgba(140,21,21,0.12)',
     stars: 22500,
   },
   {
     name: 'Pydantic AI',
-    repo: 'pydantic/pydantic-ai',
     logo: '/logos/pydantic.svg',
     accent: '#E92063',
-    accentGlow: 'rgba(233,32,99,0.14)',
+    accentGlow: 'rgba(233,32,99,0.12)',
     stars: 8700,
   },
 ];
@@ -40,17 +37,13 @@ function formatStars(count: number): string {
 
 function AnimatedStarCount({ target, inView }: { target: number; inView: boolean }) {
   const [display, setDisplay] = useState(0);
-  const ref = useRef({ value: 0 });
 
   useEffect(() => {
     if (!inView) return;
     const controls = animate(0, target, {
       duration: 1.6,
       ease: [0.16, 1, 0.3, 1],
-      onUpdate: (v) => {
-        ref.current.value = v;
-        setDisplay(Math.round(v));
-      },
+      onUpdate: (v) => setDisplay(Math.round(v)),
     });
     return () => controls.stop();
   }, [inView, target]);
@@ -60,135 +53,102 @@ function AnimatedStarCount({ target, inView }: { target: number; inView: boolean
 
 export function OpenSource() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-120px' });
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
 
-  const nodeVariants = {
-    hidden: { opacity: 0, scale: 0.6, y: 40 },
-    visible: (i: number) => ({
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        delay: 0.3 + i * 0.15,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    }),
-  };
-
-  const lineVariants = {
-    hidden: { pathLength: 0, opacity: 0 },
-    visible: (i: number) => ({
-      pathLength: 1,
-      opacity: 0.25,
-      transition: {
-        duration: 1.2,
-        delay: 0.6 + i * 0.2,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    }),
-  };
+  const nodeDelay = (i: number) => ({
+    duration: 0.8,
+    delay: 0.25 + i * 0.15,
+    ease: [0.16, 1, 0.3, 1] as const,
+  });
 
   return (
-    <section className="relative px-4 py-20 sm:px-6 sm:py-36" ref={ref}>
-      <div className="lab-shell">
+    <section className="relative px-5 py-24 sm:px-8 sm:py-36" ref={ref}>
+      <div className="mx-auto max-w-[1280px]">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="text-center"
         >
-          <p className="lab-eyebrow mb-3 sm:mb-4">Open Source</p>
-          <h2 className="font-display text-[clamp(2rem,6vw,4.4rem)] leading-[0.94] tracking-[-0.05em] text-[var(--foreground)]">
+          <h2 className="font-display text-[clamp(2.2rem,6vw,4.5rem)] leading-[0.92] tracking-[-0.04em] text-[var(--foreground)]">
             I love contributing.
           </h2>
+          <p className="mx-auto mt-4 max-w-md text-[1rem] text-[var(--muted)] sm:mt-5 sm:text-lg">
+            Merged PRs in all three.
+          </p>
         </motion.div>
 
-        <div className="relative mx-auto mt-12 max-w-2xl sm:mt-20">
-          {/* SVG connecting lines */}
-          <svg
-            className="pointer-events-none absolute inset-0 h-full w-full"
-            viewBox="0 0 600 440"
-            fill="none"
-            preserveAspectRatio="xMidYMid meet"
+        {/* Trifecta: top center + bottom two */}
+        <div className="mx-auto mt-14 max-w-3xl sm:mt-20">
+          {/* Top node */}
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.8 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={nodeDelay(0)}
+            className="flex justify-center"
           >
-            {/* Top to bottom-left */}
-            <motion.line
-              x1="300" y1="80" x2="130" y2="360"
-              stroke="var(--foreground)"
-              strokeWidth="1"
-              variants={lineVariants}
-              custom={0}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-            />
-            {/* Top to bottom-right */}
-            <motion.line
-              x1="300" y1="80" x2="470" y2="360"
-              stroke="var(--foreground)"
-              strokeWidth="1"
-              variants={lineVariants}
-              custom={1}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-            />
-            {/* Bottom-left to bottom-right */}
-            <motion.line
-              x1="130" y1="360" x2="470" y2="360"
-              stroke="var(--foreground)"
-              strokeWidth="1"
-              variants={lineVariants}
-              custom={2}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-            />
-          </svg>
+            <OSSNode contribution={contributions[0]} inView={isInView} />
+          </motion.div>
 
-          {/* Trifecta nodes */}
-          <div className="relative" style={{ paddingBottom: '73%' }}>
-            {/* Top node: OpenAI */}
-            <motion.div
-              className="absolute left-1/2 top-0 -translate-x-1/2"
-              variants={nodeVariants}
-              custom={0}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
+          {/* SVG connecting lines */}
+          <div className="relative mx-auto my-6 h-16 max-w-lg sm:my-8 sm:h-20">
+            <svg
+              className="absolute inset-0 h-full w-full"
+              viewBox="0 0 400 80"
+              fill="none"
+              preserveAspectRatio="xMidYMid meet"
             >
-              <OSSNode contribution={contributions[0]} inView={isInView} />
-            </motion.div>
+              {/* Top center to bottom-left */}
+              <motion.line
+                x1="200" y1="0" x2="60" y2="80"
+                stroke="var(--foreground)"
+                strokeWidth="1"
+                strokeOpacity="0.15"
+                initial={{ pathLength: 0 }}
+                animate={isInView ? { pathLength: 1 } : {}}
+                transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              />
+              {/* Top center to bottom-right */}
+              <motion.line
+                x1="200" y1="0" x2="340" y2="80"
+                stroke="var(--foreground)"
+                strokeWidth="1"
+                strokeOpacity="0.15"
+                initial={{ pathLength: 0 }}
+                animate={isInView ? { pathLength: 1 } : {}}
+                transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              />
+              {/* Bottom-left to bottom-right */}
+              <motion.line
+                x1="60" y1="80" x2="340" y2="80"
+                stroke="var(--foreground)"
+                strokeWidth="1"
+                strokeOpacity="0.15"
+                initial={{ pathLength: 0 }}
+                animate={isInView ? { pathLength: 1 } : {}}
+                transition={{ duration: 1, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              />
+            </svg>
+          </div>
 
-            {/* Bottom-left: Stanford / DSPy */}
+          {/* Bottom two nodes */}
+          <div className="flex justify-center gap-8 sm:gap-16 md:gap-24">
             <motion.div
-              className="absolute bottom-0 left-0 sm:left-[5%]"
-              variants={nodeVariants}
-              custom={1}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
+              initial={{ opacity: 0, y: 40, scale: 0.8 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={nodeDelay(1)}
             >
               <OSSNode contribution={contributions[1]} inView={isInView} />
             </motion.div>
-
-            {/* Bottom-right: Pydantic */}
             <motion.div
-              className="absolute bottom-0 right-0 sm:right-[5%]"
-              variants={nodeVariants}
-              custom={2}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
+              initial={{ opacity: 0, y: 40, scale: 0.8 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={nodeDelay(2)}
             >
               <OSSNode contribution={contributions[2]} inView={isInView} />
             </motion.div>
           </div>
         </div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-8 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] sm:mt-10 sm:text-[11px]"
-        >
-          Merged PRs in all three
-        </motion.p>
       </div>
     </section>
   );
@@ -196,34 +156,33 @@ export function OpenSource() {
 
 function OSSNode({ contribution, inView }: { contribution: typeof contributions[number]; inView: boolean }) {
   return (
-    <div className="group flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-3 sm:gap-4">
       <motion.div
-        className="relative flex h-20 w-20 items-center justify-center border bg-[var(--surface-strong)] p-4 shadow-lg sm:h-28 sm:w-28 sm:p-5"
+        className="relative flex h-20 w-20 items-center justify-center border-2 bg-[var(--surface-strong)] p-4 sm:h-24 sm:w-24 sm:p-5"
         style={{ borderColor: contribution.accent }}
         animate={inView ? {
           boxShadow: [
             `0 0 0 0px ${contribution.accentGlow}`,
-            `0 0 0 12px ${contribution.accentGlow}`,
+            `0 0 0 14px ${contribution.accentGlow}`,
             `0 0 0 0px ${contribution.accentGlow}`,
           ],
         } : {}}
-        transition={{ duration: 3, repeat: Infinity, repeatDelay: 1 }}
+        transition={{ duration: 3, repeat: Infinity, repeatDelay: 1.5 }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={contribution.logo}
           alt={contribution.name}
           className="h-full w-full object-contain"
-          style={{ color: contribution.accent }}
         />
       </motion.div>
       <div className="text-center">
-        <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[var(--foreground)] sm:text-[10px]">
+        <p className="text-[13px] font-semibold text-[var(--foreground)] sm:text-[15px]">
           {contribution.name}
         </p>
-        <div className="mt-1 flex items-center justify-center gap-1">
-          <Star size={11} className="fill-[var(--foreground)] text-[var(--foreground)]" />
-          <span className="font-mono text-[10px] tabular-nums tracking-wide text-[var(--muted)] sm:text-[11px]">
+        <div className="mt-1 flex items-center justify-center gap-1.5">
+          <Star size={13} className="fill-[var(--foreground)] text-[var(--foreground)]" />
+          <span className="text-[13px] font-medium tabular-nums text-[var(--muted)] sm:text-sm">
             <AnimatedStarCount target={contribution.stars} inView={inView} />
           </span>
         </div>

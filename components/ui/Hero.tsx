@@ -13,73 +13,104 @@ const socials = [
 
 export function Hero() {
   return (
-    <section className="relative min-h-[100svh] overflow-hidden px-4 pb-10 pt-24 sm:px-6 sm:pb-16 sm:pt-32">
+    <section className="relative min-h-[100svh] overflow-hidden">
       <FluidBackground className="hero-fluid opacity-100" />
 
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(250,248,242,0.06),rgba(250,248,242,0.46)_72%,rgba(250,248,242,0.94))]" />
+      {/* subtle bottom fade so content below blends */}
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[var(--background)] to-transparent" />
 
-      <div className="lab-shell relative min-h-[calc(100svh-6rem)] sm:min-h-[calc(100vh-7rem)]">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="flex min-h-[calc(100svh-6rem)] flex-col justify-end pb-4 sm:min-h-[calc(100vh-7rem)] sm:pb-8 lg:pb-14"
-        >
-          <div className="relative z-10 max-w-[720px]">
-            <p className="lab-eyebrow mb-4 text-[rgba(17,17,17,0.54)] sm:mb-6">Aditya Singh</p>
-            <h1 className="font-display text-[clamp(3rem,12vw,9.5rem)] leading-[0.82] tracking-[-0.08em] text-[var(--foreground)]">
-              Aditya
-              <br />
-              Singh
-            </h1>
+      <div className="relative z-10 flex min-h-[100svh] flex-col justify-end px-5 pb-8 sm:px-8 sm:pb-12 lg:px-12 lg:pb-16">
+        <div className="mx-auto w-full max-w-[1280px]">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="grid items-end gap-8 lg:grid-cols-[1fr_auto] lg:gap-12"
+          >
+            {/* Left: name + info */}
+            <div>
+              <h1 className="font-display text-[clamp(3.5rem,14vw,10rem)] leading-[0.82] tracking-[-0.06em] text-[var(--foreground)]">
+                Aditya
+                <br />
+                Singh
+              </h1>
 
-            <div className="mt-5 grid max-w-[560px] gap-2 text-[0.95rem] font-semibold leading-tight text-[var(--foreground)] sm:mt-8 sm:gap-3 sm:text-[1.28rem]">
-              <p>CS @ UCSB</p>
-              <p>SWE Lead @ Ryft AI</p>
-              <p>Building Ziri, a voice OS</p>
+              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1 text-[1rem] font-medium text-[var(--foreground)] sm:mt-7 sm:gap-x-7 sm:text-[1.2rem]">
+                <span>CS @ UCSB</span>
+                <span className="hidden sm:inline text-[var(--line-strong)]">/</span>
+                <span>SWE Lead @ Ryft AI</span>
+                <span className="hidden sm:inline text-[var(--line-strong)]">/</span>
+                <span>Building Ziri</span>
+              </div>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-8">
+                <a
+                  href="#projects"
+                  className="inline-flex items-center gap-2 border border-[var(--foreground)] bg-[var(--foreground)] px-4 py-2.5 text-[13px] font-medium tracking-wide text-white transition-all duration-300 hover:-translate-y-0.5 sm:px-5 sm:py-3 sm:text-sm"
+                >
+                  Projects
+                  <ArrowDownRight size={15} />
+                </a>
+                <a
+                  href="/resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border border-[rgba(17,17,17,0.2)] bg-[rgba(255,255,255,0.5)] px-4 py-2.5 text-[13px] font-medium tracking-wide text-[var(--foreground)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] sm:px-5 sm:py-3 sm:text-sm"
+                >
+                  Resume
+                </a>
+              </div>
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-2.5 sm:mt-10 sm:gap-3">
-              <a
-                href="#projects"
-                className="inline-flex items-center gap-2 border border-[var(--foreground)] bg-[var(--foreground)] px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:-translate-y-0.5 sm:px-4 sm:py-3 sm:text-[11px]"
-              >
-                Projects
-                <ArrowDownRight size={14} />
-              </a>
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-[rgba(17,17,17,0.16)] bg-[rgba(255,255,255,0.38)] px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] sm:px-4 sm:py-3 sm:text-[11px]"
-              >
-                Resume
-              </a>
+            {/* Right: headshot */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="hidden lg:block"
+            >
+              <div className="relative h-[340px] w-[260px] overflow-hidden border-2 border-[rgba(255,255,255,0.3)] shadow-[0_30px_100px_rgba(17,17,17,0.2)]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/headshot.png"
+                  alt="Aditya Singh"
+                  className="h-full w-full object-cover object-center"
+                  style={{ filter: 'contrast(1.06) saturate(0.9)' }}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Bottom bar: socials + scroll */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
+            className="mt-8 flex items-center justify-between sm:mt-10"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-[12px] font-medium tracking-widest uppercase text-[rgba(17,17,17,0.5)] sm:text-[13px]">
+                scroll
+              </span>
+              <div className="h-px w-12 bg-[rgba(17,17,17,0.25)] sm:w-16" />
             </div>
-          </div>
 
-          <div className="absolute bottom-4 right-0 z-20 flex gap-2 sm:bottom-8 lg:bottom-10 lg:flex-col">
-            {socials.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                target={social.href.startsWith('http') ? '_blank' : undefined}
-                rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                aria-label={social.label}
-                className="inline-flex h-10 w-10 items-center justify-center border border-[rgba(17,17,17,0.14)] bg-[rgba(255,255,255,0.38)] text-[var(--foreground)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] sm:h-11 sm:w-11"
-              >
-                <social.icon size={15} strokeWidth={1.8} />
-              </a>
-            ))}
-          </div>
-
-          <div className="absolute bottom-10 left-0 z-20 hidden items-center gap-3 sm:flex">
-            <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[rgba(17,17,17,0.44)]">
-              scroll
-            </span>
-            <div className="h-px w-16 bg-[rgba(17,17,17,0.24)]" />
-          </div>
-        </motion.div>
+            <div className="flex gap-2">
+              {socials.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target={social.href.startsWith('http') ? '_blank' : undefined}
+                  rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  aria-label={social.label}
+                  className="inline-flex h-10 w-10 items-center justify-center border border-[rgba(17,17,17,0.15)] bg-[rgba(255,255,255,0.4)] text-[var(--foreground)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)]"
+                >
+                  <social.icon size={16} strokeWidth={1.8} />
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

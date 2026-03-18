@@ -151,9 +151,8 @@ a {
 }
 
 .hero-fluid canvas {
-  opacity: 0.9;
-  filter: saturate(1.18) contrast(1.08);
-  mix-blend-mode: multiply;
+  opacity: 1;
+  filter: saturate(1.4) contrast(1.12) brightness(1.05);
 }
 
 .hero-portrait {
