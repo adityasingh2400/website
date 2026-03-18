@@ -648,7 +648,7 @@ export function VoiceAgent() {
     <div className="relative z-10 flex min-h-[420px] flex-col justify-between px-5 py-6 text-center sm:min-h-[520px] sm:px-8 sm:py-8">
       <div className="flex items-center justify-between gap-3 text-left">
         <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-[var(--muted)] sm:text-[10px]">
-          Live voice
+          Live
         </p>
         <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(17,17,17,0.12)] bg-[rgba(255,255,255,0.72)] px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.2em] text-[var(--foreground)] shadow-[0_10px_30px_rgba(17,17,17,0.05)] sm:text-[10px]">
           <motion.span
@@ -766,12 +766,11 @@ export function VoiceAgent() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="lab-eyebrow mb-3 sm:mb-4">Voice</p>
             <h2 className="font-display max-w-4xl text-[clamp(2.2rem,6vw,4.6rem)] leading-[0.94] tracking-[-0.05em] text-[var(--foreground)]">
-              Voice, without guesswork.
+              Talk to me.
             </h2>
             <p className="mt-4 max-w-sm text-[0.95rem] leading-relaxed text-[var(--muted)] sm:mt-5 sm:text-lg">
-              One giant button. One mic prompt. Then just talk.
+              One click. One mic prompt. Then just talk.
             </p>
 
             <div className="mt-5 flex flex-wrap gap-2 sm:mt-6">
