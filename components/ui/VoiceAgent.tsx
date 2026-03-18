@@ -275,11 +275,11 @@ function getStageContent(stage: VoiceStage, prompt: string) {
     case 'speaking':
       return {
         badge: 'answering',
-        title: 'The agent is answering.',
+        title: 'Talking.',
         body: 'Let it finish or interrupt whenever you want to steer the conversation somewhere else.',
         hintLabel: 'Next question idea',
         hintText: prompt,
-        cta: 'Voice reply in progress',
+        cta: 'Talking now',
       };
     case 'blocked':
       return {

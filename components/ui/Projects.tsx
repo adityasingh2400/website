@@ -16,7 +16,6 @@ export function Projects({ projects }: ProjectsProps) {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [activeIndex, setActiveIndex] = useState(0);
   const activeProject = projects[activeIndex] ?? projects[0];
-  const activeCapabilities = activeProject?.capabilities.slice(0, 5) ?? [];
 
   if (!activeProject) {
     return null;
@@ -59,96 +58,53 @@ export function Projects({ projects }: ProjectsProps) {
                   {String(activeIndex + 1).padStart(2, '0')}
                 </div>
 
-                <div className="grid gap-6 sm:gap-8 xl:grid-cols-[minmax(0,1fr)_260px]">
-                  <div>
-                    <div className="mb-3 flex flex-wrap items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:mb-4 sm:gap-3 sm:text-[10px]">
-                      <span>{activeProject.eyebrow}</span>
-                      <span>{activeProject.updatedLabel}</span>
-                    </div>
+                <div className="relative">
+                  <div className="mb-3 flex flex-wrap items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:mb-4 sm:gap-3 sm:text-[10px]">
+                    <span>{activeProject.eyebrow}</span>
+                    <span>{activeProject.updatedLabel}</span>
+                  </div>
 
-                    <h3 className="font-display text-[clamp(2rem,5vw,4.6rem)] leading-[0.9] tracking-[-0.055em] text-[var(--foreground)]">
-                      {activeProject.title}
-                    </h3>
-                    <p className="mt-3 max-w-xl text-[0.9rem] leading-relaxed text-[var(--muted)] sm:mt-5 sm:text-lg">
-                      {activeProject.summary}
-                    </p>
+                  <h3 className="font-display text-[clamp(2rem,5vw,4.6rem)] leading-[0.9] tracking-[-0.055em] text-[var(--foreground)]">
+                    {activeProject.title}
+                  </h3>
+                  <p className="mt-3 max-w-xl text-[0.9rem] leading-relaxed text-[var(--muted)] sm:mt-5 sm:text-lg">
+                    {activeProject.summary}
+                  </p>
 
-                    <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:mt-6 sm:gap-x-4 sm:gap-y-2 sm:text-[10px]">
-                      <span>{activeProject.role}</span>
-                      <span>{activeProject.year}</span>
-                      <span>{activeProject.primaryLanguage ?? activeProject.stack[0]}</span>
-                    </div>
+                  <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:mt-6 sm:gap-x-4 sm:gap-y-2 sm:text-[10px]">
+                    <span>{activeProject.role}</span>
+                    <span>{activeProject.year}</span>
+                    <span>{activeProject.primaryLanguage ?? activeProject.stack[0]}</span>
+                  </div>
 
-                    <div className="mt-5 flex flex-wrap gap-1.5 sm:mt-7 sm:gap-2">
-                      {activeCapabilities.map((capability) => (
-                        <div
-                          key={capability}
-                          className="border border-[rgba(17,17,17,0.1)] bg-[rgba(255,255,255,0.38)] px-2 py-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--foreground)] sm:px-3 sm:py-2 sm:text-[10px]"
-                        >
-                          {capability}
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-6 flex flex-wrap gap-2 sm:mt-8 sm:gap-3">
-                      <Link
-                        href={`/projects/${activeProject.slug}`}
-                        className="inline-flex items-center gap-2 border border-[var(--foreground)] bg-[var(--foreground)] px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--background)] transition-all duration-300 hover:-translate-y-0.5 sm:px-4 sm:py-3 sm:text-[11px]"
-                      >
-                        Details
-                        <ArrowRight size={14} />
-                      </Link>
+                  <div className="mt-6 flex flex-wrap gap-2 sm:mt-8 sm:gap-3">
+                    <Link
+                      href={`/projects/${activeProject.slug}`}
+                      className="inline-flex items-center gap-2 border border-[var(--foreground)] bg-[var(--foreground)] px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--background)] transition-all duration-300 hover:-translate-y-0.5 sm:px-4 sm:py-3 sm:text-[11px]"
+                    >
+                      Details
+                      <ArrowRight size={14} />
+                    </Link>
+                    <a
+                      href={activeProject.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 border border-[var(--line-strong)] px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] sm:px-4 sm:py-3 sm:text-[11px]"
+                    >
+                      <Github size={14} />
+                      Source
+                    </a>
+                    {activeProject.liveUrl && (
                       <a
-                        href={activeProject.githubUrl}
+                        href={activeProject.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 border border-[var(--line-strong)] px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] sm:px-4 sm:py-3 sm:text-[11px]"
                       >
-                        <Github size={14} />
-                        Source
+                        Live
+                        <ArrowUpRight size={14} />
                       </a>
-                      {activeProject.liveUrl && (
-                        <a
-                          href={activeProject.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 border border-[var(--line-strong)] px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] sm:px-4 sm:py-3 sm:text-[11px]"
-                        >
-                          Live
-                          <ArrowUpRight size={14} />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="relative space-y-3 sm:space-y-4 xl:pt-14">
-                    <div className="absolute -left-6 top-8 hidden h-24 w-24 rounded-full opacity-70 blur-2xl xl:block" style={{ background: activeProject.accentSoft }} />
-                    <div className="relative grid gap-2 grid-cols-3 sm:gap-3 xl:grid-cols-1">
-                      {activeProject.metrics.map((metric) => (
-                        <div
-                          key={metric.label}
-                          className="border border-[var(--line)] bg-[rgba(255,255,255,0.3)] p-3 sm:p-4"
-                        >
-                          <p className="font-display text-lg leading-none tracking-[-0.04em] text-[var(--foreground)] sm:text-2xl">
-                            {metric.value}
-                          </p>
-                          <p className="mt-2 font-mono text-[8px] uppercase tracking-[0.22em] text-[var(--foreground)] sm:mt-3 sm:text-[10px]">
-                            {metric.label}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="relative overflow-hidden border border-[var(--line)] bg-[rgba(255,255,255,0.38)] p-3 sm:p-5">
-                      <div
-                        className="absolute inset-x-0 top-0 h-1"
-                        style={{ background: `linear-gradient(90deg, ${activeProject.accent}, transparent)` }}
-                      />
-                      <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[0.8rem] text-[var(--muted)] sm:gap-x-4 sm:gap-y-2 sm:text-sm">
-                        {activeProject.stack.slice(0, 6).map((item) => (
-                          <span key={item}>{item}</span>
-                        ))}
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </motion.div>

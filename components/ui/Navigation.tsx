@@ -6,10 +6,9 @@ import Link from 'next/link';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
 
 const navItems = [
-  { label: 'Work', href: '#projects' },
-  { label: 'Experience', href: '#experience' },
   { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Work', href: '#projects' },
 ];
 
 export function Navigation() {
