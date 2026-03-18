@@ -1,7 +1,6 @@
 import { Navigation } from '@/components/ui/Navigation';
 import { Hero } from '@/components/ui/Hero';
 import { VoiceAgent } from '@/components/ui/VoiceAgent';
-import { About } from '@/components/ui/About';
 import { OpenSource } from '@/components/ui/OpenSource';
 import { Fun } from '@/components/ui/Fun';
 import { Experience } from '@/components/ui/Experience';
@@ -22,7 +21,6 @@ export default async function Home() {
       <main>
         <Hero />
         <VoiceAgent />
-        <About />
         <OpenSource />
         <Fun />
         <Experience />
