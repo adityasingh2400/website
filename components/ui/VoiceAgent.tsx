@@ -292,11 +292,11 @@ function getStageContent(stage: VoiceStage, prompt: string) {
     default:
       return {
         badge: 'one click start',
-        title: 'Click the giant mic. That is it.',
+        title: 'Click the mic.',
         body: 'A voice agent trained on everything about me — projects, experience, interests. Ask it anything.',
         hintLabel: 'Try asking',
         hintText: prompt,
-        cta: 'Click anywhere to start',
+        cta: '',
       };
   }
 }
@@ -708,10 +708,12 @@ export function VoiceAgent() {
           </p>
         </div>
 
-        <div className="mt-7 inline-flex max-w-full items-center gap-2 rounded-full border border-[rgba(17,17,17,0.12)] bg-[rgba(255,255,255,0.76)] px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--foreground)] shadow-[0_14px_36px_rgba(17,17,17,0.05)] sm:text-[11px]">
-          {stage === 'blocked' ? <MicOff size={14} /> : <PhoneCall size={14} />}
-          {stageContent.cta}
-        </div>
+        {stageContent.cta && (
+          <div className="mt-7 inline-flex max-w-full items-center gap-2 rounded-full border border-[rgba(17,17,17,0.12)] bg-[rgba(255,255,255,0.76)] px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--foreground)] shadow-[0_14px_36px_rgba(17,17,17,0.05)] sm:text-[11px]">
+            {stage === 'blocked' ? <MicOff size={14} /> : <PhoneCall size={14} />}
+            {stageContent.cta}
+          </div>
+        )}
 
         <div className="mt-5 max-w-[540px] rounded-[28px] border border-[rgba(17,17,17,0.1)] bg-[rgba(255,255,255,0.62)] px-4 py-3 shadow-[0_16px_42px_rgba(17,17,17,0.05)] sm:px-5">
           <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:text-[10px]">
