@@ -762,9 +762,6 @@ export function VoiceAgent() {
             <h2 className="font-display max-w-4xl text-[clamp(2.2rem,6vw,4.6rem)] leading-[0.94] tracking-[-0.05em] text-[var(--foreground)]">
               Talk to me.
             </h2>
-            <p className="mt-4 max-w-sm text-[0.95rem] leading-relaxed text-[var(--muted)] sm:mt-5 sm:text-lg">
-              A voice agent trained on everything about me. Ask it anything.
-            </p>
 
             <div className="mt-8 grid gap-3 sm:mt-10">
               {setupSteps.map((step, index) => {
