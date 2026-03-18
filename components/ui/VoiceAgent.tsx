@@ -11,11 +11,9 @@ import {
   MicOff,
   PhoneCall,
   PhoneOff,
-  Sparkles,
   Volume2,
 } from 'lucide-react';
 
-const topics = ['Projects', 'Ryft', 'Ziri'];
 const sampleQuestions = [
   'What do you like building most?',
   'Which project is your favorite?',
@@ -295,10 +293,10 @@ function getStageContent(stage: VoiceStage, prompt: string) {
       return {
         badge: 'one click start',
         title: 'Click the giant mic. That is it.',
-        body: 'One tap starts the voice agent, requests your mic if needed, and drops you straight into the conversation.',
+        body: 'A voice agent trained on everything about me — projects, experience, interests. Ask it anything.',
         hintLabel: 'Try asking',
         hintText: prompt,
-        cta: 'Click anywhere in this panel to start',
+        cta: 'Click anywhere to start',
       };
   }
 }
@@ -747,12 +745,7 @@ export function VoiceAgent() {
             <PhoneOff size={14} />
             End call
           </button>
-        ) : (
-          <div className="hidden items-center gap-2 rounded-full border border-[rgba(17,17,17,0.12)] bg-[rgba(255,255,255,0.76)] px-3 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--muted)] sm:inline-flex">
-            <Sparkles size={12} />
-            click the big card
-          </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
@@ -770,19 +763,8 @@ export function VoiceAgent() {
               Talk to me.
             </h2>
             <p className="mt-4 max-w-sm text-[0.95rem] leading-relaxed text-[var(--muted)] sm:mt-5 sm:text-lg">
-              One click. One mic prompt. Then just talk.
+              A voice agent trained on everything about me. Ask it anything.
             </p>
-
-            <div className="mt-5 flex flex-wrap gap-2 sm:mt-6">
-              {topics.map((topic) => (
-                <div
-                  key={topic}
-                  className="border border-[var(--line)] bg-[rgba(255,255,255,0.34)] px-2.5 py-1.5 text-[0.8rem] text-[var(--foreground)] sm:px-3 sm:py-2 sm:text-sm"
-                >
-                  {topic}
-                </div>
-              ))}
-            </div>
 
             <div className="mt-8 grid gap-3 sm:mt-10">
               {setupSteps.map((step, index) => {
@@ -833,37 +815,6 @@ export function VoiceAgent() {
                   </div>
                 );
               })}
-            </div>
-
-            <div className="mt-8 sm:mt-10">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">
-                Good first questions
-              </p>
-              <div className="mt-3 grid gap-2">
-                {sampleQuestions.map((question, index) => {
-                  const isSelected = index === activePromptIndex;
-
-                  return (
-                    <button
-                      key={question}
-                      type="button"
-                      onClick={() => setActivePromptIndex(index)}
-                      className="flex items-center justify-between gap-4 border px-4 py-3 text-left transition-all duration-300 hover:-translate-y-0.5 sm:px-5"
-                      style={{
-                        borderColor: isSelected ? 'rgba(17,17,17,0.22)' : 'var(--line)',
-                        background: isSelected ? 'rgba(255,255,255,0.78)' : 'rgba(255,255,255,0.46)',
-                      }}
-                    >
-                      <span className="text-[0.84rem] leading-relaxed text-[var(--foreground)] sm:text-sm">
-                        {question}
-                      </span>
-                      <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--muted)]">
-                        {isSelected ? 'queued' : 'hint'}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
             </div>
 
             <a
