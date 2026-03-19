@@ -21,14 +21,14 @@ const contributions = [
     name: 'Stanford DSPy',
     logo: '/logos/stanford.avif',
     stars: 22500,
-    position: { x: 371.24, y: 80 },
+    position: { x: 320, y: 28.76 },
     logoClassName: 'h-12 w-12 sm:h-[3.9rem] sm:w-[3.9rem] md:h-[4.4rem] md:w-[4.4rem]',
   },
   {
     name: 'Pydantic AI',
     logo: '/logos/pydantic.svg',
     stars: 8700,
-    position: { x: 371.24, y: 220 },
+    position: { x: 320, y: 271.24 },
     logoClassName: 'h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16',
   },
 ];
