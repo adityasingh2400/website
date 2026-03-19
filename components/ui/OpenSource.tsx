@@ -29,7 +29,8 @@ const contributions = [
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
     color: 'text-emerald-500',
     textColor: 'text-[var(--foreground)] hover:text-emerald-500',
-    layoutClasses: 'top-[50%] -translate-y-1/2 left-[5vw] items-start text-left',
+    align: 'left',
+    layoutClasses: 'top-[45%] -translate-y-1/2 left-[5vw]',
     prs: [
       { title: 'feat(mcp): expose auth and httpx_client_factory in SSE/StreamableHttp params', url: 'https://github.com/openai/openai-agents-python/pull/2713', date: 'Mar 19, 2026' },
       { title: 'fix: #879 return McpError as a structured error result instead of crashing the agent run', url: 'https://github.com/openai/openai-agents-python/pull/2598', date: 'Mar 4, 2026' }
@@ -43,7 +44,8 @@ const contributions = [
     logoClassName: 'h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem]',
     color: 'text-red-600',
     textColor: 'text-[var(--foreground)] hover:text-red-500',
-    layoutClasses: 'top-[8%] left-[5vw] items-start text-left',
+    align: 'right',
+    layoutClasses: 'top-[15%] right-[5vw]',
     prs: [
       { title: 'feat: add verify parameter to Image for SSL bypass', url: 'https://github.com/stanfordnlp/dspy/pull/9279', date: 'Feb 9, 2026' },
       { title: 'fix(predict): remove code corruption in ProgramOfThought._parse_code', url: 'https://github.com/stanfordnlp/dspy/pull/9276', date: 'Feb 8, 2026' }
@@ -57,7 +59,8 @@ const contributions = [
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
     color: 'text-pink-600',
     textColor: 'text-[var(--foreground)] hover:text-pink-500',
-    layoutClasses: 'bottom-[8%] right-[5vw] items-end text-right',
+    align: 'right',
+    layoutClasses: 'bottom-[10%] right-[5vw]',
     prs: [
       { title: 'fix: always pass embedding_types to Cohere embed() to prevent SDK TypeError', url: 'https://github.com/pydantic/pydantic-ai/pull/4524', date: 'Mar 4, 2026' }
     ]
@@ -135,17 +138,17 @@ export function OpenSource() {
             onMouseLeave={handleMouseLeave}
             className={`absolute z-10 flex flex-col pointer-events-auto w-full md:max-w-3xl lg:max-w-5xl ${
               contributions.find((c) => c.name === hoveredNode)?.layoutClasses
-            }`}
+            } ${contributions.find((c) => c.name === hoveredNode)?.align === 'right' ? 'items-end text-right' : 'items-start text-left'}`}
           >
             {(() => {
               const active = contributions.find((c) => c.name === hoveredNode);
               if (!active) return null;
               return (
-                <div className={`relative z-50 flex flex-col w-full ${active.name === 'Pydantic AI' ? 'items-end' : 'items-start'}`}>
+                <div className={`relative z-50 flex flex-col w-full ${active.align === 'right' ? 'items-end' : 'items-start'}`}>
                   <h3 className={`text-[6rem] sm:text-[10rem] md:text-[14rem] font-bold leading-[0.8] tracking-tighter opacity-[0.05] ${active.color} mb-6 pointer-events-none whitespace-nowrap`}>
                     {active.prs.length} MERGED<br />PR{active.prs.length !== 1 ? 'S' : ''}
                   </h3>
-                  <div className={`flex flex-col gap-6 w-full ${active.name === 'Pydantic AI' ? 'items-end text-right' : 'items-start text-left'}`}>
+                  <div className={`flex flex-col gap-6 w-full ${active.align === 'right' ? 'items-end text-right' : 'items-start text-left'}`}>
                     {active.prs.map((pr, idx) => (
                       <a 
                         key={idx} 
@@ -157,7 +160,7 @@ export function OpenSource() {
                         <p className={`text-xl sm:text-3xl md:text-5xl font-extrabold tracking-tight transition-colors line-clamp-2 ${active.textColor}`}>
                           {pr.title}
                         </p>
-                        <div className={`flex items-center gap-3 mt-4 opacity-60 group-hover:opacity-100 transition-opacity ${active.name === 'Pydantic AI' ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`flex items-center gap-3 mt-4 opacity-60 group-hover:opacity-100 transition-opacity ${active.align === 'right' ? 'justify-end' : 'justify-start'}`}>
                           <GitPullRequest size={20} className={active.color} />
                           <span className="text-base md:text-xl font-semibold text-[var(--muted)]">{pr.date}</span>
                         </div>
