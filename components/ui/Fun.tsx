@@ -55,7 +55,7 @@ export function Fun() {
               }}
               className="group flex flex-col items-center text-center"
             >
-              <div className="relative mb-5 sm:mb-7">
+              <div className="relative mb-5 flex h-28 items-center justify-center sm:mb-7 sm:h-40 lg:h-48">
                 {item.type === 'politics' ? (
                   <div className="relative flex items-center justify-center gap-3 sm:gap-5">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -80,12 +80,14 @@ export function Fun() {
                     <img
                       src={item.image!}
                       alt={item.label}
-                      className="h-28 w-auto max-w-[200px] object-contain drop-shadow-md transition-transform duration-500 group-hover:scale-105 sm:h-40 sm:max-w-[280px] lg:h-48 lg:max-w-[320px]"
+                      className={`h-28 w-auto max-w-[200px] object-contain drop-shadow-md transition-transform duration-500 group-hover:scale-105 sm:h-40 sm:max-w-[280px] lg:h-48 lg:max-w-[320px] ${
+                        item.image === '/fun-tonystark.png' ? 'rounded-xl' : ''
+                      }`}
                     />
                   </>
                 )}
               </div>
-              <p className="max-w-[220px] text-[0.95rem] leading-snug text-[var(--foreground)] sm:text-[1.1rem] lg:text-[1.2rem]">
+              <p className="max-w-[220px] font-display text-[1rem] leading-snug tracking-[-0.02em] text-[var(--foreground)] sm:text-[1.15rem] lg:text-[1.25rem]">
                 {item.label}
               </p>
             </motion.div>

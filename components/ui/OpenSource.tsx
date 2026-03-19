@@ -140,7 +140,7 @@ export function OpenSource() {
               <img
                 src={c.logo}
                 alt={c.name}
-                className="absolute left-0 top-0 h-16 w-16 -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-lg sm:h-24 sm:w-24 md:h-28 md:w-28"
+                className="absolute left-0 top-0 h-16 w-16 max-w-none -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-lg sm:h-24 sm:w-24 md:h-28 md:w-28"
               />
               <div className={`absolute left-0 top-0 min-w-max -translate-x-1/2 text-center ${LEAF_LABEL_OFFSET}`}>
                 <p className="text-[13px] font-semibold text-[var(--foreground)] sm:text-[16px]">
