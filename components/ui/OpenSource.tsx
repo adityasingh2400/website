@@ -1,10 +1,9 @@
 'use client';
 
-import { motion, useInView, animate } from 'framer-motion';
+import { motion, useInView, animate, AnimatePresence } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
-import { Star, GitMerge } from 'lucide-react';
+import { Star, GitMerge, GitPullRequest } from 'lucide-react';
 import Image from 'next/image';
-import stanfordLogo from '@/stanfordlogo.avif';
 
 type Point = {
   x: number;
@@ -28,13 +27,21 @@ const contributions = [
     stars: 15200,
     position: { x: 237.5, y: 500 }, // Angle 180
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
+    prs: [
+      { title: 'feat(mcp): expose auth and httpx_client_factory in SSE/StreamableHttp params', url: 'https://github.com/openai/openai-agents-python/pull/2713', date: 'Mar 19, 2026' },
+      { title: 'fix: #879 return McpError as a structured error result instead of crashing the agent run', url: 'https://github.com/openai/openai-agents-python/pull/2598', date: 'Mar 4, 2026' }
+    ]
   },
   {
     name: 'Stanford DSPy',
-    logo: stanfordLogo,
+    logo: '/stanfordlogo.avif',
     stars: 22500,
     position: { x: 762.5, y: 196.9 }, // Angle -60 (120 degrees apart)
     logoClassName: 'h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem]',
+    prs: [
+      { title: 'feat: add verify parameter to Image for SSL bypass', url: 'https://github.com/stanfordnlp/dspy/pull/9279', date: 'Feb 9, 2026' },
+      { title: 'fix(predict): remove code corruption in ProgramOfThought._parse_code', url: 'https://github.com/stanfordnlp/dspy/pull/9276', date: 'Feb 8, 2026' }
+    ]
   },
   {
     name: 'Pydantic AI',
@@ -42,6 +49,9 @@ const contributions = [
     stars: 8700,
     position: { x: 762.5, y: 803.1 }, // Angle 60 (120 degrees apart)
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
+    prs: [
+      { title: 'fix: always pass embedding_types to Cohere embed() to prevent SDK TypeError', url: 'https://github.com/pydantic/pydantic-ai/pull/4524', date: 'Mar 4, 2026' }
+    ]
   },
 ];
 
@@ -86,6 +96,7 @@ function insetLine(from: Point, to: Point, startInset: number, endInset: number)
 export function OpenSource() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
   return (
     <section id="open-source" className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-36" ref={ref}>
@@ -236,15 +247,56 @@ export function OpenSource() {
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.6 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="absolute left-0 top-0 flex h-[4.9rem] w-[4.9rem] max-w-none -translate-x-1/2 -translate-y-1/2 items-center justify-center sm:h-[5.8rem] sm:w-[5.8rem] md:h-[6.4rem] md:w-[6.4rem]">
+              <div 
+                className="absolute left-0 top-0 flex h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem] max-w-none -translate-x-1/2 -translate-y-1/2 items-center justify-center cursor-pointer"
+                onMouseEnter={() => setHoveredNode(c.name)}
+                onMouseLeave={() => setHoveredNode(null)}
+              >
                 {/* Keep the anchor at the node center so the SVG connector and outer node share the same target. */}
                 <Image
                   src={c.logo}
                   alt={c.name}
                   width={250}
                   height={250}
+                  unoptimized
                   className={`relative z-10 max-w-none object-contain drop-shadow-[0_10px_24px_rgba(17,17,17,0.14)] ${c.logoClassName}`}
                 />
+
+                <AnimatePresence>
+                  {hoveredNode === c.name && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="absolute top-[85%] z-50 w-72 rounded-2xl border border-[rgba(255,255,255,0.15)] bg-slate-900/85 shadow-[0_30px_100px_rgba(0,0,0,0.4)] backdrop-blur-xl p-4 sm:w-80 md:w-96 text-left"
+                      style={{ 
+                        pointerEvents: 'auto',
+                      }}
+                    >
+                      <div className="flex items-center gap-2 mb-3 border-b border-white/10 pb-2">
+                        <GitPullRequest size={16} className="text-emerald-400" />
+                        <h4 className="text-sm font-semibold text-white">{c.prs.length} Merged PR{c.prs.length !== 1 ? 's' : ''}</h4>
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        {c.prs.map((pr, idx) => (
+                          <a 
+                            key={idx} 
+                            href={pr.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="group flex flex-col gap-1 rounded-lg p-2 hover:bg-white/10 transition-colors"
+                          >
+                            <p className="text-xs font-medium text-white/90 group-hover:text-emerald-300 transition-colors line-clamp-2 leading-relaxed">
+                              {pr.title}
+                            </p>
+                            <span className="text-[10px] text-white/40">{pr.date}</span>
+                          </a>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
               <div className={`absolute left-0 top-0 min-w-max -translate-x-1/2 text-center ${LEAF_LABEL_OFFSET}`}>
                 <p className="text-[13px] font-semibold text-[var(--foreground)] sm:text-[16px]">
