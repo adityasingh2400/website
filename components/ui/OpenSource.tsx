@@ -3,6 +3,7 @@
 import { motion, useInView, animate } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { Star, GitMerge } from 'lucide-react';
+import Image from 'next/image';
 
 type Point = {
   x: number;
@@ -15,7 +16,7 @@ const CANVAS = { width: 1000, height: 1000 };
 // The bounding box center needs to be precisely at x=500.
 // Thus, HUB_X = 500 + 350 / 4 = 587.5. HUB_Y = 500.
 const HUB = { x: 587.5, y: 500 };
-const HUB_RADIUS = 160;
+const HUB_RADIUS = 75;
 const OUTER_RADIUS = 125;
 const LEAF_LABEL_OFFSET = 'translate-y-[6rem] sm:translate-y-[7.5rem] md:translate-y-[8.5rem]';
 
@@ -216,8 +217,8 @@ export function OpenSource() {
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="absolute left-0 top-0 flex h-[13.8rem] w-[13.8rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--foreground)] text-white ring-[10px] ring-white/72 shadow-[0_28px_80px_rgba(17,17,17,0.24)] sm:h-[15.6rem] sm:w-[15.6rem] md:h-[16.5rem] md:w-[16.5rem]">
-              <GitMerge size={90} strokeWidth={2.2} />
+            <div className="absolute left-0 top-0 flex h-[4.6rem] w-[4.6rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--foreground)] text-white ring-[10px] ring-white/72 shadow-[0_28px_80px_rgba(17,17,17,0.24)] sm:h-[5.2rem] sm:w-[5.2rem] md:h-[5.5rem] md:w-[5.5rem]">
+              <GitMerge size={30} strokeWidth={2.2} />
             </div>
           </motion.div>
 
@@ -236,10 +237,11 @@ export function OpenSource() {
             >
               <div className="absolute left-0 top-0 flex h-[4.9rem] w-[4.9rem] max-w-none -translate-x-1/2 -translate-y-1/2 items-center justify-center sm:h-[5.8rem] sm:w-[5.8rem] md:h-[6.4rem] md:w-[6.4rem]">
                 {/* Keep the anchor at the node center so the SVG connector and outer node share the same target. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={c.logo}
                   alt={c.name}
+                  width={250}
+                  height={250}
                   className={`relative z-10 max-w-none object-contain drop-shadow-[0_10px_24px_rgba(17,17,17,0.14)] ${c.logoClassName}`}
                 />
               </div>

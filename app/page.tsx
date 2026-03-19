@@ -21,9 +21,9 @@ export default async function Home() {
       <main>
         <Hero />
         <VoiceAgent />
-        <OpenSource />
         <Experience />
         <Projects projects={projects} />
+        <OpenSource />
         <Fun />
       </main>
       <Footer />
