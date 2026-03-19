@@ -182,8 +182,11 @@ export function OpenSource() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="text-center"
         >
-          <h2 className="font-display text-[clamp(2.1rem,6vw,4.5rem)] leading-[0.92] tracking-[-0.04em] text-[var(--foreground)]">
-            Architecting the foundation of <span className="whitespace-nowrap">modern AI.</span>
+          <h2
+            className="mx-auto max-w-5xl font-display text-[clamp(2.1rem,6vw,4.5rem)] leading-[0.92] tracking-[-0.04em] text-[var(--foreground)]"
+            style={{ textWrap: 'balance' }}
+          >
+            Architecting the foundation of modern AI.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-[1rem] text-[var(--muted)] sm:mt-5 sm:text-lg">
             Authoring critical infrastructure and high-impact pull requests merged directly into the world's most foundational open-source models and frameworks.
