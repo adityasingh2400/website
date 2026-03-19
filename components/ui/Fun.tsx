@@ -10,19 +10,14 @@ const items = [
     label: 'I love hooping',
   },
   {
-    type: 'politics' as const,
-    images: ['/fun-david.png', '/fun-illuminate.png'],
-    label: 'Will debate anyone on world politics',
-  },
-  {
-    type: 'single' as const,
-    image: '/fun-spontaneous.svg',
-    label: 'Spontaneous plans are the best plans',
-  },
-  {
     type: 'single' as const,
     image: '/fun-tonystark.png',
     label: 'Multiple concurrent agents, always',
+  },
+  {
+    type: 'politics' as const,
+    images: ['/fun-david.png', '/fun-illuminate.png'],
+    label: 'Will debate anyone on world politics',
   },
 ];
 
@@ -42,7 +37,7 @@ export function Fun() {
           Off The Clock
         </motion.p>
 
-        <div className="grid grid-cols-2 gap-6 sm:gap-10 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-6 sm:gap-10 lg:grid-cols-3">
           {items.map((item, i) => (
             <motion.div
               key={item.label}
