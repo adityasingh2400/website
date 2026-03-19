@@ -23,41 +23,50 @@ export function FluidBackground({ className }: FluidBackgroundProps) {
     if (!container || simRef.current) return;
 
     const mobile = isTouchDevice();
+    let simulation: WebGLFluidEnhanced;
 
-    const simulation = new WebGLFluidEnhanced(container);
-    simulation.setConfig({
-      simResolution: mobile ? 64 : 160,
-      dyeResolution: mobile ? 512 : 1024,
-      densityDissipation: 0.995,
-      velocityDissipation: 0.22,
-      pressure: 0.8,
-      pressureIterations: mobile ? 12 : 24,
-      curl: 22,
-      splatRadius: mobile ? 0.3 : 0.22,
-      splatForce: 6400,
-      shading: true,
-      colorful: true,
-      colorUpdateSpeed: 12,
-      backgroundColor: '#1a1a2e',
-      transparent: false,
-      bloom: !mobile,
-      bloomIterations: 6,
-      bloomResolution: 256,
-      bloomIntensity: 0.5,
-      bloomThreshold: 0.5,
-      bloomSoftKnee: 0.6,
-      sunrays: false,
-      sunraysResolution: 196,
-      sunraysWeight: 0.3,
-      hover: true,
-      brightness: 0.8,
-      colorPalette: ['#7c3aed', '#3b82f6', '#06b6d4', '#ec4899', '#f97316'],
-    });
-    simulation.start();
+    try {
+      simulation = new WebGLFluidEnhanced(container);
+      simulation.setConfig({
+        simResolution: mobile ? 64 : 160,
+        dyeResolution: mobile ? 512 : 1024,
+        densityDissipation: 0.995,
+        velocityDissipation: 0.22,
+        pressure: 0.8,
+        pressureIterations: mobile ? 12 : 24,
+        curl: 22,
+        splatRadius: mobile ? 0.3 : 0.22,
+        splatForce: 6400,
+        shading: true,
+        colorful: true,
+        colorUpdateSpeed: 12,
+        backgroundColor: '#1a1a2e',
+        transparent: false,
+        bloom: !mobile,
+        bloomIterations: 6,
+        bloomResolution: 256,
+        bloomIntensity: 0.5,
+        bloomThreshold: 0.5,
+        bloomSoftKnee: 0.6,
+        sunrays: false,
+        sunraysResolution: 196,
+        sunraysWeight: 0.3,
+        hover: true,
+        brightness: 0.8,
+        colorPalette: ['#7c3aed', '#3b82f6', '#06b6d4', '#ec4899', '#f97316'],
+      });
+      simulation.start();
+    } catch (error) {
+      console.warn('Skipping fluid background because WebGL initialization failed.', error);
+      return;
+    }
+
     simRef.current = simulation;
 
-    setTimeout(() => simulation.multipleSplats(Math.floor(Math.random() * 5) + 10), 100);
-    setTimeout(() => simulation.multipleSplats(Math.floor(Math.random() * 4) + 4), 900);
+    const warmupSplats = [
+      window.setTimeout(() => simulation.multipleSplats(Math.floor(Math.random() * 5) + 10), 100),
+      window.setTimeout(() => simulation.multipleSplats(Math.floor(Math.random() * 4) + 4), 900),
+    ];
 
     const canvas = container.querySelector<HTMLCanvasElement>('canvas');
 
@@ -120,6 +129,7 @@ export function FluidBackground({ className }: FluidBackgroundProps) {
     window.addEventListener('touchmove', forwardTouch, { passive: true });
 
     return () => {
+      warmupSplats.forEach((timeout) => window.clearTimeout(timeout));
       window.removeEventListener('mousemove', forwardMove);
       window.removeEventListener('mousedown', forwardDown);
       window.removeEventListener('touchmove', forwardTouch);
