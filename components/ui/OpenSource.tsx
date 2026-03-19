@@ -15,9 +15,9 @@ const CANVAS = { width: 1000, height: 1000 };
 // The bounding box center needs to be precisely at x=500.
 // Thus, HUB_X = 500 + 350 / 4 = 587.5. HUB_Y = 500.
 const HUB = { x: 587.5, y: 500 };
-const HUB_RADIUS = 50;
-const OUTER_RADIUS = 60;
-const LEAF_LABEL_OFFSET = 'translate-y-[5.4rem] sm:translate-y-[6.45rem] md:translate-y-[7.15rem]';
+const HUB_RADIUS = 75;
+const OUTER_RADIUS = 55;
+const LEAF_LABEL_OFFSET = 'translate-y-[4.4rem] sm:translate-y-[5.2rem] md:translate-y-[6rem]';
 
 const contributions = [
   {
@@ -29,7 +29,7 @@ const contributions = [
   },
   {
     name: 'Stanford DSPy',
-    logo: '/logos/stanford.avif',
+    logo: '/logos/stanford.svg',
     stars: 22500,
     position: { x: 762.5, y: 196.9 }, // Angle -60 (120 degrees apart)
     logoClassName: 'h-12 w-12 sm:h-[3.9rem] sm:w-[3.9rem] md:h-[4.4rem] md:w-[4.4rem]',
@@ -234,9 +234,7 @@ export function OpenSource() {
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.6 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="absolute left-0 top-0 flex h-[4.9rem] w-[4.9rem] max-w-none -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[1.75rem] border border-[rgba(17,17,17,0.09)] bg-[rgba(255,255,255,0.82)] shadow-[0_24px_70px_rgba(17,17,17,0.12)] backdrop-blur-sm sm:h-[5.8rem] sm:w-[5.8rem] md:h-[6.4rem] md:w-[6.4rem]">
-                <div className="absolute inset-[10%] rounded-[1.45rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(255,255,255,0.58))]" />
-                <div className="absolute inset-[18%] rounded-[1.15rem] border border-[rgba(17,17,17,0.05)]" />
+              <div className="absolute left-0 top-0 flex h-[4.9rem] w-[4.9rem] max-w-none -translate-x-1/2 -translate-y-1/2 items-center justify-center sm:h-[5.8rem] sm:w-[5.8rem] md:h-[6.4rem] md:w-[6.4rem]">
                 {/* Keep the anchor at the node center so the SVG connector and outer node share the same target. */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
