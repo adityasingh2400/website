@@ -15,9 +15,9 @@ const CANVAS = { width: 1000, height: 1000 };
 // The bounding box center needs to be precisely at x=500.
 // Thus, HUB_X = 500 + 350 / 4 = 587.5. HUB_Y = 500.
 const HUB = { x: 587.5, y: 500 };
-const HUB_RADIUS = 75;
-const OUTER_RADIUS = 55;
-const LEAF_LABEL_OFFSET = 'translate-y-[4.4rem] sm:translate-y-[5.2rem] md:translate-y-[6rem]';
+const HUB_RADIUS = 160;
+const OUTER_RADIUS = 125;
+const LEAF_LABEL_OFFSET = 'translate-y-[6rem] sm:translate-y-[7.5rem] md:translate-y-[8.5rem]';
 
 const contributions = [
   {
@@ -25,21 +25,21 @@ const contributions = [
     logo: '/logos/openai.svg',
     stars: 15200,
     position: { x: 237.5, y: 500 }, // Angle 180
-    logoClassName: 'h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16',
+    logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
   },
   {
     name: 'Stanford DSPy',
-    logo: '/logos/stanford.svg',
+    logo: '/logos/stanfordlogo.avif',
     stars: 22500,
     position: { x: 762.5, y: 196.9 }, // Angle -60 (120 degrees apart)
-    logoClassName: 'h-12 w-12 sm:h-[3.9rem] sm:w-[3.9rem] md:h-[4.4rem] md:w-[4.4rem]',
+    logoClassName: 'h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem]',
   },
   {
     name: 'Pydantic AI',
     logo: '/logos/pydantic.svg',
     stars: 8700,
     position: { x: 762.5, y: 803.1 }, // Angle 60 (120 degrees apart)
-    logoClassName: 'h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16',
+    logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
   },
 ];
 
@@ -216,8 +216,8 @@ export function OpenSource() {
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="absolute left-0 top-0 flex h-[4.6rem] w-[4.6rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--foreground)] text-white ring-[10px] ring-white/72 shadow-[0_28px_80px_rgba(17,17,17,0.24)] sm:h-[5.2rem] sm:w-[5.2rem] md:h-[5.5rem] md:w-[5.5rem]">
-              <GitMerge size={30} strokeWidth={2.2} />
+            <div className="absolute left-0 top-0 flex h-[13.8rem] w-[13.8rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--foreground)] text-white ring-[10px] ring-white/72 shadow-[0_28px_80px_rgba(17,17,17,0.24)] sm:h-[15.6rem] sm:w-[15.6rem] md:h-[16.5rem] md:w-[16.5rem]">
+              <GitMerge size={90} strokeWidth={2.2} />
             </div>
           </motion.div>
 
