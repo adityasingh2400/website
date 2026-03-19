@@ -146,7 +146,7 @@ export function OpenSource() {
               if (!active) return null;
               return (
                 <div className={`relative z-50 flex flex-col w-full ${active.align === 'right' ? 'items-end' : 'items-start'}`}>
-                  <h3 className={`text-[6rem] sm:text-[10rem] md:text-[14rem] font-bold leading-[0.8] tracking-tighter opacity-[0.05] ${active.color} mb-6 pointer-events-none whitespace-nowrap`}>
+                  <h3 className={`text-[4rem] sm:text-[7rem] md:text-[10rem] font-bold leading-[0.8] tracking-tighter opacity-[0.05] ${active.color} mb-6 pointer-events-none whitespace-nowrap`}>
                     {active.prs.length} MERGED<br />PR{active.prs.length !== 1 ? 'S' : ''}
                   </h3>
                   <div className={`flex flex-col gap-6 w-full ${active.align === 'right' ? 'items-end text-right' : 'items-start text-left'}`}>
@@ -158,12 +158,12 @@ export function OpenSource() {
                         rel="noopener noreferrer"
                         className="group relative cursor-pointer block transition-transform hover:scale-[1.02]"
                       >
-                        <p className={`text-xl sm:text-3xl md:text-5xl font-extrabold tracking-tight transition-colors line-clamp-2 ${active.textColor}`}>
+                        <p className={`text-lg sm:text-2xl md:text-4xl font-extrabold tracking-tight transition-colors line-clamp-2 ${active.textColor}`}>
                           {pr.title}
                         </p>
-                        <div className={`flex items-center gap-3 mt-4 opacity-60 group-hover:opacity-100 transition-opacity ${active.align === 'right' ? 'justify-end' : 'justify-start'}`}>
-                          <GitPullRequest size={20} className={active.color} />
-                          <span className="text-base md:text-xl font-semibold text-[var(--muted)]">{pr.date}</span>
+                        <div className={`flex items-center gap-3 mt-3 opacity-60 group-hover:opacity-100 transition-opacity ${active.align === 'right' ? 'justify-end' : 'justify-start'}`}>
+                          <GitPullRequest size={16} className={active.color} />
+                          <span className="text-sm md:text-lg font-semibold text-[var(--muted)]">{pr.date}</span>
                         </div>
                       </a>
                     ))}
