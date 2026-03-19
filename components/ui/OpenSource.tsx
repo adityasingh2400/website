@@ -33,6 +33,7 @@ const contributions = [
     layoutClasses: 'top-[45%] -translate-y-1/2 left-[5vw]',
     prs: [
       { title: 'feat(mcp): expose auth and httpx_client_factory in SSE/StreamableHttp params', url: 'https://github.com/openai/openai-agents-python/pull/2713', date: 'Mar 19, 2026' },
+      { title: 'feat(mcp): expose session_id on MCPServerStreamableHttp', url: 'https://github.com/openai/openai-agents-python/pull/2708', date: 'Mar 19, 2026' },
       { title: 'fix: #879 return McpError as a structured error result instead of crashing the agent run', url: 'https://github.com/openai/openai-agents-python/pull/2598', date: 'Mar 4, 2026' }
     ]
   },
