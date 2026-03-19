@@ -14,21 +14,21 @@ const contributions = [
     name: 'OpenAI Agents SDK',
     logo: '/logos/openai.svg',
     stars: 15200,
-    position: { x: 110, y: 150 },
+    position: { x: 100, y: 150 },
     logoClassName: 'h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16',
   },
   {
     name: 'Stanford DSPy',
     logo: '/logos/stanford.avif',
     stars: 22500,
-    position: { x: 320, y: 28.76 },
+    position: { x: 400, y: -23.2 },
     logoClassName: 'h-12 w-12 sm:h-[3.9rem] sm:w-[3.9rem] md:h-[4.4rem] md:w-[4.4rem]',
   },
   {
     name: 'Pydantic AI',
     logo: '/logos/pydantic.svg',
     stars: 8700,
-    position: { x: 320, y: 271.24 },
+    position: { x: 400, y: 323.2 },
     logoClassName: 'h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16',
   },
 ];
@@ -57,7 +57,7 @@ function AnimatedStarCount({ target, inView }: { target: number; inView: boolean
 }
 
 const CANVAS = { width: 500, height: 300 };
-const HUB = { x: 250, y: 150 };
+const HUB = { x: 300, y: 150 };
 const HUB_RADIUS = 28;
 const OUTER_RADIUS = 34;
 const LEAF_LABEL_OFFSET = 'translate-y-[5.4rem] sm:translate-y-[6.45rem] md:translate-y-[7.15rem]';
@@ -101,7 +101,7 @@ export function OpenSource() {
         <div className="relative mx-auto mt-12 max-w-4xl sm:mt-16" style={{ aspectRatio: '5 / 3' }}>
           {/* SVG lines */}
           <svg
-            className="absolute inset-0 h-full w-full"
+            className="absolute inset-0 h-full w-full overflow-visible"
             viewBox={`0 0 ${CANVAS.width} ${CANVAS.height}`}
             preserveAspectRatio="xMidYMid meet"
             fill="none"
