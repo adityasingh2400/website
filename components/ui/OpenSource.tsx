@@ -76,7 +76,7 @@ export function OpenSource() {
 
         <div className="relative mx-auto mt-12 max-w-3xl sm:mt-16" style={{ aspectRatio: '5 / 3' }}>
           {/* SVG lines */}
-          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" fill="none">
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" fill="none">
             {LEAVES.map((leaf, i) => (
               <motion.line
                 key={i}
@@ -85,8 +85,8 @@ export function OpenSource() {
                 x2={leaf.x}
                 y2={leaf.y}
                 stroke="var(--foreground)"
-                strokeWidth="0.5"
-                strokeOpacity="0.25"
+                strokeWidth="0.35"
+                strokeOpacity="0.35"
                 initial={{ pathLength: 0 }}
                 animate={isInView ? { pathLength: 1 } : {}}
                 transition={{ duration: 1.2, delay: 0.3 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
@@ -95,13 +95,13 @@ export function OpenSource() {
             {LEAVES.map((leaf, i) => (
               <motion.circle
                 key={`dot-${i}`}
-                r="0.8"
+                r="1"
                 fill="var(--foreground)"
                 initial={{ cx: CENTER.x, cy: CENTER.y, opacity: 0 }}
                 animate={isInView ? {
                   cx: [CENTER.x, leaf.x],
                   cy: [CENTER.y, leaf.y],
-                  opacity: [0, 0.4, 0],
+                  opacity: [0, 0.5, 0],
                 } : {}}
                 transition={{
                   duration: 2.5,
