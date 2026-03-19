@@ -5,12 +5,15 @@
   <ellipse cx="100" cy="100" rx="85" ry="50" fill="none" stroke="#3b82f6" stroke-width="1.8" opacity="0.5" transform="rotate(30 100 100)"/>
   <line x1="15" y1="100" x2="185" y2="100" stroke="#3b82f6" stroke-width="1.5" opacity="0.4"/>
   <line x1="100" y1="15" x2="100" y2="185" stroke="#3b82f6" stroke-width="1.5" opacity="0.4"/>
+  <!-- Star of David (Israel) -->
+  <polygon points="100,40 120,75 80,75" fill="none" stroke="#2563eb" stroke-width="2.5" opacity="0.75"/>
+  <polygon points="100,90 80,55 120,55" fill="none" stroke="#2563eb" stroke-width="2.5" opacity="0.75"/>
+  <!-- Eye of providence / freemason triangle -->
+  <polygon points="55,140 85,95 25,95" fill="none" stroke="#10b981" stroke-width="2" opacity="0.6"/>
+  <circle cx="55" cy="112" r="7" fill="none" stroke="#10b981" stroke-width="1.8" opacity="0.6"/>
+  <circle cx="55" cy="112" r="2.5" fill="#10b981" opacity="0.6"/>
   <!-- Question marks -->
-  <text x="55" y="70" font-family="serif" font-size="32" font-weight="700" fill="#ef4444" opacity="0.8">?</text>
-  <text x="130" y="85" font-family="serif" font-size="26" font-weight="700" fill="#f59e0b" opacity="0.7">?</text>
-  <text x="85" y="155" font-family="serif" font-size="28" font-weight="700" fill="#8b5cf6" opacity="0.7">?</text>
-  <!-- Eye of providence triangle -->
-  <polygon points="100,42 130,95 70,95" fill="none" stroke="#10b981" stroke-width="2" opacity="0.6"/>
-  <circle cx="100" cy="78" r="8" fill="none" stroke="#10b981" stroke-width="1.8" opacity="0.6"/>
-  <circle cx="100" cy="78" r="3" fill="#10b981" opacity="0.6"/>
+  <text x="140" y="85" font-family="serif" font-size="30" font-weight="700" fill="#ef4444" opacity="0.7">?</text>
+  <text x="145" y="150" font-family="serif" font-size="24" font-weight="700" fill="#f59e0b" opacity="0.6">?</text>
+  <text x="38" y="170" font-family="serif" font-size="22" font-weight="700" fill="#8b5cf6" opacity="0.5">?</text>
 </svg>
