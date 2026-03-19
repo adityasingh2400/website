@@ -7,7 +7,7 @@ const items = [
   {
     type: 'single' as const,
     image: '/fun-basketball.jpeg',
-    label: 'Never say no to runs',
+    label: 'I love hooping',
   },
   {
     type: 'politics' as const,
