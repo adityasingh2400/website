@@ -9,19 +9,16 @@ const contributions = [
     name: 'OpenAI Agents SDK',
     logo: '/logos/openai.svg',
     stars: 15200,
-    angle: 0,
   },
   {
     name: 'Stanford DSPy',
-    logo: '/logos/stanford.svg',
+    logo: '/logos/stanford.avif',
     stars: 22500,
-    angle: 1,
   },
   {
     name: 'Pydantic AI',
     logo: '/logos/pydantic.svg',
     stars: 8700,
-    angle: 2,
   },
 ];
 
@@ -48,45 +45,17 @@ function AnimatedStarCount({ target, inView }: { target: number; inView: boolean
   return <span>{formatStars(display)}</span>;
 }
 
+const CENTER = { x: 50, y: 50 };
+
+const LEAVES = [
+  { x: 12, y: 30 },
+  { x: 75, y: 12 },
+  { x: 78, y: 82 },
+];
+
 export function OpenSource() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  const lineVariant = (i: number) => ({
-    hidden: { pathLength: 0, opacity: 0 },
-    visible: {
-      pathLength: 1,
-      opacity: 1,
-      transition: {
-        duration: 1.2,
-        delay: 0.4 + i * 0.2,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    },
-  });
-
-  const nodeVariant = (i: number) => ({
-    hidden: { opacity: 0, scale: 0.5 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.8,
-        delay: 0.8 + i * 0.15,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    },
-  });
-
-  // Leaf node positions (center of each node) in the SVG viewBox
-  // Arranged: left, top-right, bottom-right
-  const cx = 300, cy = 250;
-  const radius = 180;
-  const leaves = [
-    { x: cx - radius, y: cy - 40 },
-    { x: cx + radius * 0.7, y: cy - radius * 0.9 },
-    { x: cx + radius * 0.7, y: cy + radius * 0.7 },
-  ];
 
   return (
     <section className="relative px-5 py-24 sm:px-8 sm:py-36 overflow-hidden" ref={ref}>
@@ -105,50 +74,41 @@ export function OpenSource() {
           </p>
         </motion.div>
 
-        {/* Radial graph: center node + 3 leaf nodes */}
-        <div className="relative mx-auto mt-12 max-w-2xl sm:mt-16" style={{ aspectRatio: '600 / 500' }}>
-          {/* SVG lines from center to each leaf */}
-          <svg
-            className="absolute inset-0 h-full w-full"
-            viewBox="0 0 600 500"
-            fill="none"
-            preserveAspectRatio="xMidYMid meet"
-          >
-            {leaves.map((leaf, i) => (
+        <div className="relative mx-auto mt-12 max-w-3xl sm:mt-16" style={{ aspectRatio: '5 / 3' }}>
+          {/* SVG lines */}
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" fill="none">
+            {LEAVES.map((leaf, i) => (
               <motion.line
                 key={i}
-                x1={cx}
-                y1={cy}
+                x1={CENTER.x}
+                y1={CENTER.y}
                 x2={leaf.x}
                 y2={leaf.y}
                 stroke="var(--foreground)"
-                strokeWidth="1.5"
-                strokeOpacity="0.18"
-                strokeDasharray="6 4"
-                variants={lineVariant(i)}
-                initial="hidden"
-                animate={isInView ? 'visible' : 'hidden'}
+                strokeWidth="0.5"
+                strokeOpacity="0.25"
+                initial={{ pathLength: 0 }}
+                animate={isInView ? { pathLength: 1 } : {}}
+                transition={{ duration: 1.2, delay: 0.3 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
               />
             ))}
-            {/* Animated dots traveling along lines */}
-            {leaves.map((leaf, i) => (
+            {LEAVES.map((leaf, i) => (
               <motion.circle
                 key={`dot-${i}`}
-                r="3"
+                r="0.8"
                 fill="var(--foreground)"
-                opacity="0.3"
-                initial={{ cx, cy, opacity: 0 }}
+                initial={{ cx: CENTER.x, cy: CENTER.y, opacity: 0 }}
                 animate={isInView ? {
-                  cx: [cx, leaf.x],
-                  cy: [cy, leaf.y],
-                  opacity: [0, 0.5, 0],
+                  cx: [CENTER.x, leaf.x],
+                  cy: [CENTER.y, leaf.y],
+                  opacity: [0, 0.4, 0],
                 } : {}}
                 transition={{
-                  duration: 2,
-                  delay: 0.6 + i * 0.25,
+                  duration: 2.5,
+                  delay: 0.8 + i * 0.2,
                   ease: [0.16, 1, 0.3, 1],
                   repeat: Infinity,
-                  repeatDelay: 3,
+                  repeatDelay: 4,
                 }}
               />
             ))}
@@ -156,19 +116,14 @@ export function OpenSource() {
 
           {/* Center node */}
           <motion.div
-            className="absolute"
-            style={{
-              left: `${(cx / 600) * 100}%`,
-              top: `${(cy / 500) * 100}%`,
-              transform: 'translate(-50%, -50%)',
-            }}
-            initial={{ opacity: 0, scale: 0.4 }}
+            className="absolute z-10"
+            style={{ left: `${CENTER.x}%`, top: `${CENTER.y}%`, transform: 'translate(-50%, -50%)' }}
+            initial={{ opacity: 0, scale: 0.3 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[var(--foreground)] bg-[var(--foreground)] text-white shadow-[0_0_40px_rgba(17,17,17,0.2)] sm:h-20 sm:w-20">
-              <GitMerge size={24} strokeWidth={2} className="sm:hidden" />
-              <GitMerge size={30} strokeWidth={2} className="hidden sm:block" />
+            <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[var(--foreground)] bg-[var(--foreground)] text-white shadow-[0_0_50px_rgba(17,17,17,0.25)] sm:h-18 sm:w-18 md:h-20 md:w-20">
+              <GitMerge size={28} strokeWidth={2} />
             </div>
           </motion.div>
 
@@ -176,30 +131,26 @@ export function OpenSource() {
           {contributions.map((c, i) => (
             <motion.div
               key={c.name}
-              className="absolute"
-              style={{
-                left: `${(leaves[i].x / 600) * 100}%`,
-                top: `${(leaves[i].y / 500) * 100}%`,
-                transform: 'translate(-50%, -50%)',
-              }}
-              variants={nodeVariant(i)}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
+              className="absolute z-10"
+              style={{ left: `${LEAVES[i].x}%`, top: `${LEAVES[i].y}%`, transform: 'translate(-50%, -50%)' }}
+              initial={{ opacity: 0, scale: 0.4 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.6 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="flex flex-col items-center gap-2 sm:gap-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={c.logo}
                   alt={c.name}
-                  className="h-14 w-14 object-contain drop-shadow-lg sm:h-20 sm:w-20"
+                  className="h-16 w-16 object-contain drop-shadow-lg sm:h-24 sm:w-24 md:h-28 md:w-28"
                 />
                 <div className="text-center">
-                  <p className="text-[13px] font-semibold text-[var(--foreground)] sm:text-[15px]">
+                  <p className="text-[13px] font-semibold text-[var(--foreground)] sm:text-[16px]">
                     {c.name}
                   </p>
                   <div className="mt-0.5 flex items-center justify-center gap-1.5">
-                    <Star size={14} className="fill-amber-400 text-amber-400" />
-                    <span className="text-[14px] font-semibold tabular-nums text-[var(--foreground)] sm:text-[16px]">
+                    <Star size={15} className="fill-amber-400 text-amber-400" />
+                    <span className="text-[15px] font-bold tabular-nums text-[var(--foreground)] sm:text-[18px]">
                       <AnimatedStarCount target={c.stars} inView={isInView} />
                     </span>
                   </div>
