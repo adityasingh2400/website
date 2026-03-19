@@ -4,6 +4,7 @@ import { motion, useInView, animate } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { Star, GitMerge } from 'lucide-react';
 import Image from 'next/image';
+import stanfordLogo from '@/stanfordlogo.avif';
 
 type Point = {
   x: number;
@@ -30,7 +31,7 @@ const contributions = [
   },
   {
     name: 'Stanford DSPy',
-    logo: '/logos/stanfordlogo.avif',
+    logo: stanfordLogo,
     stars: 22500,
     position: { x: 762.5, y: 196.9 }, // Angle -60 (120 degrees apart)
     logoClassName: 'h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem]',
