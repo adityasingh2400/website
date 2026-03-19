@@ -9,26 +9,36 @@ type Point = {
   y: number;
 };
 
+const CANVAS = { width: 1000, height: 1000 };
+// We perfectly center the BOUNDING BOX. 
+// For an equilateral triangle with R=350 pointing left:
+// The bounding box center needs to be precisely at x=500.
+// Thus, HUB_X = 500 + 350 / 4 = 587.5. HUB_Y = 500.
+const HUB = { x: 587.5, y: 500 };
+const HUB_RADIUS = 50;
+const OUTER_RADIUS = 60;
+const LEAF_LABEL_OFFSET = 'translate-y-[5.4rem] sm:translate-y-[6.45rem] md:translate-y-[7.15rem]';
+
 const contributions = [
   {
     name: 'OpenAI Agents SDK',
     logo: '/logos/openai.svg',
     stars: 15200,
-    position: { x: 100, y: 250 },
+    position: { x: 237.5, y: 500 }, // Angle 180
     logoClassName: 'h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16',
   },
   {
     name: 'Stanford DSPy',
     logo: '/logos/stanford.avif',
     stars: 22500,
-    position: { x: 400, y: 76.8 },
+    position: { x: 762.5, y: 196.9 }, // Angle -60 (120 degrees apart)
     logoClassName: 'h-12 w-12 sm:h-[3.9rem] sm:w-[3.9rem] md:h-[4.4rem] md:w-[4.4rem]',
   },
   {
     name: 'Pydantic AI',
     logo: '/logos/pydantic.svg',
     stars: 8700,
-    position: { x: 400, y: 423.2 },
+    position: { x: 762.5, y: 803.1 }, // Angle 60 (120 degrees apart)
     logoClassName: 'h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16',
   },
 ];
@@ -55,12 +65,6 @@ function AnimatedStarCount({ target, inView }: { target: number; inView: boolean
 
   return <span>{formatStars(display)}</span>;
 }
-
-const CANVAS = { width: 500, height: 500 };
-const HUB = { x: 300, y: 250 };
-const HUB_RADIUS = 28;
-const OUTER_RADIUS = 34;
-const LEAF_LABEL_OFFSET = 'translate-y-[5.4rem] sm:translate-y-[6.45rem] md:translate-y-[7.15rem]';
 
 function insetLine(from: Point, to: Point, startInset: number, endInset: number) {
   const dx = to.x - from.x;
@@ -98,7 +102,7 @@ export function OpenSource() {
           </p>
         </motion.div>
 
-        <div className="relative mx-auto mt-12 max-w-4xl sm:mt-16" style={{ aspectRatio: '1 / 1' }}>
+        <div className="relative mx-auto mt-12 max-w-4xl sm:mt-16 w-full" style={{ aspectRatio: '1 / 1' }}>
           {/* SVG lines */}
           <svg
             className="absolute inset-0 h-full w-full overflow-visible"
@@ -180,7 +184,7 @@ export function OpenSource() {
                     transition={{ duration: 1.15, delay: 0.2 + i * 0.14, ease: [0.16, 1, 0.3, 1] }}
                   />
                   <motion.circle
-                    r="3"
+                    r="4"
                     fill="#f4b400"
                     initial={{ cx: line.x1, cy: line.y1, opacity: 0 }}
                     animate={isInView ? {
@@ -203,17 +207,16 @@ export function OpenSource() {
 
           {/* Center node */}
           <motion.div
-            className="absolute z-10"
+            className="absolute z-10 h-0 w-0"
             style={{
               left: `${(HUB.x / CANVAS.width) * 100}%`,
               top: `${(HUB.y / CANVAS.height) * 100}%`,
-              transform: 'translate(-50%, -50%)',
             }}
             initial={{ opacity: 0, scale: 0.3 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="flex h-[4.6rem] w-[4.6rem] items-center justify-center rounded-full bg-[var(--foreground)] text-white ring-[10px] ring-white/72 shadow-[0_28px_80px_rgba(17,17,17,0.24)] sm:h-[5.2rem] sm:w-[5.2rem] md:h-[5.5rem] md:w-[5.5rem]">
+            <div className="absolute left-0 top-0 flex h-[4.6rem] w-[4.6rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--foreground)] text-white ring-[10px] ring-white/72 shadow-[0_28px_80px_rgba(17,17,17,0.24)] sm:h-[5.2rem] sm:w-[5.2rem] md:h-[5.5rem] md:w-[5.5rem]">
               <GitMerge size={30} strokeWidth={2.2} />
             </div>
           </motion.div>
