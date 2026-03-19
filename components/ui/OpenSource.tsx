@@ -29,7 +29,7 @@ const contributions = [
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
     color: 'text-emerald-500',
     textColor: 'text-[var(--foreground)] hover:text-emerald-500',
-    layoutClasses: 'top-[60%] sm:top-[50%] -translate-y-1/2 left-0 sm:-left-[5%] md:-left-[10%] items-start text-left',
+    layoutClasses: 'top-[50%] -translate-y-1/2 left-[5vw] items-start text-left',
     prs: [
       { title: 'feat(mcp): expose auth and httpx_client_factory in SSE/StreamableHttp params', url: 'https://github.com/openai/openai-agents-python/pull/2713', date: 'Mar 19, 2026' },
       { title: 'fix: #879 return McpError as a structured error result instead of crashing the agent run', url: 'https://github.com/openai/openai-agents-python/pull/2598', date: 'Mar 4, 2026' }
@@ -43,7 +43,7 @@ const contributions = [
     logoClassName: 'h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem]',
     color: 'text-red-600',
     textColor: 'text-[var(--foreground)] hover:text-red-500',
-    layoutClasses: 'top-[5%] sm:-top-[5%] left-0 sm:-left-[5%] md:-left-[10%] items-start text-left',
+    layoutClasses: 'top-[8%] left-[5vw] items-start text-left',
     prs: [
       { title: 'feat: add verify parameter to Image for SSL bypass', url: 'https://github.com/stanfordnlp/dspy/pull/9279', date: 'Feb 9, 2026' },
       { title: 'fix(predict): remove code corruption in ProgramOfThought._parse_code', url: 'https://github.com/stanfordnlp/dspy/pull/9276', date: 'Feb 8, 2026' }
@@ -57,7 +57,7 @@ const contributions = [
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
     color: 'text-pink-600',
     textColor: 'text-[var(--foreground)] hover:text-pink-500',
-    layoutClasses: 'bottom-[5%] sm:-bottom-[5%] right-0 sm:-right-[5%] md:-right-[10%] items-end text-right',
+    layoutClasses: 'bottom-[8%] right-[5vw] items-end text-right',
     prs: [
       { title: 'fix: always pass embedding_types to Cohere embed() to prevent SDK TypeError', url: 'https://github.com/pydantic/pydantic-ai/pull/4524', date: 'Mar 4, 2026' }
     ]
@@ -120,8 +120,58 @@ export function OpenSource() {
   };
 
   return (
-    <section id="open-source" className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-36" ref={ref}>
-      <div className="mx-auto max-w-[1280px]">
+    <section id="open-source" className="relative px-5 py-24 sm:px-8 sm:py-36 min-h-[100vh] flex flex-col justify-center" ref={ref}>
+      
+      {/* Massive Uncontained Background Typography */}
+      <AnimatePresence>
+        {hoveredNode && (
+          <motion.div
+            key={hoveredNode}
+            initial={{ opacity: 0, filter: 'blur(20px)', scale: 0.95 }}
+            animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
+            exit={{ opacity: 0, filter: 'blur(20px)', scale: 0.95 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            onMouseEnter={() => handleMouseEnter(hoveredNode)}
+            onMouseLeave={handleMouseLeave}
+            className={`absolute z-10 flex flex-col pointer-events-auto w-full md:max-w-3xl lg:max-w-5xl ${
+              contributions.find((c) => c.name === hoveredNode)?.layoutClasses
+            }`}
+          >
+            {(() => {
+              const active = contributions.find((c) => c.name === hoveredNode);
+              if (!active) return null;
+              return (
+                <div className={`relative z-50 flex flex-col w-full ${active.name === 'Pydantic AI' ? 'items-end' : 'items-start'}`}>
+                  <h3 className={`text-[6rem] sm:text-[10rem] md:text-[14rem] font-bold leading-[0.8] tracking-tighter opacity-[0.05] ${active.color} mb-6 pointer-events-none whitespace-nowrap`}>
+                    {active.prs.length} MERGED<br />PR{active.prs.length !== 1 ? 'S' : ''}
+                  </h3>
+                  <div className={`flex flex-col gap-6 w-full ${active.name === 'Pydantic AI' ? 'items-end text-right' : 'items-start text-left'}`}>
+                    {active.prs.map((pr, idx) => (
+                      <a 
+                        key={idx} 
+                        href={pr.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="group relative cursor-pointer block transition-transform hover:scale-[1.02]"
+                      >
+                        <p className={`text-xl sm:text-3xl md:text-5xl font-extrabold tracking-tight transition-colors line-clamp-2 ${active.textColor}`}>
+                          {pr.title}
+                        </p>
+                        <div className={`flex items-center gap-3 mt-4 opacity-60 group-hover:opacity-100 transition-opacity ${active.name === 'Pydantic AI' ? 'justify-end' : 'justify-start'}`}>
+                          <GitPullRequest size={20} className={active.color} />
+                          <span className="text-base md:text-xl font-semibold text-[var(--muted)]">{pr.date}</span>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="mx-auto max-w-[1280px] w-full relative z-30 pointer-events-none">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -239,55 +289,6 @@ export function OpenSource() {
             })}
           </svg>
 
-          {/* Corner Embedded PR Typography */}
-          <AnimatePresence>
-            {hoveredNode && (
-              <motion.div
-                key={hoveredNode}
-                initial={{ opacity: 0, filter: 'blur(12px)', scale: 0.95 }}
-                animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
-                exit={{ opacity: 0, filter: 'blur(12px)', scale: 0.95 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                onMouseEnter={() => handleMouseEnter(hoveredNode)}
-                onMouseLeave={handleMouseLeave}
-                className={`absolute z-30 flex flex-col pointer-events-auto px-4 max-w-lg ${
-                  contributions.find((c) => c.name === hoveredNode)?.layoutClasses
-                }`}
-              >
-                {(() => {
-                  const active = contributions.find((c) => c.name === hoveredNode);
-                  if (!active) return null;
-                  return (
-                    <div className="relative z-50 flex flex-col w-full">
-                      <h3 className={`text-[5rem] sm:text-[6rem] md:text-[8rem] font-bold leading-[0.8] tracking-tighter opacity-[0.09] ${active.color} mb-4`}>
-                        {active.prs.length} MERGED<br />PR{active.prs.length !== 1 ? 'S' : ''}
-                      </h3>
-                      <div className={`flex flex-col gap-6 w-full ${active.name === 'Pydantic AI' ? 'items-end' : 'items-start'}`}>
-                        {active.prs.map((pr, idx) => (
-                          <a 
-                            key={idx} 
-                            href={pr.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="group relative cursor-pointer block transition-transform hover:scale-[1.02]"
-                          >
-                            <p className={`text-xl sm:text-2xl md:text-3xl font-bold tracking-tight transition-colors line-clamp-2 ${active.textColor}`}>
-                              {pr.title}
-                            </p>
-                            <div className="flex items-center gap-2 mt-3 opacity-60 group-hover:opacity-100 transition-opacity">
-                              <GitPullRequest size={16} className={active.color} />
-                              <span className="text-sm md:text-base font-semibold text-[var(--muted)]">{pr.date}</span>
-                            </div>
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })()}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
           {/* Center node */}
           <motion.div
             className="absolute z-10 h-0 w-0"
@@ -318,7 +319,7 @@ export function OpenSource() {
               transition={{ duration: 0.8, delay: 0.6 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
             >
               <div 
-                className="absolute left-0 top-0 flex h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem] max-w-none -translate-x-1/2 -translate-y-1/2 items-center justify-center cursor-pointer z-40"
+                className="absolute left-0 top-0 flex h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem] max-w-none -translate-x-1/2 -translate-y-1/2 items-center justify-center cursor-pointer pointer-events-auto"
                 onMouseEnter={() => handleMouseEnter(c.name)}
                 onMouseLeave={handleMouseLeave}
               >
