@@ -24,7 +24,7 @@ const contributions = [
   {
     name: 'OpenAI Agents SDK',
     logo: '/logos/openai.svg',
-    stars: 15200,
+    stars: 20163,
     position: { x: 237.5, y: 500 }, // Angle 180
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
     color: 'text-emerald-500',
@@ -32,15 +32,16 @@ const contributions = [
     align: 'left',
     layoutClasses: 'top-[45%] -translate-y-1/2 left-[5vw]',
     prs: [
+      { title: 'feat(mcp): expose list_resources, list_resource_templates, and read_resource on MCPServer', url: 'https://github.com/openai/openai-agents-python/pull/2721', date: 'Mar 21, 2026' },
       { title: 'feat(mcp): expose auth and httpx_client_factory in SSE/StreamableHttp params', url: 'https://github.com/openai/openai-agents-python/pull/2713', date: 'Mar 19, 2026' },
       { title: 'feat(mcp): expose session_id on MCPServerStreamableHttp', url: 'https://github.com/openai/openai-agents-python/pull/2708', date: 'Mar 19, 2026' },
-      { title: 'fix: #879 return McpError as a structured error result instead of crashing the agent run', url: 'https://github.com/openai/openai-agents-python/pull/2598', date: 'Mar 4, 2026' }
-    ]
+      { title: 'fix: #879 return McpError as a structured error result instead of crashing the agent run', url: 'https://github.com/openai/openai-agents-python/pull/2598', date: 'Mar 4, 2026' },
+    ],
   },
   {
     name: 'Stanford DSPy',
     logo: '/stanfordlogo.png',
-    stars: 22500,
+    stars: 32969,
     position: { x: 762.5, y: 196.9 }, // Angle -60 (120 degrees apart)
     logoClassName: 'h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem]',
     color: 'text-red-600',
@@ -55,7 +56,7 @@ const contributions = [
   {
     name: 'Pydantic AI',
     logo: '/logos/pydantic.svg',
-    stars: 8700,
+    stars: 15629,
     position: { x: 762.5, y: 803.1 }, // Angle 60 (120 degrees apart)
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
     color: 'text-pink-600',
@@ -189,7 +190,7 @@ export function OpenSource() {
             Architecting the foundation of modern AI.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-[1rem] text-[var(--muted)] sm:mt-5 sm:text-lg">
-            Authoring critical infrastructure and high-impact pull requests merged directly into the world's most foundational open-source models and frameworks.
+            <span className="font-semibold text-[var(--foreground)]">7 merged PRs</span> across OpenAI Agents SDK (4), DSPy (2), and Pydantic AI (1). GitHub repo stars below; hover a logo for each merged PR.
           </p>
         </motion.div>
 
