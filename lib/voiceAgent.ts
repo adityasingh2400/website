@@ -87,7 +87,7 @@ const PORTFOLIO_AGENT_PROMPT = [
   'Maps climate risk at the census tract level and connects it to actionable policy information.',
   '',
   '--- OPEN SOURCE ---',
-  'I contribute to open source: seven merged pull requests across openai-agents-python, Stanford DSPy, and pydantic-ai.',
+  'I contribute to open source: eight merged pull requests across openai-agents-python, Stanford DSPy, and pydantic-ai.',
   'I am active on GitHub as adityasingh2400.',
   '',
   '--- EXPERIENCE HISTORY ---',
