@@ -24,7 +24,7 @@ const contributions = [
   {
     name: 'OpenAI Agents SDK',
     logo: '/logos/openai.svg',
-    stars: 20163,
+    stars: 20651,
     position: { x: 237.5, y: 500 }, // Angle 180
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
     color: 'text-emerald-500',
@@ -41,7 +41,7 @@ const contributions = [
   {
     name: 'Stanford DSPy',
     logo: '/stanfordlogo.png',
-    stars: 32969,
+    stars: 33546,
     position: { x: 762.5, y: 196.9 }, // Angle -60 (120 degrees apart)
     logoClassName: 'h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem]',
     color: 'text-red-600',
@@ -56,7 +56,7 @@ const contributions = [
   {
     name: 'Pydantic AI',
     logo: '/logos/pydantic.svg',
-    stars: 15629,
+    stars: 16181,
     position: { x: 762.5, y: 803.1 }, // Angle 60 (120 degrees apart)
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
     color: 'text-pink-600',
@@ -64,6 +64,7 @@ const contributions = [
     align: 'right',
     layoutClasses: 'bottom-[10%] right-[5vw]',
     prs: [
+      { title: 'fix(openrouter): handle null top-level fields when response is nested in provider field', url: 'https://github.com/pydantic/pydantic-ai/pull/4528', date: 'Mar 31, 2026' },
       { title: 'fix: always pass embedding_types to Cohere embed() to prevent SDK TypeError', url: 'https://github.com/pydantic/pydantic-ai/pull/4524', date: 'Mar 4, 2026' }
     ]
   },
@@ -190,7 +191,7 @@ export function OpenSource() {
             Architecting the foundation of modern AI.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-[1rem] text-[var(--muted)] sm:mt-5 sm:text-lg">
-            <span className="font-semibold text-[var(--foreground)]">7 merged PRs</span> across OpenAI Agents SDK (4), DSPy (2), and Pydantic AI (1). GitHub repo stars below; hover a logo for each merged PR.
+            <span className="font-semibold text-[var(--foreground)]">8 merged PRs</span> across OpenAI Agents SDK (4), DSPy (2), and Pydantic AI (2). GitHub repo stars below; hover a logo for each merged PR.
           </p>
         </motion.div>
 
