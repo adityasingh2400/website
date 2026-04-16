@@ -6,7 +6,7 @@ import { useRef } from 'react';
 const experiences = [
   {
     company: 'Ryft AI',
-    role: 'Software Engineering Intern',
+    role: 'Software Engineering Lead',
     location: 'Cupertino, CA',
     period: 'Aug 2025 — Present',
     accent: '#22d3ee',
