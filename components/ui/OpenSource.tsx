@@ -2,7 +2,7 @@
 
 import { motion, useInView, animate, AnimatePresence } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
-import { Star, GitMerge, GitPullRequest } from 'lucide-react';
+import { Star, GitMerge, GitPullRequest, ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 
 type Point = {
@@ -11,7 +11,7 @@ type Point = {
 };
 
 const CANVAS = { width: 1000, height: 1000 };
-// We perfectly center the BOUNDING BOX. 
+// We perfectly center the BOUNDING BOX.
 // For an equilateral triangle with R=350 pointing left:
 // The bounding box center needs to be precisely at x=500.
 // Thus, HUB_X = 500 + 350 / 4 = 587.5. HUB_Y = 500.
@@ -19,12 +19,14 @@ const HUB = { x: 587.5, y: 500 };
 const HUB_RADIUS = 75;
 const OUTER_RADIUS = 125;
 const LEAF_LABEL_OFFSET = 'translate-y-[6rem] sm:translate-y-[7.5rem] md:translate-y-[8.5rem]';
+const MAX_PRS_VISIBLE = 10;
 
 const contributions = [
   {
     name: 'OpenAI Agents SDK',
     logo: '/logos/openai.svg',
-    stars: 20651,
+    stars: 26364,
+    repoUrl: 'https://github.com/openai/openai-agents-python/pulls?q=is%3Apr+author%3Aadityasingh2400+is%3Amerged',
     position: { x: 237.5, y: 500 }, // Angle 180
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
     color: 'text-emerald-500',
@@ -32,16 +34,49 @@ const contributions = [
     align: 'left',
     layoutClasses: 'top-[45%] -translate-y-1/2 left-[5vw]',
     prs: [
+      { title: 'fix(tracing): keep BatchTraceProcessor worker alive on exporter errors', url: 'https://github.com/openai/openai-agents-python/pull/3216', date: 'May 9, 2026' },
+      { title: 'fix(realtime): validate RealtimeAgent fields in __post_init__', url: 'https://github.com/openai/openai-agents-python/pull/3234', date: 'May 9, 2026' },
+      { title: 'fix(litellm): avoid duplicating content and signed thinking blocks across parallel tool-call splits', url: 'https://github.com/openai/openai-agents-python/pull/3215', date: 'May 9, 2026' },
+      { title: 'fix(redis-session): preserve created_at across writes', url: 'https://github.com/openai/openai-agents-python/pull/3202', date: 'May 9, 2026' },
+      { title: 'fix(handoffs): preserve HandoffInputData.input_items in remove_all_tools', url: 'https://github.com/openai/openai-agents-python/pull/3253', date: 'May 9, 2026' },
+      { title: "fix(voice): stop AudioInput.to_base64() from mutating caller's buffer", url: 'https://github.com/openai/openai-agents-python/pull/3201', date: 'May 9, 2026' },
+      { title: 'fix(realtime): treat None audio.input/audio.output as unset', url: 'https://github.com/openai/openai-agents-python/pull/3254', date: 'May 9, 2026' },
+      { title: 'fix(sessions): skip corrupt docs in MongoDBSession.pop_item', url: 'https://github.com/openai/openai-agents-python/pull/3247', date: 'May 9, 2026' },
+      { title: 'fix(realtime): preserve output_audio content parts in output_item events', url: 'https://github.com/openai/openai-agents-python/pull/3230', date: 'May 9, 2026' },
+      { title: 'fix(any-llm): avoid duplicating content and signed thinking blocks across parallel tool-call splits', url: 'https://github.com/openai/openai-agents-python/pull/3261', date: 'May 8, 2026' },
+      { title: 'fix(computer): exclude Computer instances from provider duck-typing', url: 'https://github.com/openai/openai-agents-python/pull/3249', date: 'May 8, 2026' },
+      { title: 'fix(realtime): raise UserError for input_type without on_handoff', url: 'https://github.com/openai/openai-agents-python/pull/3248', date: 'May 8, 2026' },
+      { title: 'fix(run): preserve last known response_id on conversation resume', url: 'https://github.com/openai/openai-agents-python/pull/3245', date: 'May 8, 2026' },
+      { title: 'fix(realtime): skip invalid input_text parts in user input conversion', url: 'https://github.com/openai/openai-agents-python/pull/3243', date: 'May 8, 2026' },
+      { title: 'fix: preserve tool guardrail results across handoffs in SingleStepResult', url: 'https://github.com/openai/openai-agents-python/pull/3237', date: 'May 8, 2026' },
+      { title: 'fix(approvals): skip needs_approval_checker when status already resolved', url: 'https://github.com/openai/openai-agents-python/pull/3229', date: 'May 8, 2026' },
+      { title: 'fix(sessions): persist output_tokens_details when input details are None', url: 'https://github.com/openai/openai-agents-python/pull/3227', date: 'May 8, 2026' },
+      { title: 'fix(run): skip CompactionItem silently in stream queue helper', url: 'https://github.com/openai/openai-agents-python/pull/3224', date: 'May 8, 2026' },
+      { title: 'fix(realtime): expose max_output_tokens on RealtimeSessionModelSettings', url: 'https://github.com/openai/openai-agents-python/pull/3223', date: 'May 8, 2026' },
+      { title: 'fix(run): preserve failed status across apply_patch operations', url: 'https://github.com/openai/openai-agents-python/pull/3217', date: 'May 8, 2026' },
+      { title: 'fix(realtime): preserve existing transcript over stale delta accumulator', url: 'https://github.com/openai/openai-agents-python/pull/3214', date: 'May 8, 2026' },
+      { title: 'fix(usage): preserve existing request_usage_entries on Usage.add', url: 'https://github.com/openai/openai-agents-python/pull/3213', date: 'May 8, 2026' },
+      { title: 'fix(handoffs): await on_handoff callables with async __call__', url: 'https://github.com/openai/openai-agents-python/pull/3211', date: 'May 8, 2026' },
+      { title: 'fix(exceptions): export MCPToolCancellationError from top-level package', url: 'https://github.com/openai/openai-agents-python/pull/3210', date: 'May 8, 2026' },
+      { title: 'fix(result): drop reasoning items orphaned by dropped tool calls', url: 'https://github.com/openai/openai-agents-python/pull/3207', date: 'May 8, 2026' },
+      { title: 'fix(strict-schema): preserve chained $ref during sibling-key expansion', url: 'https://github.com/openai/openai-agents-python/pull/3205', date: 'May 8, 2026' },
+      { title: 'fix(mcp): isolate strict schema conversion from non-strict fallback', url: 'https://github.com/openai/openai-agents-python/pull/3199', date: 'May 8, 2026' },
+      { title: 'fix(models): allow extra_query/extra_body via extra_args in Responses', url: 'https://github.com/openai/openai-agents-python/pull/3194', date: 'May 8, 2026' },
+      { title: 'test(realtime): cover overlapping tool response creates', url: 'https://github.com/openai/openai-agents-python/pull/3140', date: 'May 6, 2026' },
+      { title: 'fix(mcp): make duplicate tool errors deterministic', url: 'https://github.com/openai/openai-agents-python/pull/3136', date: 'May 6, 2026' },
+      { title: 'fix(mcp): reject non-object tool input JSON', url: 'https://github.com/openai/openai-agents-python/pull/3135', date: 'May 6, 2026' },
+      { title: 'fix(mcp): avoid mutating tool input schemas', url: 'https://github.com/openai/openai-agents-python/pull/3134', date: 'May 6, 2026' },
       { title: 'feat(mcp): expose list_resources, list_resource_templates, and read_resource on MCPServer', url: 'https://github.com/openai/openai-agents-python/pull/2721', date: 'Mar 21, 2026' },
-      { title: 'feat(mcp): expose auth and httpx_client_factory in SSE/StreamableHttp params', url: 'https://github.com/openai/openai-agents-python/pull/2713', date: 'Mar 19, 2026' },
       { title: 'feat(mcp): expose session_id on MCPServerStreamableHttp', url: 'https://github.com/openai/openai-agents-python/pull/2708', date: 'Mar 19, 2026' },
+      { title: 'feat(mcp): expose auth and httpx_client_factory in SSE/StreamableHttp params', url: 'https://github.com/openai/openai-agents-python/pull/2713', date: 'Mar 19, 2026' },
       { title: 'fix: #879 return McpError as a structured error result instead of crashing the agent run', url: 'https://github.com/openai/openai-agents-python/pull/2598', date: 'Mar 4, 2026' },
     ],
   },
   {
     name: 'Stanford DSPy',
     logo: '/stanfordlogo.png',
-    stars: 33546,
+    stars: 34471,
+    repoUrl: 'https://github.com/stanfordnlp/dspy/pulls?q=is%3Apr+author%3Aadityasingh2400+is%3Amerged',
     position: { x: 762.5, y: 196.9 }, // Angle -60 (120 degrees apart)
     logoClassName: 'h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem]',
     color: 'text-red-600',
@@ -56,7 +91,8 @@ const contributions = [
   {
     name: 'Pydantic AI',
     logo: '/logos/pydantic.svg',
-    stars: 16181,
+    stars: 17098,
+    repoUrl: 'https://github.com/pydantic/pydantic-ai/pulls?q=is%3Apr+author%3Aadityasingh2400+is%3Amerged',
     position: { x: 762.5, y: 803.1 }, // Angle 60 (120 degrees apart)
     logoClassName: 'h-[8.25rem] w-[8.25rem] sm:h-[10.5rem] sm:w-[10.5rem] md:h-[12rem] md:w-[12rem]',
     color: 'text-pink-600',
@@ -69,6 +105,8 @@ const contributions = [
     ]
   },
 ];
+
+const TOTAL_PR_COUNT = contributions.reduce((sum, c) => sum + c.prs.length, 0);
 
 function formatStars(count: number): string {
   if (count >= 1000) {
@@ -127,7 +165,7 @@ export function OpenSource() {
 
   return (
     <section id="open-source" className="relative px-5 py-24 sm:px-8 sm:py-36 min-h-[100vh] flex flex-col justify-center" ref={ref}>
-      
+
       {/* Massive Uncontained Background Typography */}
       <AnimatePresence>
         {hoveredNode && (
@@ -146,29 +184,49 @@ export function OpenSource() {
             {(() => {
               const active = contributions.find((c) => c.name === hoveredNode);
               if (!active) return null;
+              const isLarge = active.prs.length > MAX_PRS_VISIBLE;
+              const visiblePrs = active.prs.slice(0, MAX_PRS_VISIBLE);
+              const hiddenCount = active.prs.length - visiblePrs.length;
+              const titleSize = isLarge
+                ? 'text-sm sm:text-base md:text-xl'
+                : 'text-lg sm:text-2xl md:text-4xl';
+              const dateSize = isLarge ? 'text-xs md:text-sm' : 'text-sm md:text-lg';
+              const listGap = isLarge ? 'gap-3 sm:gap-4' : 'gap-6';
+              const blockGap = isLarge ? 'mt-1.5' : 'mt-3';
               return (
                 <div className={`relative z-50 flex flex-col w-full ${active.align === 'right' ? 'items-end' : 'items-start'}`}>
                   <h3 className={`text-[4rem] sm:text-[7rem] md:text-[10rem] font-bold leading-[0.8] tracking-tighter opacity-[0.05] ${active.color} mb-6 pointer-events-none whitespace-nowrap`}>
                     {active.prs.length} MERGED<br />PR{active.prs.length !== 1 ? 'S' : ''}
                   </h3>
-                  <div className={`flex flex-col gap-6 w-full ${active.align === 'right' ? 'items-end text-right' : 'items-start text-left'}`}>
-                    {active.prs.map((pr, idx) => (
-                      <a 
-                        key={idx} 
-                        href={pr.url} 
-                        target="_blank" 
+                  <div className={`flex flex-col ${listGap} w-full ${active.align === 'right' ? 'items-end text-right' : 'items-start text-left'}`}>
+                    {visiblePrs.map((pr, idx) => (
+                      <a
+                        key={idx}
+                        href={pr.url}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="group relative cursor-pointer block transition-transform hover:scale-[1.02]"
                       >
-                        <p className={`text-lg sm:text-2xl md:text-4xl font-extrabold tracking-tight transition-colors line-clamp-2 ${active.textColor}`}>
+                        <p className={`${titleSize} font-extrabold tracking-tight transition-colors line-clamp-2 ${active.textColor}`}>
                           {pr.title}
                         </p>
-                        <div className={`flex items-center gap-3 mt-3 opacity-60 group-hover:opacity-100 transition-opacity ${active.align === 'right' ? 'justify-end' : 'justify-start'}`}>
-                          <GitPullRequest size={16} className={active.color} />
-                          <span className="text-sm md:text-lg font-semibold text-[var(--muted)]">{pr.date}</span>
+                        <div className={`flex items-center gap-3 ${blockGap} opacity-60 group-hover:opacity-100 transition-opacity ${active.align === 'right' ? 'justify-end' : 'justify-start'}`}>
+                          <GitPullRequest size={isLarge ? 13 : 16} className={active.color} />
+                          <span className={`${dateSize} font-semibold text-[var(--muted)]`}>{pr.date}</span>
                         </div>
                       </a>
                     ))}
+                    {hiddenCount > 0 && (
+                      <a
+                        href={active.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`group inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--muted)] transition-colors hover:text-[var(--foreground)] ${active.align === 'right' ? 'self-end' : 'self-start'}`}
+                      >
+                        <span>+ {hiddenCount} more on GitHub</span>
+                        <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </a>
+                    )}
                   </div>
                 </div>
               );
@@ -191,7 +249,7 @@ export function OpenSource() {
             Architecting the foundation of modern AI.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-[1rem] text-[var(--muted)] sm:mt-5 sm:text-lg">
-            <span className="font-semibold text-[var(--foreground)]">8 merged PRs</span> across OpenAI Agents SDK (4), DSPy (2), and Pydantic AI (2). GitHub repo stars below; hover a logo for each merged PR.
+            <span className="font-semibold text-[var(--foreground)]">{TOTAL_PR_COUNT} merged PRs</span> across OpenAI Agents SDK ({contributions[0].prs.length}), DSPy ({contributions[1].prs.length}), and Pydantic AI ({contributions[2].prs.length}). GitHub repo stars below; hover a logo for each merged PR.
           </p>
         </motion.div>
 
@@ -327,7 +385,7 @@ export function OpenSource() {
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.6 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div 
+              <div
                 className="absolute left-0 top-0 flex h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem] max-w-none -translate-x-1/2 -translate-y-1/2 items-center justify-center cursor-pointer pointer-events-auto"
                 onMouseEnter={() => handleMouseEnter(c.name)}
                 onMouseLeave={handleMouseLeave}
