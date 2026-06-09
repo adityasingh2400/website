@@ -1,128 +1,136 @@
 'use client';
 
 import Link from 'next/link';
-import { AnimatePresence, motion, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, Github } from 'lucide-react';
-import { useRef, useState } from 'react';
-import { ProjectCard } from './ProjectCard';
+import { useRef } from 'react';
 import type { Project } from '@/lib/projects';
 
 interface ProjectsProps {
   projects: Project[];
 }
 
+const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export function Projects({ projects }: ProjectsProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeProject = projects[activeIndex] ?? projects[0];
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
 
-  if (!activeProject) {
-    return null;
-  }
+  if (!projects.length) return null;
 
   return (
-    <section id="projects" className="relative px-4 py-20 sm:px-6 sm:py-36" ref={ref}>
-      <div className="lab-shell">
-        <div className="grid gap-8 sm:gap-12 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.88fr)] xl:gap-14">
-          <div className="xl:sticky xl:top-28 xl:self-start">
-            <motion.div
-              initial={{ opacity: 0, y: 26 }}
+    <section id="work" className="relative scroll-mt-24 px-5 py-16 sm:px-8 sm:py-24" ref={ref}>
+      <div className="mx-auto w-full max-w-[860px]">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease }}
+          className="flex items-baseline justify-between gap-4"
+        >
+          <h2 className="font-display text-[clamp(2rem,6vw,3.2rem)] leading-[1] tracking-[-0.01em] text-[var(--foreground)]">
+            Things I&apos;ve built
+          </h2>
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] sm:text-[11px]">
+            {projects.length} pinned
+          </p>
+        </motion.div>
+
+        <div className="mt-7 sm:mt-9">
+          {projects.map((project, index) => (
+            <motion.article
+              key={project.slug}
+              initial={{ opacity: 0, y: 22 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="mb-6 max-w-2xl sm:mb-8"
+              transition={{ duration: 0.7, delay: index * 0.06, ease }}
+              className="group border-t border-[var(--line)] py-7 last:border-b sm:py-8"
             >
-              <p className="lab-eyebrow mb-3 sm:mb-4">Projects</p>
-              <h2 className="font-display text-[clamp(2.2rem,6vw,4.4rem)] leading-[0.94] tracking-[-0.05em] text-[var(--foreground)]">
-                Pinned projects.
-              </h2>
-            </motion.div>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeProject.slug}
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -18 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="lab-panel overflow-hidden p-4 sm:p-6 md:p-8"
-                style={{
-                  borderColor: activeProject.accent,
-                  background: `linear-gradient(180deg, rgba(255,255,255,0.56), rgba(255,255,255,0.28)), ${activeProject.accentSoft}`,
-                }}
-              >
-                <div
-                  className="pointer-events-none absolute right-3 top-1 font-display text-[clamp(4rem,12vw,10rem)] leading-none tracking-[-0.08em] opacity-10 sm:right-5 sm:top-2"
-                  style={{ color: activeProject.accent }}
-                >
-                  {String(activeIndex + 1).padStart(2, '0')}
-                </div>
-
-                <div className="relative">
-                  <div className="mb-3 flex flex-wrap items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:mb-4 sm:gap-3 sm:text-[10px]">
-                    <span>{activeProject.eyebrow}</span>
-                    <span>{activeProject.updatedLabel}</span>
+              <div className="grid gap-x-8 gap-y-3 sm:grid-cols-[1fr_auto]">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
+                    <span style={{ color: project.accent }}>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span>{project.eyebrow}</span>
                   </div>
 
-                  <h3 className="font-display text-[clamp(2rem,5vw,4.6rem)] leading-[0.9] tracking-[-0.055em] text-[var(--foreground)]">
-                    {activeProject.title}
-                  </h3>
-                  <p className="mt-3 max-w-xl text-[0.9rem] leading-relaxed text-[var(--muted)] sm:mt-5 sm:text-lg">
-                    {activeProject.summary}
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    className="mt-1.5 inline-flex items-center gap-2"
+                  >
+                    <h3 className="font-display text-[1.9rem] leading-[1.05] tracking-[-0.01em] text-[var(--foreground)] transition-colors duration-200 group-hover:text-[var(--muted-strong)] sm:text-[2.4rem]">
+                      {project.title}
+                    </h3>
+                    <ArrowUpRight
+                      size={18}
+                      className="mt-1 flex-shrink-0 text-[var(--muted)] opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100"
+                    />
+                  </Link>
+
+                  <p className="mt-2 max-w-[46ch] text-[0.95rem] leading-relaxed text-[var(--muted)] sm:text-[1.02rem]">
+                    {project.summary}
                   </p>
 
-                  <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:mt-6 sm:gap-x-4 sm:gap-y-2 sm:text-[10px]">
-                    <span>{activeProject.role}</span>
-                    <span>{activeProject.year}</span>
-                    <span>{activeProject.primaryLanguage ?? activeProject.stack[0]}</span>
-                  </div>
-
-                  <div className="mt-6 flex flex-wrap gap-2 sm:mt-8 sm:gap-3">
-                    <Link
-                      href={`/projects/${activeProject.slug}`}
-                      className="inline-flex items-center gap-2 border border-[var(--foreground)] bg-[var(--foreground)] px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--background)] transition-all duration-300 hover:-translate-y-0.5 sm:px-4 sm:py-3 sm:text-[11px]"
-                    >
-                      Details
-                      <ArrowRight size={14} />
-                    </Link>
-                    <a
-                      href={activeProject.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 border border-[var(--line-strong)] px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] sm:px-4 sm:py-3 sm:text-[11px]"
-                    >
-                      <Github size={14} />
-                      Source
-                    </a>
-                    {activeProject.liveUrl && (
-                      <a
-                        href={activeProject.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 border border-[var(--line-strong)] px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] sm:px-4 sm:py-3 sm:text-[11px]"
-                      >
-                        Live
-                        <ArrowUpRight size={14} />
-                      </a>
+                  <div className="mt-3.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
+                    <span>{project.role}</span>
+                    <span aria-hidden className="text-[var(--line-strong)]">·</span>
+                    <span>{project.year}</span>
+                    {(project.primaryLanguage ?? project.stack[0]) && (
+                      <>
+                        <span aria-hidden className="text-[var(--line-strong)]">·</span>
+                        <span>{project.primaryLanguage ?? project.stack[0]}</span>
+                      </>
                     )}
                   </div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
 
-          <div className="space-y-2 sm:space-y-3">
-            {projects.map((project, index) => (
-              <ProjectCard
-                key={project.slug}
-                project={project}
-                index={index}
-                isActive={index === activeIndex}
-                onSelect={() => setActiveIndex(index)}
-              />
-            ))}
-          </div>
+                <div className="flex flex-wrap items-start gap-2 sm:justify-end">
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line-strong)] px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)]"
+                  >
+                    Details
+                    <ArrowRight size={13} />
+                  </Link>
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${project.title} source on GitHub`}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--muted)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] hover:text-[var(--foreground)]"
+                  >
+                    <Github size={13} />
+                    Source
+                  </a>
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${project.title} live`}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--muted)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] hover:text-[var(--foreground)]"
+                    >
+                      Live
+                      <ArrowUpRight size={13} />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </motion.article>
+          ))}
         </div>
+
+        <motion.a
+          href="https://github.com/adityasingh2400"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.7, delay: 0.4, ease }}
+          className="mt-8 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--muted)] transition-colors duration-200 hover:text-[var(--foreground)]"
+        >
+          More on GitHub
+          <ArrowUpRight size={14} />
+        </motion.a>
       </div>
     </section>
   );

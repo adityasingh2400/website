@@ -6,9 +6,10 @@ import Link from 'next/link';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
 
 const navItems = [
-  { label: 'About', href: '#about' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Work', href: '#projects' },
+  { label: 'Work', href: '#work' },
+  { label: 'Open Source', href: '#open-source' },
+  { label: 'Hackathons', href: '#hackathons' },
+  { label: 'Life', href: '#life' },
 ];
 
 export function Navigation() {
@@ -60,13 +61,12 @@ export function Navigation() {
           }`}
         >
           <div className="flex items-center justify-between gap-3 px-3 py-2.5 sm:gap-4 sm:px-6 sm:py-3">
-            <Link href="/" className="transition-opacity duration-300 hover:opacity-65" onClick={closeMenu}>
-              <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-[var(--muted)] sm:text-[10px]">
-                Aditya Singh
-              </span>
-              <span className="mt-0.5 block font-display text-[1rem] leading-none tracking-[-0.04em] text-[var(--foreground)] sm:mt-1 sm:text-[1.1rem]">
-                UCSB / Ryft AI
-              </span>
+            <Link
+              href="/"
+              className="font-display text-[1.25rem] leading-none tracking-[-0.01em] text-[var(--foreground)] transition-opacity duration-300 hover:opacity-60 sm:text-[1.35rem]"
+              onClick={closeMenu}
+            >
+              Aditya Singh
             </Link>
 
             <div className="hidden lg:flex items-center gap-8">
@@ -79,15 +79,6 @@ export function Navigation() {
                   {item.label}
                 </a>
               ))}
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-[var(--line-strong)] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--foreground)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)]"
-              >
-                Resume
-                <ArrowUpRight size={14} />
-              </a>
             </div>
 
             <button
@@ -135,19 +126,6 @@ export function Navigation() {
                     <ArrowUpRight size={15} />
                   </motion.a>
                 ))}
-                <motion.a
-                  href="/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: navItems.length * 0.06 }}
-                  className="mt-2 inline-flex items-center justify-between border border-[var(--line-strong)] px-4 py-3.5 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--foreground)]"
-                >
-                  Resume
-                  <ArrowUpRight size={15} />
-                </motion.a>
               </div>
             </motion.div>
           </>

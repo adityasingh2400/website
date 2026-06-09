@@ -1,9 +1,8 @@
 import { Navigation } from '@/components/ui/Navigation';
-import { Hero } from '@/components/ui/Hero';
-import { VoiceAgent } from '@/components/ui/VoiceAgent';
-import { OpenSource } from '@/components/ui/OpenSource';
-import { Experience } from '@/components/ui/Experience';
+import { Intro } from '@/components/ui/Intro';
 import { Projects } from '@/components/ui/Projects';
+import { OpenSource } from '@/components/ui/OpenSource';
+import { Milestones } from '@/components/ui/Milestones';
 import { Fun } from '@/components/ui/Fun';
 import { Footer } from '@/components/ui/Footer';
 import { SmoothScroll } from '@/components/ui/SmoothScroll';
@@ -19,11 +18,10 @@ export default async function Home() {
       <SmoothScroll />
       <Navigation />
       <main>
-        <Hero />
-        <VoiceAgent />
-        <Experience />
+        <Intro />
         <Projects projects={projects} />
         <OpenSource />
+        <Milestones />
         <Fun />
       </main>
       <Footer />

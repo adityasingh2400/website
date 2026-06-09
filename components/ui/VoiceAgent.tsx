@@ -2,38 +2,15 @@
 
 import { useRef, useState, useCallback, useEffect, useId } from 'react';
 import { useConversation } from '@elevenlabs/react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
-import {
-  ArrowUpRight,
-  Check,
-  LoaderCircle,
-  Mic,
-  MicOff,
-  PhoneCall,
-  PhoneOff,
-  Volume2,
-} from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { LoaderCircle, Mic, MicOff, PhoneOff, Volume2, X } from 'lucide-react';
 
 const sampleQuestions = [
   'What do you like building most?',
   'Which project is your favorite?',
+  'What got you into agents and voice?',
   'What kind of work do you want next?',
   'What matters to you when you build AI?',
-];
-
-const setupSteps = [
-  {
-    title: 'Click the giant mic',
-    detail: 'The big voice card is the main action. You do not need to hunt for controls.',
-  },
-  {
-    title: 'Allow microphone once',
-    detail: 'Your browser may ask for mic permission the first time. After that, it just works.',
-  },
-  {
-    title: 'Ask naturally',
-    detail: 'Projects, Ryft, Ziri, what I care about building. Speak like a normal conversation.',
-  },
 ];
 
 const AGENT_ID = 'agent_2901kkeajfaseyw97wxkc2mz646b';
@@ -530,8 +507,6 @@ function VoiceReactiveCore({
 
 export function VoiceAgent() {
   const agentId = process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID?.trim() || AGENT_ID;
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
   const [errorMessage, setErrorMessage] = useState('');
   const [micDenied, setMicDenied] = useState(false);
   const [stableSpeaking, setStableSpeaking] = useState(false);
@@ -633,241 +608,164 @@ export function VoiceAgent() {
         : 'rgba(14,165,233,0.86)';
   const panelActionable = !isConnected;
 
-  const getStepState = (index: number) => {
-    if (index === 0) return stage === 'ready' || stage === 'blocked' ? 'active' : 'done';
-    if (index === 1) {
-      if (stage === 'connecting' || stage === 'blocked') return 'active';
-      return isConnected ? 'done' : 'idle';
-    }
-    return isConnected ? 'active' : 'idle';
-  };
+  const [open, setOpen] = useState(false);
 
-  const cardContent = (
-    <div className="relative z-10 flex min-h-[420px] flex-col justify-between px-5 py-6 text-center sm:min-h-[520px] sm:px-8 sm:py-8">
-      <div className="flex items-center justify-between gap-3 text-left">
-        <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-[var(--muted)] sm:text-[10px]">
-          Live
-        </p>
-        <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(17,17,17,0.12)] bg-[rgba(255,255,255,0.72)] px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.2em] text-[var(--foreground)] shadow-[0_10px_30px_rgba(17,17,17,0.05)] sm:text-[10px]">
-          <motion.span
-            className="h-2 w-2 rounded-full"
-            animate={{
-              scale: stage === 'blocked' ? [1, 0.9, 1] : [0.9, 1.2, 0.9],
-              opacity: [0.45, 1, 0.45],
-              backgroundColor: [pulseColor, pulseColor, pulseColor],
-            }}
-            transition={{
-              duration: stage === 'speaking' ? 0.82 : 1.6,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-          {stageContent.badge}
-        </div>
-      </div>
+  const openVoice = useCallback(() => {
+    setOpen(true);
+    void startConversation();
+  }, [startConversation]);
 
-      <div className="relative flex flex-1 flex-col items-center justify-center">
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute left-[14%] top-[18%] h-24 w-24 rounded-full blur-3xl sm:h-36 sm:w-36"
-          animate={{
-            x: [0, 18, -10, 0],
-            y: [0, -14, 10, 0],
-            opacity: [0.28, 0.42, 0.3, 0.28],
-          }}
-          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ background: 'rgba(14,165,233,0.18)' }}
-        />
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute bottom-[12%] right-[12%] h-28 w-28 rounded-full blur-3xl sm:h-40 sm:w-40"
-          animate={{
-            x: [0, -14, 12, 0],
-            y: [0, 12, -10, 0],
-            opacity: [0.22, 0.38, 0.26, 0.22],
-          }}
-          transition={{ duration: 13, repeat: Infinity, ease: 'easeInOut' }}
-          style={{
-            background:
-              stage === 'speaking' ? 'rgba(249,115,22,0.18)' : 'rgba(251,146,60,0.16)',
-          }}
-        />
+  const closeVoice = useCallback(() => {
+    void stopConversation();
+    setOpen(false);
+    setMicDenied(false);
+    setErrorMessage('');
+  }, [stopConversation]);
 
-        <VoiceReactiveCore
-          conversation={conversation}
-          stage={stage}
-          panelActionable={panelActionable}
-        />
+  useEffect(() => {
+    if (!open) return;
 
-        <div className="mt-7 max-w-[560px]">
-          <h3 className="font-display text-[clamp(2rem,5vw,3.8rem)] leading-[0.92] tracking-[-0.05em] text-[var(--foreground)]">
-            {stageContent.title}
-          </h3>
-          <p className="mx-auto mt-4 max-w-[520px] text-[0.95rem] leading-relaxed text-[var(--muted)] sm:text-lg">
-            {stageContent.body}
-          </p>
-        </div>
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeVoice();
+    };
 
-        {stageContent.cta && (
-          <div className="mt-7 inline-flex max-w-full items-center gap-2 rounded-full border border-[rgba(17,17,17,0.12)] bg-[rgba(255,255,255,0.76)] px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--foreground)] shadow-[0_14px_36px_rgba(17,17,17,0.05)] sm:text-[11px]">
-            {stage === 'blocked' ? <MicOff size={14} /> : <PhoneCall size={14} />}
-            {stageContent.cta}
-          </div>
-        )}
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
 
-        <div className="mt-5 max-w-[540px] rounded-[28px] border border-[rgba(17,17,17,0.1)] bg-[rgba(255,255,255,0.62)] px-4 py-3 shadow-[0_16px_42px_rgba(17,17,17,0.05)] sm:px-5">
-          <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:text-[10px]">
-            {stageContent.hintLabel}
-          </p>
-          <motion.p
-            key={`${stage}-${activePrompt}`}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-2 text-sm font-medium leading-relaxed text-[var(--foreground)] sm:text-base"
-          >
-            <span aria-hidden>&ldquo;</span>
-            {stageContent.hintText}
-            <span aria-hidden>&rdquo;</span>
-          </motion.p>
-        </div>
-      </div>
-
-      <div className="mt-6 flex items-center justify-between gap-4 text-left">
-        <p className="max-w-[280px] text-[0.78rem] leading-relaxed text-[var(--muted)] sm:text-sm">
-          Chrome or Safari work best. If the browser asks for the mic, allow it once and you are done.
-        </p>
-
-        {isConnected ? (
-          <button
-            type="button"
-            onClick={stopConversation}
-            className="inline-flex flex-shrink-0 items-center gap-2 rounded-full border border-red-500 bg-red-500 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-all duration-300 hover:-translate-y-0.5 sm:px-5 sm:text-[11px]"
-          >
-            <PhoneOff size={14} />
-            End call
-          </button>
-        ) : null}
-      </div>
-    </div>
-  );
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [open, closeVoice]);
 
   return (
-    <section id="voice" className="relative px-4 py-20 sm:px-6 sm:py-36" ref={sectionRef}>
-      <div className="lab-shell">
-        <div className="grid gap-8 sm:gap-10 xl:grid-cols-[340px_minmax(0,1fr)] xl:items-start">
+    <>
+      <button
+        type="button"
+        onClick={openVoice}
+        className="group inline-flex items-center gap-2.5 rounded-full border border-[var(--line-strong)] bg-[rgba(255,255,255,0.5)] px-4 py-2.5 text-[0.82rem] font-medium text-[var(--foreground)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--foreground)] hover:bg-[rgba(255,255,255,0.82)] sm:text-[0.9rem]"
+      >
+        <span className="relative flex h-2 w-2" aria-hidden>
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400/60" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-sky-500" />
+        </span>
+        Talk to me
+        <Mic
+          size={15}
+          strokeWidth={1.8}
+          className="opacity-55 transition-opacity duration-300 group-hover:opacity-100"
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
           <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h2 className="font-display max-w-4xl text-[clamp(2.2rem,6vw,4.6rem)] leading-[0.94] tracking-[-0.05em] text-[var(--foreground)]">
-              Talk to me.
-            </h2>
-
-            <div className="mt-8 grid gap-3 sm:mt-10">
-              {setupSteps.map((step, index) => {
-                const stepState = getStepState(index);
-                const isActive = stepState === 'active';
-                const isDone = stepState === 'done';
-
-                return (
-                  <div
-                    key={step.title}
-                    className="border px-4 py-4 transition-colors duration-300 sm:px-5"
-                    style={{
-                      borderColor: isDone
-                        ? 'rgba(14,165,233,0.28)'
-                        : isActive
-                          ? 'rgba(17,17,17,0.24)'
-                          : 'var(--line)',
-                      background: isDone
-                        ? 'rgba(14,165,233,0.08)'
-                        : isActive
-                          ? 'rgba(255,255,255,0.72)'
-                          : 'rgba(255,255,255,0.44)',
-                    }}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div
-                        className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border text-[11px]"
-                        style={{
-                          borderColor: isDone
-                            ? 'rgba(14,165,233,0.32)'
-                            : isActive
-                              ? 'rgba(17,17,17,0.18)'
-                              : 'rgba(17,17,17,0.12)',
-                          background: isDone ? 'rgba(14,165,233,0.12)' : 'rgba(255,255,255,0.74)',
-                        }}
-                      >
-                        {isDone ? <Check size={14} /> : index + 1}
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-[var(--foreground)] sm:text-[0.98rem]">
-                          {step.title}
-                        </p>
-                        <p className="mt-1.5 text-[0.8rem] leading-relaxed text-[var(--muted)] sm:text-sm">
-                          {step.detail}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <a
-              href="mailto:adityasingh@ucsb.edu"
-              className="mt-8 inline-flex items-center gap-2 border-b border-[var(--foreground)] pb-2 text-[0.8rem] font-medium text-[var(--foreground)] transition-opacity duration-300 hover:opacity-65 sm:mt-10 sm:text-sm"
-            >
-              Email instead
-              <ArrowUpRight size={16} />
-            </a>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="lab-panel relative overflow-hidden p-0"
-            style={{
-              background:
-                'linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.68)), radial-gradient(circle at top left, rgba(14,165,233,0.08), transparent 34%), radial-gradient(circle at bottom right, rgba(249,115,22,0.08), transparent 38%)',
-            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
           >
             <div
+              className="absolute inset-0 bg-[rgba(244,238,227,0.74)] backdrop-blur-xl"
+              onClick={closeVoice}
               aria-hidden
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  'linear-gradient(180deg, rgba(255,255,255,0.12), transparent 32%), radial-gradient(circle at 18% 12%, rgba(14,165,233,0.12), transparent 28%), radial-gradient(circle at 88% 84%, rgba(249,115,22,0.12), transparent 28%)',
-              }}
             />
 
-            {isConnected ? (
-              <div className="relative">{cardContent}</div>
-            ) : (
-              <motion.button
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 16, scale: 0.98 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Talk to Aditya"
+              className="relative z-10 flex w-full max-w-[480px] flex-col items-center rounded-[28px] border border-[var(--line)] bg-[rgba(255,255,255,0.74)] px-6 py-8 text-center shadow-[0_40px_120px_rgba(17,17,17,0.18)] backdrop-blur-2xl sm:px-10 sm:py-10"
+            >
+              <button
                 type="button"
-                onClick={startConversation}
-                disabled={isConnecting}
-                className="relative block w-full text-left disabled:cursor-progress"
-                whileHover={isConnecting ? undefined : { y: -4, scale: 1.005 }}
-                whileTap={isConnecting ? undefined : { scale: 0.995 }}
-                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                onClick={closeVoice}
+                aria-label="Close"
+                className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] text-[var(--muted)] transition-colors duration-200 hover:border-[var(--foreground)] hover:text-[var(--foreground)]"
               >
-                {cardContent}
-              </motion.button>
-            )}
+                <X size={16} />
+              </button>
 
-            {errorMessage && (
-              <div className="border-t border-[rgba(220,38,38,0.14)] bg-[rgba(254,242,242,0.88)] px-5 py-4 text-sm leading-relaxed text-red-700 sm:px-8">
-                {errorMessage}
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[rgba(255,255,255,0.7)] px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--foreground)] sm:text-[10px]">
+                <motion.span
+                  className="h-1.5 w-1.5 rounded-full"
+                  animate={{ scale: [0.85, 1.25, 0.85], opacity: [0.45, 1, 0.45] }}
+                  transition={{
+                    duration: stage === 'speaking' ? 0.82 : 1.6,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                  style={{ backgroundColor: pulseColor }}
+                />
+                {stageContent.badge}
               </div>
-            )}
+
+              <VoiceReactiveCore conversation={conversation} stage={stage} panelActionable={panelActionable} />
+
+              <h3 className="-mt-2 font-display text-[clamp(1.9rem,6vw,2.9rem)] leading-[1.02] text-[var(--foreground)]">
+                {stageContent.title}
+              </h3>
+              <p className="mx-auto mt-3 max-w-[360px] text-[0.9rem] leading-relaxed text-[var(--muted)] sm:text-[0.98rem]">
+                {stageContent.body}
+              </p>
+
+              <div className="mt-5 w-full max-w-[380px] rounded-2xl border border-[var(--line)] bg-[rgba(255,255,255,0.6)] px-4 py-3">
+                <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--muted)] sm:text-[10px]">
+                  {stageContent.hintLabel}
+                </p>
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={`${stage}-${activePrompt}`}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.3 }}
+                    className="mt-1.5 text-[0.92rem] font-medium text-[var(--foreground)]"
+                  >
+                    &ldquo;{stageContent.hintText}&rdquo;
+                  </motion.p>
+                </AnimatePresence>
+              </div>
+
+              <div className="mt-6 flex items-center gap-3">
+                {isConnected ? (
+                  <button
+                    type="button"
+                    onClick={closeVoice}
+                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(220,38,38,0.4)] bg-[rgba(220,38,38,0.06)] px-5 py-2.5 text-[0.82rem] font-medium text-red-600 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[rgba(220,38,38,0.12)]"
+                  >
+                    <PhoneOff size={15} />
+                    End conversation
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={openVoice}
+                    disabled={isConnecting}
+                    className="inline-flex items-center gap-2 rounded-full border border-[var(--foreground)] bg-[var(--foreground)] px-5 py-2.5 text-[0.82rem] font-medium text-[var(--background)] transition-all duration-300 hover:-translate-y-0.5 disabled:cursor-progress disabled:opacity-70"
+                  >
+                    {stage === 'blocked' ? <MicOff size={15} /> : <Mic size={15} />}
+                    {stage === 'blocked' ? 'Retry mic' : isConnecting ? 'Connecting…' : 'Start talking'}
+                  </button>
+                )}
+              </div>
+
+              <p className="mt-4 max-w-[320px] text-[0.72rem] leading-relaxed text-[var(--muted)]">
+                Chrome or Safari work best. Allow the mic once and just talk.
+              </p>
+
+              {errorMessage && (
+                <p className="mt-3 max-w-[340px] text-[0.78rem] leading-relaxed text-red-600">{errorMessage}</p>
+              )}
+            </motion.div>
           </motion.div>
-        </div>
-      </div>
-    </section>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

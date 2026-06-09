@@ -1,25 +1,12 @@
 'use client';
 
-import { motion, useInView, animate, AnimatePresence } from 'framer-motion';
+import { motion, useInView, animate } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { Star, GitMerge, GitPullRequest, ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 
-type Point = {
-  x: number;
-  y: number;
-};
-
-const CANVAS = { width: 1000, height: 1000 };
-// We perfectly center the BOUNDING BOX.
-// For an equilateral triangle with R=350 pointing left:
-// The bounding box center needs to be precisely at x=500.
-// Thus, HUB_X = 500 + 350 / 4 = 587.5. HUB_Y = 500.
-const HUB = { x: 587.5, y: 500 };
-const HUB_RADIUS = 75;
-const OUTER_RADIUS = 125;
-const LEAF_LABEL_OFFSET = 'translate-y-[6rem] sm:translate-y-[7.5rem] md:translate-y-[8.5rem]';
-const MAX_PRS_VISIBLE = 10;
+const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const RECENT_PER_REPO = 3;
 
 const contributions = [
   {
@@ -131,290 +118,104 @@ function AnimatedStarCount({ target, inView }: { target: number; inView: boolean
   return <span>{formatStars(display)}</span>;
 }
 
-function insetLine(from: Point, to: Point, startInset: number, endInset: number) {
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
-  const length = Math.hypot(dx, dy) || 1;
-  const ux = dx / length;
-  const uy = dy / length;
-
-  return {
-    x1: from.x + ux * startInset,
-    y1: from.y + uy * startInset,
-    x2: to.x - ux * endInset,
-    y2: to.y - uy * endInset,
-  };
-}
-
 export function OpenSource() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
-  const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const handleMouseEnter = (name: string) => {
-    if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
-    setHoveredNode(name);
-  };
-
-  const handleMouseLeave = () => {
-    hideTimeoutRef.current = setTimeout(() => {
-      setHoveredNode(null);
-    }, 300);
-  };
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="open-source" className="relative px-5 py-24 sm:px-8 sm:py-36 min-h-[100vh] flex flex-col justify-center" ref={ref}>
-
-      {/* Massive Uncontained Background Typography */}
-      <AnimatePresence>
-        {hoveredNode && (
-          <motion.div
-            key={hoveredNode}
-            initial={{ opacity: 0, filter: 'blur(20px)', scale: 0.95 }}
-            animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
-            exit={{ opacity: 0, filter: 'blur(20px)', scale: 0.95 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            onMouseEnter={() => handleMouseEnter(hoveredNode)}
-            onMouseLeave={handleMouseLeave}
-            className={`absolute z-10 flex flex-col pointer-events-auto w-full md:max-w-3xl lg:max-w-5xl ${
-              contributions.find((c) => c.name === hoveredNode)?.layoutClasses
-            } ${contributions.find((c) => c.name === hoveredNode)?.align === 'right' ? 'items-end text-right' : 'items-start text-left'}`}
-          >
-            {(() => {
-              const active = contributions.find((c) => c.name === hoveredNode);
-              if (!active) return null;
-              const isLarge = active.prs.length > MAX_PRS_VISIBLE;
-              const visiblePrs = active.prs.slice(0, MAX_PRS_VISIBLE);
-              const hiddenCount = active.prs.length - visiblePrs.length;
-              const titleSize = isLarge
-                ? 'text-sm sm:text-base md:text-xl'
-                : 'text-lg sm:text-2xl md:text-4xl';
-              const dateSize = isLarge ? 'text-xs md:text-sm' : 'text-sm md:text-lg';
-              const listGap = isLarge ? 'gap-3 sm:gap-4' : 'gap-6';
-              const blockGap = isLarge ? 'mt-1.5' : 'mt-3';
-              return (
-                <div className={`relative z-50 flex flex-col w-full ${active.align === 'right' ? 'items-end' : 'items-start'}`}>
-                  <h3 className={`text-[4rem] sm:text-[7rem] md:text-[10rem] font-bold leading-[0.8] tracking-tighter opacity-[0.05] ${active.color} mb-6 pointer-events-none whitespace-nowrap`}>
-                    {active.prs.length} MERGED<br />PR{active.prs.length !== 1 ? 'S' : ''}
-                  </h3>
-                  <div className={`flex flex-col ${listGap} w-full ${active.align === 'right' ? 'items-end text-right' : 'items-start text-left'}`}>
-                    {visiblePrs.map((pr, idx) => (
-                      <a
-                        key={idx}
-                        href={pr.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group relative cursor-pointer block transition-transform hover:scale-[1.02]"
-                      >
-                        <p className={`${titleSize} font-extrabold tracking-tight transition-colors line-clamp-2 ${active.textColor}`}>
-                          {pr.title}
-                        </p>
-                        <div className={`flex items-center gap-3 ${blockGap} opacity-60 group-hover:opacity-100 transition-opacity ${active.align === 'right' ? 'justify-end' : 'justify-start'}`}>
-                          <GitPullRequest size={isLarge ? 13 : 16} className={active.color} />
-                          <span className={`${dateSize} font-semibold text-[var(--muted)]`}>{pr.date}</span>
-                        </div>
-                      </a>
-                    ))}
-                    {hiddenCount > 0 && (
-                      <a
-                        href={active.repoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`group inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--muted)] transition-colors hover:text-[var(--foreground)] ${active.align === 'right' ? 'self-end' : 'self-start'}`}
-                      >
-                        <span>+ {hiddenCount} more on GitHub</span>
-                        <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              );
-            })()}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="mx-auto max-w-[1280px] w-full relative z-30 pointer-events-none">
+    <section id="open-source" className="relative scroll-mt-24 px-5 py-16 sm:px-8 sm:py-24" ref={ref}>
+      <div className="mx-auto w-full max-w-[860px]">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center"
+          transition={{ duration: 0.8, ease }}
         >
-          <h2
-            className="mx-auto max-w-5xl font-display text-[clamp(2.1rem,6vw,4.5rem)] leading-[0.92] tracking-[-0.04em] text-[var(--foreground)]"
-            style={{ textWrap: 'balance' }}
-          >
-            Architecting the foundation of modern AI.
+          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--muted)] sm:text-[11px]">
+            Open source
+          </p>
+          <h2 className="mt-2.5 font-display text-[clamp(2rem,6vw,3.2rem)] leading-[1.05] tracking-[-0.01em] text-[var(--foreground)]">
+            I help build the tools the field runs on
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-[1rem] text-[var(--muted)] sm:mt-5 sm:text-lg">
-            <span className="font-semibold text-[var(--foreground)]">{TOTAL_PR_COUNT} merged PRs</span> across OpenAI Agents SDK ({contributions[0].prs.length}), DSPy ({contributions[1].prs.length}), and Pydantic AI ({contributions[2].prs.length}). GitHub repo stars below; hover a logo for each merged PR.
+          <p className="mt-3.5 max-w-[54ch] text-[0.98rem] leading-relaxed text-[var(--muted)] sm:text-[1.08rem]">
+            <span className="font-medium text-[var(--foreground)]">{TOTAL_PR_COUNT} merged pull requests</span> into the
+            open-source libraries powering modern AI agents&nbsp;— OpenAI&apos;s Agents SDK,
+            Stanford&apos;s DSPy, and Pydantic AI.
           </p>
         </motion.div>
 
-        <div className="relative mx-auto mt-12 max-w-4xl sm:mt-16 w-full" style={{ aspectRatio: '1 / 1' }}>
-          {/* SVG lines */}
-          <svg
-            className="absolute inset-0 h-full w-full overflow-visible"
-            viewBox={`0 0 ${CANVAS.width} ${CANVAS.height}`}
-            preserveAspectRatio="xMidYMid meet"
-            fill="none"
-          >
-            <defs>
-              <filter id="oss-connector-glow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="4.5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              {contributions.map(({ position }, i) => {
-                const line = insetLine(HUB, position, HUB_RADIUS, OUTER_RADIUS);
-
-                return (
-                  <linearGradient
-                    key={`gradient-${i}`}
-                    id={`oss-connector-${i}`}
-                    x1={line.x1}
-                    y1={line.y1}
-                    x2={line.x2}
-                    y2={line.y2}
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop offset="0%" stopColor="#111111" stopOpacity="0.58" />
-                    <stop offset="52%" stopColor="#4b5563" stopOpacity="0.36" />
-                    <stop offset="100%" stopColor="#9ca3af" stopOpacity="0.18" />
-                  </linearGradient>
-                );
-              })}
-            </defs>
-
-            {contributions.map(({ position }, i) => {
-              const line = insetLine(HUB, position, HUB_RADIUS, OUTER_RADIUS);
-
-              return (
-                <g key={i}>
-                  <motion.line
-                    x1={line.x1}
-                    y1={line.y1}
-                    x2={line.x2}
-                    y2={line.y2}
-                    stroke="#111111"
-                    strokeWidth="7.5"
-                    strokeOpacity="0.09"
-                    strokeLinecap="round"
-                    filter="url(#oss-connector-glow)"
-                    initial={{ pathLength: 0 }}
-                    animate={isInView ? { pathLength: 1 } : {}}
-                    transition={{ duration: 1.15, delay: 0.2 + i * 0.14, ease: [0.16, 1, 0.3, 1] }}
-                  />
-                  <motion.line
-                    x1={line.x1}
-                    y1={line.y1}
-                    x2={line.x2}
-                    y2={line.y2}
-                    stroke={`url(#oss-connector-${i})`}
-                    strokeWidth="3.3"
-                    strokeLinecap="round"
-                    initial={{ pathLength: 0 }}
-                    animate={isInView ? { pathLength: 1 } : {}}
-                    transition={{ duration: 1.15, delay: 0.2 + i * 0.14, ease: [0.16, 1, 0.3, 1] }}
-                  />
-                  <motion.line
-                    x1={line.x1}
-                    y1={line.y1}
-                    x2={line.x2}
-                    y2={line.y2}
-                    stroke="#ffffff"
-                    strokeWidth="1.1"
-                    strokeOpacity="0.56"
-                    strokeLinecap="round"
-                    initial={{ pathLength: 0 }}
-                    animate={isInView ? { pathLength: 1 } : {}}
-                    transition={{ duration: 1.15, delay: 0.2 + i * 0.14, ease: [0.16, 1, 0.3, 1] }}
-                  />
-                  <motion.circle
-                    r="4"
-                    fill="#f4b400"
-                    initial={{ cx: line.x1, cy: line.y1, opacity: 0 }}
-                    animate={isInView ? {
-                      cx: [line.x1, line.x2],
-                      cy: [line.y1, line.y2],
-                      opacity: [0, 0.85, 0],
-                    } : {}}
-                    transition={{
-                      duration: 2.8,
-                      delay: 0.7 + i * 0.18,
-                      ease: [0.16, 1, 0.3, 1],
-                      repeat: Infinity,
-                      repeatDelay: 4.2,
-                    }}
-                  />
-                </g>
-              );
-            })}
-          </svg>
-
-          {/* Center node */}
-          <motion.div
-            className="absolute z-10 h-0 w-0"
-            style={{
-              left: `${(HUB.x / CANVAS.width) * 100}%`,
-              top: `${(HUB.y / CANVAS.height) * 100}%`,
-            }}
-            initial={{ opacity: 0, scale: 0.3 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div className="absolute left-0 top-0 flex h-[4.6rem] w-[4.6rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--foreground)] text-white ring-[10px] ring-white/72 shadow-[0_28px_80px_rgba(17,17,17,0.24)] sm:h-[5.2rem] sm:w-[5.2rem] md:h-[5.5rem] md:w-[5.5rem]">
-              <GitMerge size={30} strokeWidth={2.2} />
-            </div>
-          </motion.div>
-
-          {/* Leaf nodes */}
-          {contributions.map((c, i) => (
-            <motion.div
-              key={c.name}
-              className="absolute z-10 h-0 w-0"
-              style={{
-                left: `${(c.position.x / CANVAS.width) * 100}%`,
-                top: `${(c.position.y / CANVAS.height) * 100}%`,
-              }}
-              initial={{ opacity: 0, scale: 0.4 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.8, delay: 0.6 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div
-                className="absolute left-0 top-0 flex h-[9rem] w-[9rem] sm:h-[11.7rem] sm:w-[11.7rem] md:h-[13.2rem] md:w-[13.2rem] max-w-none -translate-x-1/2 -translate-y-1/2 items-center justify-center cursor-pointer pointer-events-auto"
-                onMouseEnter={() => handleMouseEnter(c.name)}
-                onMouseLeave={handleMouseLeave}
+        <div className="mt-9 grid gap-3 sm:gap-4 lg:grid-cols-3">
+          {contributions.map((repo, i) => {
+            const recent = repo.prs.slice(0, RECENT_PER_REPO);
+            return (
+              <motion.div
+                key={repo.name}
+                initial={{ opacity: 0, y: 22 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7, delay: 0.1 + i * 0.1, ease }}
+                className="flex flex-col rounded-2xl border border-[var(--line)] bg-[rgba(255,255,255,0.42)] p-5 transition-colors duration-300 hover:border-[var(--line-strong)] sm:p-6"
               >
-                {/* Keep the anchor at the node center so the SVG connector and outer node share the same target. */}
-                <Image
-                  src={c.logo}
-                  alt={c.name}
-                  width={250}
-                  height={250}
-                  unoptimized
-                  className={`relative z-10 max-w-none object-contain drop-shadow-[0_10px_24px_rgba(17,17,17,0.14)] ${c.logoClassName}`}
-                />
-              </div>
-              <div className={`absolute left-0 top-0 min-w-max -translate-x-1/2 text-center ${LEAF_LABEL_OFFSET}`}>
-                <p className="text-[13px] font-semibold text-[var(--foreground)] sm:text-[16px]">
-                  {c.name}
-                </p>
-                <div className="mt-0.5 flex items-center justify-center gap-1.5">
-                  <Star size={15} className="fill-amber-400 text-amber-400" />
-                  <span className="text-[15px] font-bold tabular-nums text-[var(--foreground)] sm:text-[18px]">
-                    <AnimatedStarCount target={c.stars} inView={isInView} />
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center">
+                    <Image
+                      src={repo.logo}
+                      alt={repo.name}
+                      width={44}
+                      height={44}
+                      unoptimized
+                      className="max-h-11 w-auto object-contain"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="truncate text-[0.95rem] font-semibold text-[var(--foreground)]">{repo.name}</p>
+                    <div className="mt-0.5 flex items-center gap-1.5">
+                      <Star size={13} className="fill-amber-400 text-amber-400" />
+                      <span className="text-[0.82rem] font-semibold tabular-nums text-[var(--foreground)]">
+                        <AnimatedStarCount target={repo.stars} inView={isInView} />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex items-center gap-2">
+                  <GitMerge size={15} className={repo.color} />
+                  <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--foreground)]">
+                    {repo.prs.length} merged
                   </span>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+
+                <ul className="mt-3 flex flex-1 flex-col gap-3 border-t border-[var(--line)] pt-3.5">
+                  {recent.map((pr) => (
+                    <li key={pr.url}>
+                      <a href={pr.url} target="_blank" rel="noopener noreferrer" className="group flex gap-2">
+                        <GitPullRequest size={13} className={`mt-0.5 flex-shrink-0 opacity-70 ${repo.color}`} aria-hidden />
+                        <span className="min-w-0">
+                          <span className="line-clamp-2 block text-[0.82rem] leading-snug text-[var(--muted-strong)] transition-colors duration-200 group-hover:text-[var(--foreground)]">
+                            {pr.title}
+                          </span>
+                          <span className="mt-0.5 block font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--muted)]">
+                            {pr.date}
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href={repo.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--muted)] transition-colors duration-200 hover:text-[var(--foreground)]"
+                >
+                  {repo.prs.length > recent.length ? `All ${repo.prs.length} on GitHub` : 'View on GitHub'}
+                  <ArrowUpRight size={13} />
+                </a>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
+
