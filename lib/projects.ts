@@ -583,6 +583,11 @@ function uniqueValues(values: Array<string | undefined>): string[] {
   return Array.from(new Set(values.filter(Boolean) as string[]));
 }
 
+// Keep copy lean: no em dashes (including any pulled live from GitHub descriptions).
+function cleanText(text: string): string {
+  return text.replace(/\s*—\s*/g, ', ').replace(/\s+,/g, ',');
+}
+
 function hexToRgba(hex: string, alpha: number): string {
   const normalized = hex.replace('#', '');
   const expanded = normalized.length === 3
@@ -617,8 +622,9 @@ function formatUpdatedLabel(updatedAt?: string): string {
 }
 
 function buildFallbackProject(repository: GithubRepository, pinnedIndex: number): Project {
-  const fallbackSummary =
-    repository.description || 'Pinned repository pulled in directly from GitHub.';
+  const fallbackSummary = cleanText(
+    repository.description || 'Pinned repository pulled in directly from GitHub.'
+  );
   const stack = uniqueValues([repository.language]);
 
   return {
@@ -690,8 +696,8 @@ function mergeProject(repository: GithubRepository, pinnedIndex: number): Projec
     title: override.title,
     eyebrow: override.eyebrow,
     category: override.category,
-    summary: override.summary,
-    description: override.description,
+    summary: cleanText(override.summary),
+    description: cleanText(override.description),
     heroStatement: override.heroStatement,
     pullQuote: override.pullQuote,
     accent: override.accent,

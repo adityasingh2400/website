@@ -270,7 +270,7 @@ function getStageContent(stage: VoiceStage, prompt: string) {
       return {
         badge: 'one click start',
         title: 'Click the mic.',
-        body: 'A voice agent trained on everything about me — projects, experience, interests. Ask it anything.',
+        body: 'A voice agent trained on everything about me. Ask it about my projects, experience, or interests.',
         hintLabel: 'Try asking',
         hintText: prompt,
         cta: '',

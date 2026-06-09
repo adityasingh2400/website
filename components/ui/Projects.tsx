@@ -25,14 +25,10 @@ export function Projects({ projects }: ProjectsProps) {
           initial={{ opacity: 0, y: 18 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease }}
-          className="flex items-baseline justify-between gap-4"
         >
           <h2 className="font-display text-[clamp(2rem,6vw,3.2rem)] leading-[1] tracking-[-0.01em] text-[var(--foreground)]">
             Things I&apos;ve built
           </h2>
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] sm:text-[11px]">
-            {projects.length} pinned
-          </p>
         </motion.div>
 
         <div className="mt-7 sm:mt-9">
@@ -46,11 +42,11 @@ export function Projects({ projects }: ProjectsProps) {
             >
               <div className="grid gap-x-8 gap-y-3 sm:grid-cols-[1fr_auto]">
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
-                    <span style={{ color: project.accent }}>
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span>{project.eyebrow}</span>
+                  <div
+                    className="font-mono text-[10px] uppercase tracking-[0.22em]"
+                    style={{ color: project.accent }}
+                  >
+                    {String(index + 1).padStart(2, '0')}
                   </div>
 
                   <Link
@@ -69,18 +65,6 @@ export function Projects({ projects }: ProjectsProps) {
                   <p className="mt-2 max-w-[46ch] text-[0.95rem] leading-relaxed text-[var(--muted)] sm:text-[1.02rem]">
                     {project.summary}
                   </p>
-
-                  <div className="mt-3.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
-                    <span>{project.role}</span>
-                    <span aria-hidden className="text-[var(--line-strong)]">·</span>
-                    <span>{project.year}</span>
-                    {(project.primaryLanguage ?? project.stack[0]) && (
-                      <>
-                        <span aria-hidden className="text-[var(--line-strong)]">·</span>
-                        <span>{project.primaryLanguage ?? project.stack[0]}</span>
-                      </>
-                    )}
-                  </div>
                 </div>
 
                 <div className="flex flex-wrap items-start gap-2 sm:justify-end">

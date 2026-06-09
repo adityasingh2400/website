@@ -138,7 +138,7 @@ export function OpenSource() {
           </h2>
           <p className="mt-3.5 max-w-[54ch] text-[0.98rem] leading-relaxed text-[var(--muted)] sm:text-[1.08rem]">
             <span className="font-medium text-[var(--foreground)]">{TOTAL_PR_COUNT} merged pull requests</span> into the
-            open-source libraries powering modern AI agents&nbsp;— OpenAI&apos;s Agents SDK,
+            open source libraries powering modern AI agents, across OpenAI&apos;s Agents SDK,
             Stanford&apos;s DSPy, and Pydantic AI.
           </p>
         </motion.div>

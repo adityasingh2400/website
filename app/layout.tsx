@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://adityasingh.dev'),
   title: 'Aditya Singh',
   description:
-    'Aditya Singh — CS at UCSB. I build voice interfaces, agents, and automation tools, and help maintain the open-source libraries the field is built on.',
+    'Aditya Singh. CS at UCSB. I build voice interfaces, agents, and automation tools, and help maintain the open source libraries the field is built on.',
   keywords: [
     'Aditya Singh',
     'AI',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Aditya Singh',
     description:
-      'I build voice interfaces, agents, and automation tools — and help maintain the open-source libraries the field runs on.',
+      'I build voice interfaces, agents, and automation tools, and help maintain the open source libraries the field runs on.',
     type: 'website',
     url: 'https://adityasingh.dev',
   },

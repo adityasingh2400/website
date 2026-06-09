@@ -114,7 +114,7 @@ export function Milestones() {
             What a month of building under a clock looks like
           </h2>
           <p className="mt-3.5 max-w-[54ch] text-[0.98rem] leading-relaxed text-[var(--muted)] sm:text-[1.08rem]">
-            I build a new product almost every weekend. A recent stretch, in order — from a beach in
+            I build a new product almost every weekend. A recent stretch, in order, from a beach in
             Long Beach to Y Combinator&apos;s HQ.
           </p>
         </motion.div>
