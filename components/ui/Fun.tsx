@@ -76,7 +76,7 @@ export function Fun() {
           transition={{ duration: 0.7, delay: 0.45, ease }}
           className="mt-7 text-[0.95rem] leading-relaxed text-[var(--muted)] sm:text-[1.02rem]"
         >
-          Also late nights vibecoding, a little guitar, an unreasonable SGA take, and{' '}
+          Also late nights vibecoding, guitar, an unreasonable SGA take, and{' '}
           <span className="italic text-[var(--foreground)]">The Matrix</span> on repeat.
         </motion.p>
       </div>

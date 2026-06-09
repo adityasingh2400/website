@@ -111,11 +111,11 @@ export function Milestones() {
             Hackathons
           </p>
           <h2 className="mt-2.5 font-display text-[clamp(2rem,6vw,3.2rem)] leading-[1.05] tracking-[-0.01em] text-[var(--foreground)]">
-            What a month of building under a clock looks like
+            A month of building under a clock
           </h2>
           <p className="mt-3.5 max-w-[54ch] text-[0.98rem] leading-relaxed text-[var(--muted)] sm:text-[1.08rem]">
-            I build a new product almost every weekend. A recent stretch, in order, from a beach in
-            Long Beach to Y Combinator&apos;s HQ.
+            I build something new most weekends. A recent stretch, from a beach in Long Beach to Y
+            Combinator&apos;s HQ.
           </p>
         </motion.div>
 

@@ -65,28 +65,27 @@ export function Intro() {
           className="prose-story mt-9 sm:mt-11"
         >
           <p>
-            I&apos;m a computer science student at UC Santa Barbara, living a block from the ocean in
-            Isla Vista. I build AI systems like voice interfaces, agents, and automation tools, the
-            kind of thing that&apos;s a little weird but that I actually want to use every day.
+            I&apos;m a computer science student at UC Santa Barbara, a block from the ocean in Isla
+            Vista. I build AI systems. Voice interfaces, agents, automation tools, the weird kind I
+            actually want to use every day.
           </p>
           <p>
-            I got here through robotics. I started a robotics nonprofit back home in Fremont, then
-            spent six months on soft robotics research at Cambridge that I{' '}
-            <a className="story-link" href="#hackathons">published and presented</a> through IEEE at
-            MIT. Somewhere along the way I fell for the messier, more interesting side of the work.
-            Getting machines to understand language, take real actions, and be trusted with them.
+            I got here through robotics. I started a nonprofit in Fremont, then spent six months on
+            soft robotics research at Cambridge that I{' '}
+            <a className="story-link" href="#hackathons">published</a> through IEEE at MIT. Along the
+            way I fell for the messier side of the work. Teaching machines to understand language,
+            take real actions, and be trusted with them.
           </p>
           <p>
-            These days most of my time goes to agentic systems and where voice computing heads next.
-            I ship a lot of <a className="story-link" href="#work">side projects</a>, and I help
-            maintain the <a className="story-link" href="#open-source">open source libraries</a> the
-            whole field is built on, like OpenAI&apos;s Agents SDK, Stanford&apos;s DSPy, and
-            Pydantic AI.
+            Now most of my time goes to agentic systems and where voice computing heads next. I ship
+            a lot of <a className="story-link" href="#work">side projects</a>, and I help maintain
+            the <a className="story-link" href="#open-source">open source libraries</a> the field is
+            built on. OpenAI&apos;s Agents SDK, Stanford&apos;s DSPy, Pydantic AI.
           </p>
           <p>
-            When I&apos;m not building, I&apos;m <a className="story-link" href="#life">hooping</a>, up
-            late vibecoding, or arguing about world politics. I just like learning things. If
-            you&apos;re working on something good,{' '}
+            Otherwise I&apos;m <a className="story-link" href="#life">hooping</a>, up late vibecoding,
+            or arguing about world politics. I like learning things. If you&apos;re building
+            something good,{' '}
             <a className="story-link" href="mailto:adityasingh@ucsb.edu">reach out</a>.
           </p>
         </motion.div>
@@ -99,9 +98,7 @@ export function Intro() {
           className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 sm:mt-10"
         >
           <VoiceAgent />
-          <span className="text-[0.85rem] text-[var(--muted)]">
-            or just read on, it&apos;s all right here.
-          </span>
+          <span className="text-[0.85rem] text-[var(--muted)]">or just read on.</span>
         </motion.div>
       </div>
     </section>
