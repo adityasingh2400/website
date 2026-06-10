@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { VoiceAgent } from './VoiceAgent';
+import { PointillismPortrait } from './PointillismPortrait';
 
 const socials = [
   { label: 'GitHub', href: 'https://github.com/adityasingh2400', icon: Github },
@@ -14,20 +15,17 @@ const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export function Intro() {
   return (
-    <section id="top" className="relative px-5 pb-16 pt-28 sm:px-8 sm:pb-24 sm:pt-36">
-      <div className="mx-auto w-full max-w-[760px]">
-        {/* Name + headshot */}
+    <section id="top" className="relative flex min-h-[100svh] flex-col px-5 sm:px-8">
+      <div className="chapter-shell my-auto pb-8 pt-12 sm:pb-20 sm:pt-20">
+        {/* Name + portrait */}
         <motion.div
           initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.9, ease }}
-          className="flex flex-col-reverse items-start gap-6 sm:flex-row sm:items-center sm:gap-8"
+          className="flex items-center gap-4 sm:gap-10"
         >
-          <div className="flex-1">
-            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--muted)] sm:text-[11px]">
-              Santa Barbara, California
-            </p>
-            <h1 className="mt-2.5 font-display text-[clamp(3.2rem,11vw,6rem)] leading-[0.95] tracking-[-0.01em] text-[var(--foreground)]">
+          <div className="min-w-0 flex-1">
+            <h1 className="font-display text-[clamp(2.2rem,8vw,5.4rem)] leading-[0.95] tracking-[-0.01em] text-[var(--foreground)]">
               Aditya Singh
             </h1>
             <div className="mt-4 flex items-center gap-3">
@@ -46,15 +44,11 @@ export function Intro() {
             </div>
           </div>
 
-          <div className="h-[112px] w-[112px] flex-shrink-0 overflow-hidden rounded-full border border-[var(--line-strong)] shadow-[0_18px_50px_rgba(17,17,17,0.14)] sm:h-[136px] sm:w-[136px]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/headshot.png"
-              alt="Aditya Singh"
-              className="h-full w-full object-cover object-center"
-              style={{ filter: 'contrast(1.04) saturate(0.96)' }}
-            />
-          </div>
+          <PointillismPortrait
+            src="/headshot.png"
+            alt="Aditya Singh"
+            className="h-[96px] w-[96px] flex-shrink-0 sm:h-[208px] sm:w-[208px]"
+          />
         </motion.div>
 
         {/* Story */}
@@ -62,45 +56,57 @@ export function Intro() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.12, ease }}
-          className="prose-story mt-9 sm:mt-11"
+          className="prose-story mt-5 sm:mt-10"
         >
           <p>
             I&apos;m a computer science student at UC Santa Barbara, a block from the ocean in Isla
-            Vista. I build AI systems. Voice interfaces, agents, automation tools, the weird kind I
-            actually want to use every day.
+            Vista. Most of my time goes into agents and voice interfaces, software you can talk to
+            that actually goes and does the thing.
           </p>
           <p>
-            I got here through robotics. I started a nonprofit in Fremont, then spent six months on
-            soft robotics research at Cambridge that I{' '}
-            <a className="story-link" href="#hackathons">published</a> through IEEE at MIT. Along the
-            way I fell for the messier side of the work. Teaching machines to understand language,
-            take real actions, and be trusted with them.
+            Robotics got me here. I started a robotics nonprofit back home in Fremont, then spent
+            six months on soft robotics research with a Cambridge lab that ended up{' '}
+            <a className="story-link" href="#hackathons">published</a> through IEEE at MIT.
+            Somewhere in there I realized the part I loved wasn&apos;t the hardware. It was getting
+            a machine to understand what you mean and act on it.
           </p>
           <p>
-            Now most of my time goes to agentic systems and where voice computing heads next. I ship
-            a lot of <a className="story-link" href="#work">side projects</a>, and I help maintain
-            the <a className="story-link" href="#open-source">open source libraries</a> the field is
-            built on. OpenAI&apos;s Agents SDK, Stanford&apos;s DSPy, Pydantic AI.
+            So that&apos;s what I do now. I ship <a className="story-link" href="#work">side
+            projects</a>, spend most weekends building at{' '}
+            <a className="story-link" href="#hackathons">hackathons</a>, and contribute to the{' '}
+            <a className="story-link" href="#open-source">open source libraries</a> I use every
+            day. The rest is <a className="story-link" href="#life">basketball</a>, late nights,
+            and arguments about politics I refuse to lose.
           </p>
           <p>
-            Otherwise I&apos;m <a className="story-link" href="#life">hooping</a>, up late vibecoding,
-            or arguing about world politics. I like learning things. If you&apos;re building
-            something good,{' '}
+            If you&apos;re building something good,{' '}
             <a className="story-link" href="mailto:adityasingh@ucsb.edu">reach out</a>.
           </p>
         </motion.div>
 
-        {/* Voice + contact row */}
+        {/* Voice row */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.32, ease }}
-          className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 sm:mt-10"
+          className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 sm:mt-10"
         >
           <VoiceAgent />
           <span className="text-[0.85rem] text-[var(--muted)]">or just read on.</span>
         </motion.div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1.1 }}
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-5 flex justify-center"
+      >
+        <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[var(--muted)] opacity-60">
+          scroll
+        </span>
+      </motion.div>
     </section>
   );
 }

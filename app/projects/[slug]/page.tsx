@@ -37,7 +37,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <div className="lab-shell">
         <div className="mb-8 sm:mb-10">
           <Link
-            href="/#projects"
+            href="/#work"
             className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--foreground)] sm:text-[11px]"
           >
             <ArrowLeft size={14} />
@@ -310,7 +310,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
           <div className="mt-5 sm:mt-6">
             <Link
-              href="/#projects"
+              href="/#work"
               className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--foreground)] sm:text-[11px]"
             >
               Back to explorer

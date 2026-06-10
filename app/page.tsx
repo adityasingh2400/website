@@ -1,10 +1,9 @@
-import { Navigation } from '@/components/ui/Navigation';
+import { ChapterRail } from '@/components/ui/ChapterRail';
 import { Intro } from '@/components/ui/Intro';
 import { Projects } from '@/components/ui/Projects';
 import { OpenSource } from '@/components/ui/OpenSource';
 import { Milestones } from '@/components/ui/Milestones';
 import { Fun } from '@/components/ui/Fun';
-import { Footer } from '@/components/ui/Footer';
 import { SmoothScroll } from '@/components/ui/SmoothScroll';
 import { getPinnedProjects } from '@/lib/projects';
 
@@ -16,7 +15,7 @@ export default async function Home() {
   return (
     <>
       <SmoothScroll />
-      <Navigation />
+      <ChapterRail />
       <main>
         <Intro />
         <Projects projects={projects} />
@@ -24,7 +23,6 @@ export default async function Home() {
         <Milestones />
         <Fun />
       </main>
-      <Footer />
     </>
   );
 }
